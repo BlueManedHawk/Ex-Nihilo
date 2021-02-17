@@ -5,7 +5,7 @@ This document lists all the changes in each version of Ex Nihilo.  These version
 A level-2 heading lists the version.  Level-3 headings are used to separate the changes in each version by the type of change.  If there are no changes in a particular section, that section will be elided.  The sections are as follows:
 
 - The **IMPORTANT!** section lists changes of any type that are important, which typically means removal of something which was heavily used, information on a security fix, a notice of backwards incompatibility, or something else I haven't thought of.  These are preceeded with a !.
-- The **Additions** section lists changes that add new features to the game.  These are preceeded with a +.
+- The **Additions** section lists changes that add new features to the game.  These are preceeded with a +, which inexplicably renders as a °.
 - The **Modifications** section lists changes that don't add anything new, but modify existing things.  These are preceeded by a ~.
 - The **Removals** section lists changes that take away some element of the game.  These are preceeded with a $.
 - The **Deprecations** section lists changes that add some new element for the purpose of replacing a different element.  These are preceeded by a @.
@@ -18,7 +18,7 @@ There may be a time where a version will need to be made innacessible, due to so
 
 For plans for future versions, see `PLANS.md`.
 
-## Version N.0, released on 2021-MM-DD.
+## Version N.0, released on 2021-02-16.
 
 ### IMPORTANT!
 
