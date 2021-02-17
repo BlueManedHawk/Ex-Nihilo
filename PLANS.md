@@ -6,23 +6,23 @@ The long-term goal of the project is to create a game in which the player starts
 
 ### Basic things
 
-[ ] Draw to the screen
-[ ] Draw specific things to the screen
-[ ] Have the screen react to keypresses
-[ ] Setup drawing text to the screen
-[ ] Allow "the screen" to be a window in X11
+- [ ] Draw to the screen
+- [ ] Draw specific things to the screen
+- [ ] Have the screen react to keypresses
+- [ ] Setup drawing text to the screen
+- [ ] Allow "the screen" to be a window in X11
 
 ### Basic game things
 
-[ ] Movable character
-[ ] Placing and destruction of flooring
-[ ] Placing and destruction of not-flooring
-[ ] Interactions with tiles
-[ ] Inventory
-[ ] Items
-[ ] Crafting
-[ ] Beasts
-[ ] Basic placeholder combat
-[ ] Built-in documentation
+- [ ] Movable character
+- [ ] Placing and destruction of flooring
+- [ ] Placing and destruction of not-flooring
+- [ ] Interactions with tiles
+- [ ] Inventory
+- [ ] Items
+- [ ] Crafting
+- [ ] Beasts
+- [ ] Basic placeholder combat
+- [ ] Built-in documentation
 
 ### 
