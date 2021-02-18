@@ -24,6 +24,9 @@
 
 int main ( int argc , char *argv[] ) {
 
+/* This bit of code serves only to use `argc`, as otherwise an error is generated. */
+
+if ( argc ) { } 
 /* We now need to determine whether there were any arguments, and to immediatly exit if there were, with a message telling people to try again without supplying arguments.  Thankfully, there's a pretty simple way to do this:  the C standard (see line 7) specifies that `argv[argc]` needs to be null; therefore, if there are any arguments, `argc` will be set to something other than 0, and `argv[1]` will not be null.  If that's true, then the program will terminate with an exit code of one;  otherwise, it will terminate with an exit code of zero. */
 
 if ( argv[1] != NULL ) {
