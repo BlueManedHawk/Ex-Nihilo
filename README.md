@@ -21,3 +21,4 @@ The long-term goal of this project is to create a game in which the player start
 - PORTING.md contains my stance on porting the game.
 - REQUIREMENTS.md contains the requirements for the game.
 - STYLE.md indicates the programming style for the game.
+- TROUBLESHOOTING.md has some tips for fixing common issues.
