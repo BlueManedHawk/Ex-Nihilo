@@ -31,6 +31,6 @@ if ( argc ) { }
 
 if ( argv[1] != NULL ) {
 	printf ( "Hey, this program isn't meant to take any arguments.  Try running it again without them.\n" ) ;
-	return 1 ; } 
+	return 22 ; } 
 printf ( "Wahoo!\n" ) ;
 return 0 ; }
