@@ -6,11 +6,20 @@ The long-term goal of the project is to create a game in which the player starts
 
 ### Basic things
 
-- [ ] Draw to the screen
-- [ ] Draw specific things to the screen
-- [ ] Have the screen react to keypresses
+- ~~[ ] Draw to the screen~~
+- ~~[ ] Draw specific things to the screen~~
+- ~~[ ] Have the screen react to keypresses~~
+- ~~[ ] Setup drawing text to the screen~~
+- ~~[ ] Allow "the screen" to be a window in X11~~
+
+After looking around for a bit, I couldn't find a single damn solution that didn't use X11 and some nonstandard graphics library; therefore, I am unfortunately going to need to use X11 and SDL (which seems like the best choice) in order to do this.  For this reason, I have chosen to reforment this section as follows:
+
+- [ ] Create a window
+- [ ] Draw to the window
+- [ ] Draw something specific to the window
+- [ ] Allow the window to react to keypresses
+- [ ] Setup SDL (whatever that means)
 - [ ] Setup drawing text to the screen
-- [ ] Allow "the screen" to be a window in X11
 
 ### Basic game things
 
