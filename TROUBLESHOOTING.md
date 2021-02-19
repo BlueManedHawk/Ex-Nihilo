@@ -28,18 +28,22 @@ Oh…_oh no._  Something has truly gone wrong.
 
 Firstly, run the game from a CLI, reproduce the crash, and then get the exit code.  (On bash, you can do this with `echo $?`.)  Convert it to binary.  This error code determines what caused the crash:
 
-- The first bit states whether the game exited safely.  0 is yes, 1 is no.
-- The second bit states whether the game exited expectedly.  0 is yes, 1 is no.
-- The third bit states whether the game was in debug mode.  0 is yes, 1 is no.
-- The fourth, fifth, sixth, seventh, and eight bits form a number.  This number indicates the source of the crash.  The meaning of this number is as follows:
-	- 0 indicates "some other reason".
-	- 1 indicates that the game crashed to prevent abuse of slowdowns.
-	- 2 indicates that the game crashed when you tried to feed it arguments.  Don't do that.
-	- 3 indicates PC LOAD LETTER
-	- 4 indicates that the game couldn't write to an appropriate place in memory.
-	- 5 indicates that you attempted to access tiles outside the bounds of normal gameplay.
-	- 6 indicates that you attempted to do something that could have been very bad not just for the game, but for your whole system.
-	- 7 indicates that the game went into an abnormal infinite loop.
-	- 8 indicates that the printer is on fire.
+- The first nybble of the byte describes a few characteristics (in all cases, 0 is yes, and 1 is no):
+	- The first bit states whether the game exited safely.
+	- The second bit states whether the game exited expectedly.
+	- The third bit states whether the game was outside debug mode.
+	- The fourth bit is reserved because it makes things easier.
+- The second nybble of the byte is used to state the source of the crash, and is _not_ treated bitwise.
+	- 0 indicates the it what it what was it not what have it.
+	- 1 indicates some error in SDL.
+	- 2 indicates that the error was from an inability to write.
+	- 3 indicates illegal positioning.
+	- 4 indicates that the game was crashed manually.
+	- 5 indicates that the game was running too slowly.
+	- 6 indicates a prevention of system breakage.
+	- 7 indicates an abnormal infinite loop was detected.
+	- 8 indicates that the error was from an inability to read.
+	- 9 indicates that a server sent bad information.
+	- Other values are currently unused.
 
 Please be sure to file an issue (see `CONTRIBUTING.md`).
