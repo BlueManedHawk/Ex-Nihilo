@@ -1,3 +1,9 @@
 # Compiling Ex Nihilo
 
-Compile the file `Ex Nihilo.c` in Clang against C2x, and append ` \`sdl2-config --cflags --libs\``, **with the graves**, to the compile command.  I also use the options `-pedantic`, `-Wall`, `-Wextra`, and `-Werror`, but these don't affect the final result of a particular piece of code, and aren't strictly necessary.
+Run the command
+
+```bash
+clang-11 -Wall -Werror -Wextra -pedantic "Ex Nihilo.c" `sdl2-config --cflags --libs` -o "Whatever you want the executable to be called.elf"
+```
+
+in the directory containing the file `Ex Nihilo.c`.  Do not that the `-Wall -Wextra -Werror -pedantic` part isn't strictly necessary; I just use it to help catch problems, and it doesn't affect the final executable in any way other that determining if it exists.
