@@ -48,7 +48,7 @@ if ( argc ) { }
 
 if ( argv[1] != NULL ) {
 	printf ( "Hey, this program isn't meant to take any arguments.  Try running it again without them.\n" ) ;
-	return 1 ; }
+	return 0x60 ; }
 
 /* Now that we're sure that the game was executed properly, we can initialize SDL.  This is done by using the `SDL_Init` function, with specific arguments for the separate subsystems.  Since I'm only using the video subsystem and not the audio subsystem (for now ¯‿°), the only argument I need to supply to the function is `SDL_INIT_VIDEO`.
  *
@@ -56,7 +56,7 @@ if ( argv[1] != NULL ) {
 
 if ( SDL_Init( SDL_INIT_VIDEO ) != 0 ) {
 	printf ( "SDL failed to initialize the video subsystem!  Thankfully, it was kind enough to give this error:\n%s\n", SDL_GetError( ) ) ;
-	return 1 ; }
+	return 0x21 ; }
 
 /* Of course, if the game quits unexpectedly, we'll want to ensure that SDL closes safely.  We can do this with the `atexit` function from `<stdlib.h>`.  Ideally, we'd want this to exit each subsystem individually, but `atexit` calls the functions with no arguments, so we can only use `SDL_Quit`, which closes all subsystems at once without any arguments.*/
 
@@ -69,7 +69,7 @@ atexit ( SDL_Quit ) ;
 SDL_Window *PrimaryGameWindow = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 , 480 , SDL_WINDOW_SHOWN ) ;
 if ( PrimaryGameWindow == NULL ) {
 	printf ( "SDL failed to create the window!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
+	return 0x21 ; }
 
 /* We now need to create a renderer for the primary game window.  What does this do?  I'm not quite sure.  In any case, we still need to check if there's a problem, which is done in the same way as before. 
  *
@@ -78,7 +78,7 @@ if ( PrimaryGameWindow == NULL ) {
 SDL_Renderer *GameRenderer = SDL_CreateRenderer ( PrimaryGameWindow , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ) ;
 if ( GameRenderer == NULL ) {
 	printf ( "SDL failed to initialize the renderer!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
+	return 0x21 ; }
 /* Let's now clear the window.  This is done with the `SDL_RenderClear` function.  Since this is a drawing function, we need to set the color first, using `SDL_SetRenderDrawColor`; in this case, I'm setting it to black.  The `SDL_RenderPresent` function just puts the things on the screen. */
 
 SDL_SetRenderDrawColor ( GameRenderer , 0 , 0 , 0 , 0xFF ) ;
@@ -95,4 +95,4 @@ SDL_DestroyRenderer ( GameRenderer ) ;
 SDL_DestroyWindow ( PrimaryGameWindow ) ;
 SDL_QuitSubSystem ( SDL_INIT_VIDEO ) ;
 SDL_Quit ( ) ;
-return 0x0 ; }
+return 0x00 ; }
