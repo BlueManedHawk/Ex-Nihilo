@@ -18,23 +18,23 @@
  *
  * This game uses SDL and its libraries.  While I do my best to explain what these things does, it would still do you some good to look at the SDL wiki, available at https://wiki.libsdl.org.
  *
- * To link to SDL2, you need to append `sdl2-config --cflags --libs`, **with the graves**, to you compiling command. */
+ * To link to SDL2, you need to append `sdl2-config --cflags --libs`, **with the graves**, to your compiling command. */
 
 /* We begin with the setup. */
 
 /* I need to add some of the C Standard Library for this to work.  The specific libraries I use from the CSL are used for the following purposes:
  *
  * - `<stdio.h>` is used for basic input-output systems, such as `printf`.
- * - `<stdlib.h>` is mostly used for the `atexit` function. */
+ * - `<stdlib.h>` is mostly used for the `atexit` function. 
+ * - `<string.h>` is used to faff about with strings. */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-/* Now, I need to add the necessary SDL libraries.  The specific libraries I use from SDL are used for the following purposes:
- *
- * - `"SDL.h"` is used for…uh, "initialization and shutdown", according to the wiki.  Considering the name, I think it does a _bit_ more than that. */
+/* Now, I need to add the SDL library. */
 
-#include <SDL2/SDL.h>
+#include "SDL.h"
 
 /* The main function contains the code, except for functions.  Why?  I don't know.  In any case, it takes a couple of arguments, these being an integer `argc` and a character pointer array `argv`.  These contain the count of arguments to the program and the arguments to the program, respecively.  Currently, I'm using this as debug functionality to tell the user that the program doesn't take any arguments. */
 
@@ -44,7 +44,7 @@ int main ( int argc , char *argv[] ) {
 
 if ( argc ) { }
 
-/* We now need to determine whether there were any arguments, and to immediatly exit if there were, with a message telling people to try again without supplying arguments.  Thankfully, there's a pretty simple way to do this:  the C standard (see line 7) specifies that `argv[argc]` needs to be null; therefore, if there are any arguments, `argc` will be set to something other than 0, and `argv[1]` will not be null.  If that's true, then the program will terminate with an exit code of twenty-two;  otherwise, it will terminate with an exit code of zero. */
+/* We now need to determine whether there were any arguments, and to immediatly exit if there were, with a message telling people to try again without supplying arguments.  Thankfully, there's a pretty simple way to do this:  the C standard (see line 7) specifies that `argv[argc]` needs to be null; therefore, if there are any arguments, `argc` will be set to something other than 0, and `argv[1]` will not be null.  If that's true, then the program will terminate with an exit code of 0x60;  otherwise, it will terminate with an exit code of zero. */
 
 if ( argv[1] != NULL ) {
 	printf ( "Hey, this program isn't meant to take any arguments.  Try running it again without them.\n" ) ;
@@ -56,7 +56,7 @@ if ( argv[1] != NULL ) {
 
 if ( SDL_Init( SDL_INIT_VIDEO ) != 0 ) {
 	printf ( "SDL failed to initialize the video subsystem!  Thankfully, it was kind enough to give this error:\n%s\n", SDL_GetError( ) ) ;
-	return 0x21 ; }
+	return 0x41 ; }
 
 /* Of course, if the game quits unexpectedly, we'll want to ensure that SDL closes safely.  We can do this with the `atexit` function from `<stdlib.h>`.  Ideally, we'd want this to exit each subsystem individually, but `atexit` calls the functions with no arguments, so we can only use `SDL_Quit`, which closes all subsystems at once without any arguments.*/
 
@@ -69,7 +69,7 @@ atexit ( SDL_Quit ) ;
 SDL_Window *PrimaryGameWindow = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 , 480 , SDL_WINDOW_SHOWN ) ;
 if ( PrimaryGameWindow == NULL ) {
 	printf ( "SDL failed to create the window!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x21 ; }
+	return 0x41 ; }
 
 /* We now need to create a renderer for the primary game window.  What does this do?  I'm not quite sure.  In any case, we still need to check if there's a problem, which is done in the same way as before. 
  *
@@ -78,11 +78,41 @@ if ( PrimaryGameWindow == NULL ) {
 SDL_Renderer *GameRenderer = SDL_CreateRenderer ( PrimaryGameWindow , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ) ;
 if ( GameRenderer == NULL ) {
 	printf ( "SDL failed to initialize the renderer!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x21 ; }
-/* Let's now clear the window.  This is done with the `SDL_RenderClear` function.  Since this is a drawing function, we need to set the color first, using `SDL_SetRenderDrawColor`; in this case, I'm setting it to black.  The `SDL_RenderPresent` function just puts the things on the screen. */
+	return 0x41 ; }
+
+/* Let's now clear the window.  This is done with the `SDL_RenderClear` function.  Since this is a drawing function, we need to set the color first, using `SDL_SetRenderDrawColor`; in this case, I'm setting it to black.  The `SDL_RenderPresent` function just flushes the buffer to the renderer. */
 
 SDL_SetRenderDrawColor ( GameRenderer , 0 , 0 , 0 , 0xFF ) ;
 SDL_RenderClear ( GameRenderer ) ;
+SDL_RenderPresent ( GameRenderer ) ;
+
+
+
+char AssetsLocation[255] = "/home/";
+const char *CurrentUser = getenv ( "USER" ) ;
+strcat ( AssetsLocation , CurrentUser ) ;
+strcat ( AssetsLocation , "/.ExNihilo/assets/assets.bin" ) ;
+FILE *Assets = fopen ( AssetsLocation , "rb" ) ;
+if ( Assets == NULL ) {
+	printf ( "The file `~/.ExNihilo/assets/assets.bin` could not be opened!  Please make sure that you have a copy and that it's in the right place.  If it is and you're still getting this message, please file an issue.\n" ) ; 
+	return 0x48 ; }
+int TestImage[7] ;
+fread ( TestImage , 1 , 8 , Assets ) ;
+SDL_Surface *TestSurface = SDL_CreateRGBSurfaceWithFormatFrom ( (void*)TestImage , 8 , 8 , 2 , 2 , SDL_PIXELFORMAT_RGB444 ) ;
+if ( TestSurface == NULL ) {
+	printf ( "SDL failed to create the test surface!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
+	return 0x41 ; }
+SDL_Palette *TestPalette = SDL_AllocPalette ( 4 ) ;
+if ( TestPalette == NULL ) {
+	printf ( "SDL failed to allocate the test palette!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
+	return 0x41 ; }
+SDL_SetSurfacePalette ( TestSurface , TestPalette ) ;
+SDL_Texture *TestTexture = SDL_CreateTextureFromSurface ( GameRenderer , TestSurface ) ;
+if ( TestTexture == NULL ) {
+	printf ( "SDL failed to create the test texture!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
+	return 0x41 ; }
+SDL_FreeSurface ( TestSurface ) ;
+SDL_RenderCopy ( GameRenderer , TestTexture , NULL , NULL ) ;
 SDL_RenderPresent ( GameRenderer ) ;
 
 /* I'm now going to pause for a moment so that the window shows up before it disappears. */
