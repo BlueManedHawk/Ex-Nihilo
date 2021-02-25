@@ -2,7 +2,7 @@
 
 ## Important!
 
-This repository is for the video game Ex Nihilo.  It is still in very early developement, and may cause many problems.  The license is at `LICENSE.md`, and installation instructions are available at `INSTALLING.md`.
+This repository is for the video game Ex Nihilo.  It is still in very early developement, and may cause many problems.  The license is at `docs/LICENSE.md`, and installation instructions are available at `docs/INSTALLING.md`.
 
 ## Introduction
 
@@ -10,7 +10,7 @@ The long-term goal of this project is to create a game in which the player start
 
 ## Other files you should read
 
-These are all located in the `Other Files` directory in this repository.
+These are all located in the `docs` directory in this repository.
 
 - CHANGELOG.md contains a list of each version's changes.
 - COMPILING.md contains instructions on how to compile the game.
