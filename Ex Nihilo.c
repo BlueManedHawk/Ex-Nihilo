@@ -86,27 +86,18 @@ SDL_SetRenderDrawColor ( GameRenderer , 0 , 0 , 0 , 0xFF ) ;
 SDL_RenderClear ( GameRenderer ) ;
 SDL_RenderPresent ( GameRenderer ) ;
 
+/* This part was originally going to be much better, using a specialized format for storing images.  Unfortunately, the SDL documentation is currently in a sorry state, and I couldn't figure out how the hell I was supposed to create a surface, and frankly, I don't want to spend any longer on this, so I'm going to use the temporary solution of loading BMPs.  It's ugly, it's lazy, and it's oversized, but it's what I have to do.
+ *
+ * What this does is it uses an unnecessarily complicated series of string-modification commands (because apparently the ISO can't be bothered to make this understandable) to determine the location of a specific test image, then takes that image and loads it to a surface, then takes that surface and loads it to a texture, then takes that texture and loads it to the renderer, then takes that renderer and loads it to the window.  There's probably some reason why this is so ridiculously complicated, but I hacen't been able to find an answer. */
 
-
-char AssetsLocation[255] = "/home/";
+char TestImageLocation[255] = "/home/";
 const char *CurrentUser = getenv ( "USER" ) ;
-strcat ( AssetsLocation , CurrentUser ) ;
-strcat ( AssetsLocation , "/.ExNihilo/assets/assets.bin" ) ;
-FILE *Assets = fopen ( AssetsLocation , "rb" ) ;
-if ( Assets == NULL ) {
-	printf ( "The file `~/.ExNihilo/assets/assets.bin` could not be opened!  Please make sure that you have a copy and that it's in the right place.  If it is and you're still getting this message, please file an issue.\n" ) ; 
-	return 0x48 ; }
-int TestImage[7] ;
-fread ( TestImage , 1 , 8 , Assets ) ;
-SDL_Surface *TestSurface = SDL_CreateRGBSurfaceWithFormatFrom ( (void*)TestImage , 8 , 8 , 2 , 2 , SDL_PIXELFORMAT_RGB444 ) ;
+strcat ( TestImageLocation , CurrentUser ) ;
+strcat ( TestImageLocation , "/.ExNihilo/Assets/TestImage.bmp" ) ;
+SDL_Surface *TestSurface = SDL_LoadBMP ( TestImageLocation ) ;
 if ( TestSurface == NULL ) {
 	printf ( "SDL failed to create the test surface!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
 	return 0x41 ; }
-SDL_Palette *TestPalette = SDL_AllocPalette ( 4 ) ;
-if ( TestPalette == NULL ) {
-	printf ( "SDL failed to allocate the test palette!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
-SDL_SetSurfacePalette ( TestSurface , TestPalette ) ;
 SDL_Texture *TestTexture = SDL_CreateTextureFromSurface ( GameRenderer , TestSurface ) ;
 if ( TestTexture == NULL ) {
 	printf ( "SDL failed to create the test texture!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
@@ -121,6 +112,7 @@ SDL_Delay ( 5000 ) ;
 
 /* Now, it's time to clean up everything.  We need to kill the renderer, kill the window, kill the video subsytem, kill SDL, and then kill the program. */
 
+SDL_DestroyTexture ( TestTexture ) ;
 SDL_DestroyRenderer ( GameRenderer ) ;
 SDL_DestroyWindow ( PrimaryGameWindow ) ;
 SDL_QuitSubSystem ( SDL_INIT_VIDEO ) ;

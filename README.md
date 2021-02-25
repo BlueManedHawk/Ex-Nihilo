@@ -10,6 +10,8 @@ The long-term goal of this project is to create a game in which the player start
 
 ## Other files you should read
 
+These are all located in the `Other Files` directory in this repository.
+
 - CHANGELOG.md contains a list of each version's changes.
 - COMPILING.md contains instructions on how to compile the game.
 - CONTRIBUTING.md contains information on how you can contribute.

@@ -16,7 +16,7 @@ After looking around for a bit, I couldn't find a single damn solution that didn
 
 - [X] Create a window
 - [X] Draw to the window
-- [ ] Draw something specific to the window
+- [X] Draw something specific to the window
 - [ ] Allow the window to react to keypresses
 - [X] ~~Setup SDL (whatever that means)~~
 - [ ] Make the window fullscreen
