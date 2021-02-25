@@ -106,10 +106,21 @@ SDL_FreeSurface ( TestSurface ) ;
 SDL_RenderCopy ( GameRenderer , TestTexture , NULL , NULL ) ;
 SDL_RenderPresent ( GameRenderer ) ;
 
-/* I'm now going to pause for a moment so that the window shows up before it disappears. */
+/* Now begins the main game loop. */
 
-SDL_Delay ( 5000 ) ;
+while ( 1 ) {
 
+/* Currently, the only thing that the main game loop does is check if the Q key is down, and if it is, it breaks from the game loop. */
+
+int Quit = 0 ;
+SDL_Event CurrentEvent ;
+while ( SDL_PollEvent ( &CurrentEvent ) ) {
+	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_q ) {
+		Quit = 1 ;
+		break ; } }
+if ( Quit == 1 ) {
+	break ; } }
+ 
 /* Now, it's time to clean up everything.  We need to kill the renderer, kill the window, kill the video subsytem, kill SDL, and then kill the program. */
 
 SDL_DestroyTexture ( TestTexture ) ;
