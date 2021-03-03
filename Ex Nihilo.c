@@ -20,6 +20,12 @@
  *
  * To link to SDL2, you need to append `sdl2-config --cflags --libs`, **with the graves**, to your compiling command. */
 
+/* Table of Contents:
+ *
+ * - Line 27: The setup
+ * - Line 29: Libraries
+ * - */
+
 /* We begin with the setup. */
 
 /* I need to add some of the C Standard Library for this to work.  The specific libraries I use from the CSL are used for the following purposes:
@@ -35,6 +41,328 @@
 /* Now, I need to add the SDL library. */
 
 #include "SDL.h"
+
+/* I'll comment this function properly later, but for now, all that you need to know is that the massive switch statement was necessary. */
+
+void DrawText ( int LocationX , int LocationY , const char *Text , char *AssetsLocation , SDL_Renderer *Renderer ) {
+
+int OriginalLocationX = LocationX ;
+char CurrentCharacter[1] = " " ;
+char CharacterImageLocation[255] = " " ;
+SDL_Rect CharacterDestination ;
+CharacterDestination.w = 8 ;
+CharacterDestination.h = 8 ;
+SDL_Surface *CharacterSurface ;
+SDL_Texture *CharacterTexture ;
+
+for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
+	CurrentCharacter[0] = Text[i] ;
+	if ( ( LocationX + 8 ) > 640 ) {
+		LocationY += 8 ;
+		LocationX = OriginalLocationX ; }
+	else {
+		LocationX += 8 ; } 
+	CharacterDestination.x = LocationX ;
+	CharacterDestination.y = LocationY ;
+	strcpy ( CharacterImageLocation , AssetsLocation ) ;
+
+	switch ( CurrentCharacter[0] ) {
+	case 0x20 :
+		strcat ( CharacterImageLocation , "space.bmp" ) ;
+		break ;
+	case 0x21 :
+		strcat ( CharacterImageLocation , "exclamation.bmp" ) ;
+		break ;
+	case 0x22 :
+		strcat ( CharacterImageLocation , "doublequote.bmp" ) ;
+		break ;
+	case 0x23 :
+		strcat ( CharacterImageLocation , "hash.bmp" ) ;
+		break ;
+	case 0x24 :
+		strcat ( CharacterImageLocation , "dollar.bmp" ) ;
+		break ;
+	case 0x25 :
+		strcat ( CharacterImageLocation , "pernif.bmp" ) ;
+		break ;
+	case 0x26 :
+		strcat ( CharacterImageLocation , "ampersand.bmp" ) ;
+		break ;
+	case 0x27 :
+		strcat ( CharacterImageLocation , "singlequote.bmp" ) ;
+		break ;
+	case 0x28 :
+		strcat ( CharacterImageLocation , "openparen.bmp" ) ;
+		break ;
+	case 0x29 :
+		strcat ( CharacterImageLocation , "closeparen.bmp" ) ;
+		break ;
+	case 0x2A :
+		strcat ( CharacterImageLocation , "asterisk.bmp" ) ;
+		break ;
+	case 0x2B :
+		strcat ( CharacterImageLocation , "plus.bmp" ) ;
+		break ;
+	case 0x2C :
+		strcat ( CharacterImageLocation , "comma.bmp" ) ;
+		break ;
+	case 0x2D :
+		strcat ( CharacterImageLocation , "hyphen.bmp" ) ;
+		break ;
+	case 0x2E :
+		strcat ( CharacterImageLocation , "period.bmp" ) ;
+		break ;
+	case 0x2F :
+		strcat ( CharacterImageLocation , "foreslash.bmp" ) ;
+		break ;
+	case 0x30 :
+		strcat ( CharacterImageLocation , "0.bmp" ) ;
+		break ;
+	case 0x31 :
+		strcat ( CharacterImageLocation , "1.bmp" ) ;
+		break ;
+	case 0x32 :
+		strcat ( CharacterImageLocation , "2.bmp" ) ;
+		break ;
+	case 0x33 :
+		strcat ( CharacterImageLocation , "3.bmp" ) ;
+		break ;
+	case 0x34 :
+		strcat ( CharacterImageLocation , "4.bmp" ) ;
+		break ;
+	case 0x35 :
+		strcat ( CharacterImageLocation , "5.bmp" ) ;
+		break ;
+	case 0x36 :
+		strcat ( CharacterImageLocation , "6.bmp" ) ;
+		break ;
+	case 0x37 :
+		strcat ( CharacterImageLocation , "7.bmp" ) ;
+		break ;
+	case 0x38 :
+		strcat ( CharacterImageLocation , "8.bmp" ) ;
+		break ;
+	case 0x39 :
+		strcat ( CharacterImageLocation , "9.bmp" ) ;
+		break ;
+	case 0x3A :
+		strcat ( CharacterImageLocation , "colon.bmp" ) ;
+		break ;
+	case 0x3B :
+		strcat ( CharacterImageLocation , "semicolon.bmp" ) ;
+		break ;
+	case 0x3C :
+		strcat ( CharacterImageLocation , "less.bmp" ) ;
+		break ;
+	case 0x3D :
+		strcat ( CharacterImageLocation , "equals.bmp" ) ;
+		break ;
+	case 0x3E :
+		strcat ( CharacterImageLocation , "more.bmp" ) ;
+		break ;
+	case 0x3F :
+		strcat ( CharacterImageLocation , "question.bmp" ) ;
+		break ;
+	case 0x40 :
+		strcat ( CharacterImageLocation , "at.bmp" ) ;
+		break ;
+	case 0x41 :
+		strcat ( CharacterImageLocation , "A.bmp" ) ;
+		break ;
+	case 0x42 :
+		strcat ( CharacterImageLocation , "B.bmp" ) ;
+		break ;
+	case 0x43 :
+		strcat ( CharacterImageLocation , "C.bmp" ) ;
+		break ; 
+	case 0x44 :
+		strcat ( CharacterImageLocation , "D.bmp" ) ;
+		break ;
+	case 0x45 :
+		strcat ( CharacterImageLocation , "E.bmp" ) ;
+		break ;
+	case 0x46 :
+		strcat ( CharacterImageLocation , "F.bmp" ) ;
+		break ;
+	case 0x47 :
+		strcat ( CharacterImageLocation , "G.bmp" ) ;
+		break ;
+	case 0x48 :
+		strcat ( CharacterImageLocation , "H.bmp" ) ;
+		break ;
+	case 0x49 :
+		strcat ( CharacterImageLocation , "I.bmp" ) ;
+		break ;
+	case 0x4A :
+		strcat ( CharacterImageLocation , "J.bmp" ) ;
+		break ;
+	case 0x4B :
+		strcat ( CharacterImageLocation , "K.bmp" ) ;
+		break ;
+	case 0x4C :
+		strcat ( CharacterImageLocation , "L.bmp" ) ;
+		break ;
+	case 0x4D :
+		strcat ( CharacterImageLocation , "M.bmp" ) ;
+		break ;
+	case 0x4E :
+		strcat ( CharacterImageLocation , "N.bmp" ) ;
+		break ;
+	case 0x4F :
+		strcat ( CharacterImageLocation , "O.bmp" ) ;
+		break ;
+	case 0x50 :
+		strcat ( CharacterImageLocation , "P.bmp" ) ;
+		break ;
+	case 0x51 :
+		strcat ( CharacterImageLocation , "Q.bmp" ) ;
+		break ;
+	case 0x52 :
+		strcat ( CharacterImageLocation , "R.bmp" ) ;
+		break ;
+	case 0x53 :
+		strcat ( CharacterImageLocation , "S.bmp" ) ;
+		break ;
+	case 0x54 :
+		strcat ( CharacterImageLocation , "T.bmp" ) ;
+		break ;
+	case 0x55 :
+		strcat ( CharacterImageLocation , "U.bmp" ) ;
+		break ;
+	case 0x56 :
+		strcat ( CharacterImageLocation , "V.bmp" ) ;
+		break ;
+	case 0x57 :
+		strcat ( CharacterImageLocation , "W.bmp" ) ;
+		break ;
+	case 0x58 :
+		strcat ( CharacterImageLocation , "X.bmp" ) ;
+		break ;
+	case 0x59 :
+		strcat ( CharacterImageLocation , "Y.bmp" ) ;
+		break ;
+	case 0x5A :
+		strcat ( CharacterImageLocation , "Z.bmp" ) ;
+		break ;
+	case 0x5B :
+		strcat ( CharacterImageLocation , "openbracket.bmp" ) ;
+		break ;
+	case 0x5C :
+		strcat ( CharacterImageLocation , "backslash.bmp" ) ;
+		break ;
+	case 0x5D :
+		strcat ( CharacterImageLocation , "closebracket.bmp" ) ;
+		break ;
+	case 0x5E :
+		strcat ( CharacterImageLocation , "caret.bmp" ) ;
+		break ;
+	case 0x5F :
+		strcat ( CharacterImageLocation , "underscore.bmp" ) ;
+		break ;
+	case 0x60 :
+		strcat ( CharacterImageLocation , "grave.bmp" ) ;
+		break ;
+	case 0x61 :
+		strcat ( CharacterImageLocation , "a.bmp" ) ;
+		break ;
+	case 0x62 :
+		strcat ( CharacterImageLocation , "b.bmp" ) ;
+		break ;
+	case 0x63 :
+		strcat ( CharacterImageLocation , "c.bmp" ) ;
+		break ;
+	case 0x64 :
+		strcat ( CharacterImageLocation , "d.bmp" ) ;
+		break ;
+	case 0x65 :
+		strcat ( CharacterImageLocation , "e.bmp" ) ;
+		break ;
+	case 0x66 :
+		strcat ( CharacterImageLocation , "f.bmp" ) ;
+		break ;
+	case 0x67 :
+		strcat ( CharacterImageLocation , "g.bmp" ) ;
+		break ;
+	case 0x68 :
+		strcat ( CharacterImageLocation , "h.bmp" ) ;
+		break ;
+	case 0x69 :
+		strcat ( CharacterImageLocation , "i.bmp" ) ;
+		break ;
+	case 0x6A :
+		strcat ( CharacterImageLocation , "j.bmp" ) ;
+		break ;
+	case 0x6B :
+		strcat ( CharacterImageLocation , "k.bmp" ) ;
+		break ;
+	case 0x6C :
+		strcat ( CharacterImageLocation , "l.bmp" ) ;
+		break ;
+	case 0x6D :
+		strcat ( CharacterImageLocation , "m.bmp" ) ;
+		break ;
+	case 0x6E :
+		strcat ( CharacterImageLocation , "n.bmp" ) ;
+		break ;
+	case 0x6F :
+		strcat ( CharacterImageLocation , "o.bmp" ) ;
+		break ;
+	case 0x70 :
+		strcat ( CharacterImageLocation , "p.bmp" ) ;
+		break ;
+	case 0x71 :
+		strcat ( CharacterImageLocation , "q.bmp" ) ;
+		break ;
+	case 0x72 :
+		strcat ( CharacterImageLocation , "r.bmo" ) ;
+		break ;
+	case 0x73 :
+		strcat ( CharacterImageLocation , "s.bmp" ) ;
+		break ;
+	case 0x74 :
+		strcat ( CharacterImageLocation , "t.bmp" ) ;
+		break ;
+	case 0x75 :
+		strcat ( CharacterImageLocation , "u.bmp" ) ;
+		break ;
+	case 0x76 :
+		strcat ( CharacterImageLocation , "v.bmp" ) ;
+		break ;
+	case 0x77 :
+		strcat ( CharacterImageLocation , "w.bmp" ) ;
+		break ;
+	case 0x78 :
+		strcat ( CharacterImageLocation , "x.bmp" ) ;
+		break ;
+	case 0x79 :
+		strcat ( CharacterImageLocation , "y.bmp" ) ;
+		break ;
+	case 0x7A :
+		strcat ( CharacterImageLocation , "z.bmp" ) ;
+		break ;
+	case 0x7B :
+		strcat ( CharacterImageLocation , "openbrace.bmp" ) ;
+		break ;
+	case 0x7C :
+		strcat ( CharacterImageLocation , "polebar.bmp" ) ;
+		break ;
+	case 0x7D :
+		strcat ( CharacterImageLocation , "closebrace.bmp" ) ;
+		break ;
+	case 0x7E :
+		strcat ( CharacterImageLocation , "tilde.bmp" ) ;
+		break ; }
+
+	CharacterSurface = SDL_LoadBMP ( CharacterImageLocation ) ;
+	if ( CharacterSurface == NULL ) {
+		printf ( "SDL failed to load %s!  Thankfully, it was nice enough to give this error:\n%s\n" , CharacterImageLocation , SDL_GetError ( ) ) ; }
+	CharacterTexture = SDL_CreateTextureFromSurface ( Renderer , CharacterSurface ) ;
+	if ( CharacterTexture == NULL ) {
+		printf ( "SDL failed to apply the character surface to the character texture!  Thankfully, it was kind enough to give this error:\n%s\n" , SDL_GetError ( ) ) ; }
+	SDL_RenderCopy ( Renderer , CharacterTexture , NULL , &CharacterDestination ) ;
+	SDL_RenderPresent ( Renderer ) ; }
+
+SDL_DestroyTexture ( CharacterTexture ) ; }
 
 /* The main function contains the code, except for functions.  Why?  I don't know.  In any case, it takes a couple of arguments, these being an integer `argc` and a character pointer array `argv`.  These contain the count of arguments to the program and the arguments to the program, respecively.  Currently, I'm using this as debug functionality to tell the user that the program doesn't take any arguments. */
 
@@ -66,7 +394,7 @@ atexit ( SDL_Quit ) ;
  *
  * The arguments to the function `SDL_CreateWindow` are the name of the window, the X and Y position and size of the window, respectively, respectively, and the flags to the function ORed together, respectively. */
 
-SDL_Window *PrimaryGameWindow = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 , 480 , SDL_WINDOW_FULLSCREEN ) ;
+SDL_Window *PrimaryGameWindow = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 , 480 , SDL_WINDOW_FULLSCREEN | SDL_WINDOW_ALWAYS_ON_TOP | SDL_WINDOW_ALLOW_HIGHDPI ) ;
 if ( PrimaryGameWindow == NULL ) {
 	printf ( "SDL failed to create the window!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
 	return 0x41 ; }
@@ -85,15 +413,19 @@ if ( GameRenderer == NULL ) {
 SDL_SetRenderDrawColor ( GameRenderer , 0 , 0 , 0 , 0xFF ) ;
 SDL_RenderClear ( GameRenderer ) ;
 SDL_RenderPresent ( GameRenderer ) ;
+SDL_Delay ( 1000 ) ;
 
 /* This part was originally going to be much better, using a specialized format for storing images.  Unfortunately, the SDL documentation is currently in a sorry state, and I couldn't figure out how the hell I was supposed to create a surface, and frankly, I don't want to spend any longer on this, so I'm going to use the temporary solution of loading BMPs.  It's ugly, it's lazy, and it's oversized, but it's what I have to do.
  *
  * What this does is it uses an unnecessarily complicated series of string-modification commands (because apparently the ISO can't be bothered to make this understandable) to determine the location of a specific test image, then takes that image and loads it to a surface, then takes that surface and loads it to a texture, then takes that texture and loads it to the renderer, then takes that renderer and loads it to the window.  There's probably some reason why this is so ridiculously complicated, but I hacen't been able to find an answer. */
 
-char TestImageLocation[255] = "/home/";
+char AssetsLocation[255] = "/home/";
 const char *CurrentUser = getenv ( "USER" ) ;
-strcat ( TestImageLocation , CurrentUser ) ;
-strcat ( TestImageLocation , "/.ExNihilo/Assets/TestImage.bmp" ) ;
+strcat ( AssetsLocation , CurrentUser ) ;
+strcat ( AssetsLocation , "/.ExNihilo/Assets/" ) ;
+char TestImageLocation[255] = " " ;
+strcpy ( TestImageLocation , AssetsLocation ) ;
+strcat ( TestImageLocation , "TestImage.bmp" ) ;
 SDL_Surface *TestSurface = SDL_LoadBMP ( TestImageLocation ) ;
 if ( TestSurface == NULL ) {
 	printf ( "SDL failed to create the test surface!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
@@ -105,6 +437,12 @@ if ( TestTexture == NULL ) {
 SDL_FreeSurface ( TestSurface ) ;
 SDL_RenderCopy ( GameRenderer , TestTexture , NULL , NULL ) ;
 SDL_RenderPresent ( GameRenderer ) ;
+
+SDL_Delay ( 1000 ) ;
+
+DrawText ( 128 , 128 , "Surprise!" , AssetsLocation , GameRenderer ) ;
+
+SDL_Delay ( 1000 ) ;
 
 /* Now begins the main game loop. */
 
