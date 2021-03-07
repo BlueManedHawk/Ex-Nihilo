@@ -314,7 +314,7 @@ for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
 		strcat ( CharacterImageLocation , "q.bmp" ) ;
 		break ;
 	case 0x72 :
-		strcat ( CharacterImageLocation , "r.bmo" ) ;
+		strcat ( CharacterImageLocation , "r.bmp" ) ;
 		break ;
 	case 0x73 :
 		strcat ( CharacterImageLocation , "s.bmp" ) ;
@@ -357,20 +357,17 @@ for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
 	if ( CharacterSurface == NULL ) {
 		printf ( "SDL failed to load %s!  Thankfully, it was nice enough to give this error:\n%s\n" , CharacterImageLocation , SDL_GetError ( ) ) ; }
 	CharacterTexture = SDL_CreateTextureFromSurface ( Renderer , CharacterSurface ) ;
+	SDL_FreeSurface ( CharacterSurface ) ;
 	if ( CharacterTexture == NULL ) {
 		printf ( "SDL failed to apply the character surface to the character texture!  Thankfully, it was kind enough to give this error:\n%s\n" , SDL_GetError ( ) ) ; }
-	SDL_RenderCopy ( Renderer , CharacterTexture , NULL , &CharacterDestination ) ;
-	SDL_RenderPresent ( Renderer ) ; }
+	SDL_RenderCopy ( Renderer , CharacterTexture , NULL , &CharacterDestination ) ; }
 
+SDL_RenderPresent ( Renderer ) ;
 SDL_DestroyTexture ( CharacterTexture ) ; }
 
 /* The main function contains the code, except for functions.  Why?  I don't know.  In any case, it takes a couple of arguments, these being an integer `argc` and a character pointer array `argv`.  These contain the count of arguments to the program and the arguments to the program, respecively.  Currently, I'm using this as debug functionality to tell the user that the program doesn't take any arguments. */
 
-int main ( int argc , char *argv[] ) {
-
-/* This bit of code serves only to use `argc`, as otherwise an error is generated. */
-
-if ( argc ) { }
+int main ( [[maybe_unused]] int argc , char *argv[] ) {
 
 /* We now need to determine whether there were any arguments, and to immediatly exit if there were, with a message telling people to try again without supplying arguments.  Thankfully, there's a pretty simple way to do this:  the C standard (see line 7) specifies that `argv[argc]` needs to be null; therefore, if there are any arguments, `argc` will be set to something other than 0, and `argv[1]` will not be null.  If that's true, then the program will terminate with an exit code of 0x60;  otherwise, it will terminate with an exit code of zero. */
 
