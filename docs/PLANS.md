@@ -54,8 +54,8 @@ Void magic will be the most basic form of magic, necessary to synthesize things 
 
 The music and sound of a game is extremely important to give the game an atmosphere, to immerse the player in the world, and to truly make the game feel alive.  The game will use simple sounds to go with its simple graphics, using triangle, square, sawtooth, and noise waves.
 
-- [ ] _The Key_, a song played while the game is loading that uses simple single tones, going over each of the melodies used throughout the soundtrack, which overall doesn't mean anything and isn't intended to evoke any particular feeling.
-- [ ] Fours songs played on the title screen that _The Key_ transitions to:
+- [ ] _The Key_, a song played while the game is loading that uses simple single tones, going over each of the melodies used throughout the soundtrack, which overall doesn't mean anything and isn't intended to evoke any particular feeling.  Each melody is assigned a movement, and the movements play in a random order.
+- [ ] Fours single-movement songs played on the title screen that _The Key_ transitions to:
 	- [ ] _The Lock_, a song which continues _The Key_, but with harmony.  Like _The Key_, it isn't meant to mean anything or invoke any particular feeling.
 	- [ ] _The Door_, a song intended to be bright and cheerful, meant to invoke a feeling of happiness and hope, with the intent to focus on how there's nothing in your way.
 	- [ ] _The Gate_, a song intended to be dark and forboding, meant to invoke a feeling of depression and fear, with the intent to focus on how there's nothing in your way.
