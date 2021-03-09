@@ -22,7 +22,7 @@ After looking around for a bit, I couldn't find a single damn solution that didn
 - [X] Allow the window to react to keypresses
 - [X] ~~Setup SDL (whatever that means)~~
 - [X] Make the window fullscreen
-- [ ] Setup drawing text to the screen (somewhat complete — basic logic implemented, but not yet the assets)
+- [X] Setup drawing text to the screen ~~(somewhat complete — basic logic implemented, but not yet the assets)~~
 
 ### Basic game things
 
