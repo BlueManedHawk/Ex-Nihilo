@@ -6,7 +6,7 @@ This repository is for the video game Ex Nihilo.  It is still in very early deve
 
 ## Introduction
 
-The long-term goal of this project is to create a game in which the player starts with nothing, and works their way up.
+The long-term goal of the project is to create a game in which the player starts with nothing and works their way up.  The game will feature extensive magic and technology systems, along with built-in documentation of many parts of the game.  While the game will be a sandbox game, a tree of advancements will exist to help guide the player.
 
 ## Other files you should read
 

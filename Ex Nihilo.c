@@ -1,3 +1,17 @@
+/* Table of Contents:
+ *
+ * - Line 15: Introduction
+ * - Line 37: Setup
+ * - Line 39: Libraries 
+ * - Line 53: DrawText function
+ * - Line 81: DrawText's MASSIVE SWITCH STATEMENT
+ * - Line 370: The rest of DrawText
+ * - Line 384: The main function
+ * - Line 388: Debugging things
+ * - Line 394: SDL setup
+ * - Line 431: Testing things
+ * - Line 460: Primary game loop */
+
 /* Hello, and welcome to the source code of Ex Nihilo!
  *
  * The environment I use to modify this file is Neovim in the Kitty terminal emulator with the font Fira Code.  I suggest that you do the same for viewing this file.
@@ -20,12 +34,6 @@
  *
  * To link to SDL2, you need to append `sdl2-config --cflags --libs`, **with the graves**, to your compiling command. */
 
-/* Table of Contents:
- *
- * - Line 27: The setup
- * - Line 29: Libraries
- * - */
-
 /* We begin with the setup. */
 
 /* I need to add some of the C Standard Library for this to work.  The specific libraries I use from the CSL are used for the following purposes:
@@ -42,9 +50,11 @@
 
 #include "SDL.h"
 
-/* I'll comment this function properly later, but for now, all that you need to know is that the massive switch statement was necessary. */
+/* Drawing text to the screen is a pretty common thing to need to do, so I've created this function for it.  It takes two points for the location of the top-left corner of the text, a string to use for the text, where to find the text images, and where to place the text.  To prevent overflow, the function will automatically newline at the boundary of the window. */
 
 void DrawText ( int LocationX , int LocationY , const char *Text , char *AssetsLocation , SDL_Renderer *Renderer ) {
+
+/* We first need to setup all of the variables used in this function.  This includes storing the original LocationX for later, creating some strings for storage of characters and the locations thereof, defining the height and width of the rectangle where the characters will be placed, and creating a surface and texture for the characters. */
 
 int OriginalLocationX = LocationX ;
 char CurrentCharacter[1] = " " ;
@@ -54,6 +64,8 @@ CharacterDestination.w = 8 ;
 CharacterDestination.h = 8 ;
 SDL_Surface *CharacterSurface ;
 SDL_Texture *CharacterTexture ;
+
+/* We then need to cycle through the characters in the string given, then output each of them in the appropriate place. */
 
 for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
 	CurrentCharacter[0] = Text[i] ;
@@ -65,6 +77,8 @@ for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
 	CharacterDestination.x = LocationX ;
 	CharacterDestination.y = LocationY ;
 	strcpy ( CharacterImageLocation , AssetsLocation ) ;
+	
+	/* And now it's time for this massive switch statement!  Yes, I *did* try that thing that seems like such an obvious way to do this!  It didn't do jack-sh*t!  Why?  I haven't a clue!  (If you want to skip this, jump to Line 370. */
 
 	switch ( CurrentCharacter[0] ) {
 	case 0x20 :
@@ -353,6 +367,8 @@ for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
 		strcat ( CharacterImageLocation , "tilde.bmp" ) ;
 		break ; }
 
+	/* Once we've gotten the character image we need, we then need to load the image onto a surface, then load the surface onto the texture, then copy the texture to the screen.  After the loop is finished, the characters will then be presented to the screen. */
+
 	CharacterSurface = SDL_LoadBMP ( CharacterImageLocation ) ;
 	if ( CharacterSurface == NULL ) {
 		printf ( "SDL failed to load %s!  Thankfully, it was nice enough to give this error:\n%s\n" , CharacterImageLocation , SDL_GetError ( ) ) ; }
@@ -365,7 +381,7 @@ for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
 SDL_RenderPresent ( Renderer ) ;
 SDL_DestroyTexture ( CharacterTexture ) ; }
 
-/* The main function contains the code, except for functions.  Why?  I don't know.  In any case, it takes a couple of arguments, these being an integer `argc` and a character pointer array `argv`.  These contain the count of arguments to the program and the arguments to the program, respecively.  Currently, I'm using this as debug functionality to tell the user that the program doesn't take any arguments. */
+/* The main function contains the code, except for functions.  Why?  I don't know.  In any case, it takes a couple of arguments, these being an integer `argc` and a character pointer array `argv`.  These contain the count of arguments to the program and the arguments to the program, respecively.  Currently, I'm using this as debug functionality to tell the user that the program doesn't take any arguments.  Additionally, `argc` has the `maybe_unused` atribute, because I haven't thought of a reason to use it. */
 
 int main ( [[maybe_unused]] int argc , char *argv[] ) {
 
