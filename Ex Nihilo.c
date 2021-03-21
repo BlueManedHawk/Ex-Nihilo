@@ -45,6 +45,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <math.h>
 
 /* Now, I need to add the SDL library. */
 
@@ -378,7 +380,6 @@ for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
 		printf ( "SDL failed to apply the character surface to the character texture!  Thankfully, it was kind enough to give this error:\n%s\n" , SDL_GetError ( ) ) ; }
 	SDL_RenderCopy ( Renderer , CharacterTexture , NULL , &CharacterDestination ) ; }
 
-SDL_RenderPresent ( Renderer ) ;
 SDL_DestroyTexture ( CharacterTexture ) ; }
 
 /* The main function contains the code, except for functions.  Why?  I don't know.  In any case, it takes a couple of arguments, these being an integer `argc` and a character pointer array `argv`.  These contain the count of arguments to the program and the arguments to the program, respecively.  Currently, I'm using this as debug functionality to tell the user that the program doesn't take any arguments.  Additionally, `argc` has the `maybe_unused` atribute, because I haven't thought of a reason to use it. */
@@ -391,92 +392,125 @@ if ( argv[1] != NULL ) {
 	printf ( "Hey, this program isn't meant to take any arguments.  Try running it again without them.\n" ) ;
 	return 0x60 ; }
 
-/* Now that we're sure that the game was executed properly, we can initialize SDL.  This is done by using the `SDL_Init` function, with specific arguments for the separate subsystems.  Since I'm only using the video subsystem and not the audio subsystem (for now ¯‿°), the only argument I need to supply to the function is `SDL_INIT_VIDEO`.
- *
- * However, there is the possibility that this can fail.  If it does, then the function will return a number other than 0.  We can check for this, and immediately exit the program if such a fault occurs.  Additionally, SDL has a fancy function called `SDL_GetError`, which…gets the error.  (Of course, a normal error code will also be `return`ed.) */
-
-if ( SDL_Init( SDL_INIT_VIDEO ) != 0 ) {
-	printf ( "SDL failed to initialize the video subsystem!  Thankfully, it was kind enough to give this error:\n%s\n", SDL_GetError( ) ) ;
-	return 0x41 ; }
-
-/* Of course, if the game quits unexpectedly, we'll want to ensure that SDL closes safely.  We can do this with the `atexit` function from `<stdlib.h>`.  Ideally, we'd want this to exit each subsystem individually, but `atexit` calls the functions with no arguments, so we can only use `SDL_Quit`, which closes all subsystems at once without any arguments.*/
-
-atexit ( SDL_Quit ) ;
-
-/* We now need to setup the main game window.  Of course, if the game window fails to initialize, we don't want to keep doing things, so we need to put the window creation in a check to make sure it doesn't fail.  The function returns NULL on failure, so we'll check for that.
- *
- * The arguments to the function `SDL_CreateWindow` are the name of the window, the X and Y position and size of the window, respectively, respectively, and the flags to the function ORed together, respectively. */
-
-SDL_Window *PrimaryGameWindow = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 , 480 , SDL_WINDOW_FULLSCREEN | SDL_WINDOW_ALWAYS_ON_TOP | SDL_WINDOW_ALLOW_HIGHDPI ) ;
-if ( PrimaryGameWindow == NULL ) {
-	printf ( "SDL failed to create the window!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
-
-/* We now need to create a renderer for the primary game window.  What does this do?  I'm not quite sure.  In any case, we still need to check if there's a problem, which is done in the same way as before. 
- *
- * The function `SDL_CreateRenderer` takes arguments for the window to setup, the driver to use, and the flags to set.  It takes -1 for the second argument to just use whatever driver it can find. */
-
-SDL_Renderer *GameRenderer = SDL_CreateRenderer ( PrimaryGameWindow , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ) ;
-if ( GameRenderer == NULL ) {
-	printf ( "SDL failed to initialize the renderer!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
-
-/* Let's now clear the window.  This is done with the `SDL_RenderClear` function.  Since this is a drawing function, we need to set the color first, using `SDL_SetRenderDrawColor`; in this case, I'm setting it to black.  The `SDL_RenderPresent` function just flushes the buffer to the renderer. */
-
-SDL_SetRenderDrawColor ( GameRenderer , 0 , 0 , 0 , 0xFF ) ;
-SDL_RenderClear ( GameRenderer ) ;
-SDL_RenderPresent ( GameRenderer ) ;
-SDL_Delay ( 1000 ) ;
-
-/* This part was originally going to be much better, using a specialized format for storing images.  Unfortunately, the SDL documentation is currently in a sorry state, and I couldn't figure out how the hell I was supposed to create a surface, and frankly, I don't want to spend any longer on this, so I'm going to use the temporary solution of loading BMPs.  It's ugly, it's lazy, and it's oversized, but it's what I have to do.
- *
- * What this does is it uses an unnecessarily complicated series of string-modification commands (because apparently the ISO can't be bothered to make this understandable) to determine the location of a specific test image, then takes that image and loads it to a surface, then takes that surface and loads it to a texture, then takes that texture and loads it to the renderer, then takes that renderer and loads it to the window.  There's probably some reason why this is so ridiculously complicated, but I hacen't been able to find an answer. */
+/* Now, we need to declare some variables. */
 
 char AssetsLocation[255] = "/home/";
 const char *CurrentUser = getenv ( "USER" ) ;
 strcat ( AssetsLocation , CurrentUser ) ;
 strcat ( AssetsLocation , "/.ExNihilo/Assets/" ) ;
-char TestImageLocation[255] = " " ;
-strcpy ( TestImageLocation , AssetsLocation ) ;
-strcat ( TestImageLocation , "TestImage.bmp" ) ;
-SDL_Surface *TestSurface = SDL_LoadBMP ( TestImageLocation ) ;
+char ImageLocationLocation[255] = " " ;
+_Bool Quit = 0 ;
+SDL_Event CurrentEvent ;
+double PreviousNifth = 0.0 ;
+char PreviousNifthText[255] ;
+int WindowFlags = 0 ;
+
+/* Once we've done that, we need to setup SDL, or at least the parts we care about.  This part checks to see if fullscreen is wanted, sets up the video subsystem, creates the game window, then creates the renderer for that window.  These have checks to make sure that everything goes right that crash the program if things go wrong.  If you really care about exactly what's going on here, please just read the SDL wiki.  It explains what each of these things does. */
+
+if ( SDL_Init( SDL_INIT_VIDEO ) != 0 ) {
+	printf ( "SDL failed to initialize the video subsystem!  Thankfully, it was kind enough to give this error:\n%s\n", SDL_GetError( ) ) ;
+	return 0x41 ; }
+atexit ( SDL_Quit ) ;
+SDL_Window *FullscreenPopup = SDL_CreateWindow ( "Would you like fullscreen?" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 , 480 , 0 ) ;
+if ( FullscreenPopup == NULL ) {
+	printf ( "SDL failed to create the fullscreen popup!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
+	return 0x41 ; }
+SDL_Renderer *FullscreenPopupRenderer = SDL_CreateRenderer ( FullscreenPopup , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ) ;
+if ( FullscreenPopupRenderer == NULL ) {
+	printf ( "SDL failed to initialize the renderer for the fullscreen popup!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
+	return 0x41 ; }
+while ( 1 ) {
+	DrawText ( 0 , 0 , "Do you want to play in fullscreen?  Press [y] for yes or [n] for no.  (Note:  Not being in fullscreen will result in the window being the same size as this window.)" , AssetsLocation , FullscreenPopupRenderer ) ;
+	SDL_RenderPresent ( FullscreenPopupRenderer ) ;
+	while ( SDL_PollEvent ( &CurrentEvent ) ) {
+		if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_n ) {
+			WindowFlags = SDL_WINDOW_ALLOW_HIGHDPI ;
+			break ; }
+	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_y ) {
+			WindowFlags = SDL_WINDOW_FULLSCREEN | SDL_WINDOW_ALLOW_HIGHDPI ;
+			break ; } }
+	if ( WindowFlags != 0 ) {
+		break ; } }
+SDL_DestroyRenderer ( FullscreenPopupRenderer ) ;
+SDL_DestroyWindow ( FullscreenPopup ) ;
+SDL_Window *Window = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 , 480 , WindowFlags ) ;
+if ( Window == NULL ) {
+	printf ( "SDL failed to create the window!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
+	return 0x41 ; }
+SDL_Renderer *Renderer = SDL_CreateRenderer ( Window , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ) ;
+if ( Renderer == NULL ) {
+	printf ( "SDL failed to initialize the renderer!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
+	return 0x41 ; }
+
+/* Let's now clear the window.  This is done with the `SDL_RenderClear` function.  Since this is a drawing function, we need to set the color first, using `SDL_SetRenderDrawColor`; in this case, I'm setting it to black.  The `SDL_RenderPresent` function just flushes the buffer to the renderer.  While this is done every tick, making this not strictly necessary, I've chosen to do it anyway. */
+
+SDL_SetRenderDrawColor ( Renderer , 0 , 0 , 0 , 0xFF ) ;
+SDL_RenderClear ( Renderer ) ;
+SDL_RenderPresent ( Renderer ) ;
+
+/* We now need to test…something.  I'm not actually sure what this was supposed to be for.  In any case, it loads an image from the assets to the screen. */
+
+strcpy ( ImageLocationLocation , AssetsLocation ) ;
+strcat ( ImageLocationLocation , "TestImage.bmp" ) ;
+SDL_Surface *TestSurface = SDL_LoadBMP ( ImageLocationLocation ) ;
 if ( TestSurface == NULL ) {
 	printf ( "SDL failed to create the test surface!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
 	return 0x41 ; }
-SDL_Texture *TestTexture = SDL_CreateTextureFromSurface ( GameRenderer , TestSurface ) ;
+SDL_Texture *TestTexture = SDL_CreateTextureFromSurface ( Renderer , TestSurface ) ;
 if ( TestTexture == NULL ) {
 	printf ( "SDL failed to create the test texture!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
 	return 0x41 ; }
 SDL_FreeSurface ( TestSurface ) ;
-SDL_RenderCopy ( GameRenderer , TestTexture , NULL , NULL ) ;
-SDL_RenderPresent ( GameRenderer ) ;
+SDL_RenderCopy ( Renderer , TestTexture , NULL , NULL ) ;
+SDL_RenderPresent ( Renderer ) ;
 
-SDL_Delay ( 1000 ) ;
+/* Now let's test text drawing. */
 
-DrawText ( 128 , 128 , "Surprise!" , AssetsLocation , GameRenderer ) ;
-
-SDL_Delay ( 1000 ) ;
+DrawText ( 128 , 128 , "Surprise!" , AssetsLocation , Renderer ) ;
+SDL_RenderPresent ( Renderer ) ;
 
 /* Now begins the main game loop. */
 
 while ( 1 ) {
 
-/* Currently, the only thing that the main game loop does is check if the Q key is down, and if it is, it breaks from the game loop. */
+/* We first need to deal with the time.  The game only does things one nif times per second, so if it's before the next nifth of a second, we shouldn't bother doing anything. (This is, by the way, one of the only reasons <time.h> is needed.) */
+if ( time ( NULL ) == -1 ) {
+	break ; }
+if ( difftime ( time ( NULL ) , PreviousNifth )  > 0.027 ) {
+	PreviousNifth = time ( NULL ) ; }
+else {
+	continue ; }
 
-int Quit = 0 ;
-SDL_Event CurrentEvent ;
+/* The next thing we need to do is clear the screen.  This is done as before. */
+
+SDL_SetRenderDrawColor ( Renderer , 0 , 0 , 0 , 0xFF ) ;
+SDL_RenderClear ( Renderer ) ;
+
+/* We now need to handle events.  Currently, all that we're doing is checking for whether "q" is held down, and quitting if it is. */
+
 while ( SDL_PollEvent ( &CurrentEvent ) ) {
 	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_q ) {
 		Quit = 1 ;
 		break ; } }
+
+/* Now it's time to actually do things.  Currently, all that we're doing is quitting if the `Quit` variable is set to 1. */
+
 if ( Quit == 1 ) {
-	break ; } }
+	break ; }
+
+DrawText ( 256 , 256 , "~!@#$%%^&*()_+`1234567890-=QWERTYUIOP{}|qwertyuiop[]\\ASDFGHJKL:\"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./" , AssetsLocation , Renderer ) ;
+snprintf ( PreviousNifthText , 5 , "%f" , PreviousNifth ) ;
+DrawText ( 0 , 98 , PreviousNifthText , AssetsLocation , Renderer ) ;
+
+/* Finally, we need to write to the screen. */
+
+SDL_RenderPresent ( Renderer ) ; }
  
 /* Now, it's time to clean up everything.  We need to kill the renderer, kill the window, kill the video subsytem, kill SDL, and then kill the program. */
 
 SDL_DestroyTexture ( TestTexture ) ;
-SDL_DestroyRenderer ( GameRenderer ) ;
-SDL_DestroyWindow ( PrimaryGameWindow ) ;
+SDL_DestroyRenderer ( Renderer ) ;
+SDL_DestroyWindow ( Window ) ;
 SDL_QuitSubSystem ( SDL_INIT_VIDEO ) ;
 SDL_Quit ( ) ;
 return 0x00 ; }
