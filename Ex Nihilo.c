@@ -46,7 +46,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <math.h>
 
 /* Now, I need to add the SDL library. */
 
@@ -54,7 +53,7 @@
 
 /* Drawing text to the screen is a pretty common thing to need to do, so I've created this function for it.  It takes two points for the location of the top-left corner of the text, a string to use for the text, where to find the text images, and where to place the text.  To prevent overflow, the function will automatically newline at the boundary of the window. */
 
-void DrawText ( int LocationX , int LocationY , const char *Text , char *AssetsLocation , SDL_Renderer *Renderer ) {
+void DrawText ( int LocationX , int LocationY , int MaximumLocationX , const char *Text , char *AssetsLocation , SDL_Renderer *Renderer ) {
 
 /* We first need to setup all of the variables used in this function.  This includes storing the original LocationX for later, creating some strings for storage of characters and the locations thereof, defining the height and width of the rectangle where the characters will be placed, and creating a surface and texture for the characters. */
 
@@ -71,16 +70,16 @@ SDL_Texture *CharacterTexture ;
 
 for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
 	CurrentCharacter[0] = Text[i] ;
-	if ( ( LocationX + 8 ) > 640 ) {
+	if ( ( LocationX + 16 ) > MaximumLocationX ) {
 		LocationY += 8 ;
 		LocationX = OriginalLocationX ; }
-	else {
+	else if ( i != 0 ) {
 		LocationX += 8 ; } 
 	CharacterDestination.x = LocationX ;
 	CharacterDestination.y = LocationY ;
 	strcpy ( CharacterImageLocation , AssetsLocation ) ;
 	
-	/* And now it's time for this massive switch statement!  Yes, I *did* try that thing that seems like such an obvious way to do this!  It didn't do jack-sh*t!  Why?  I haven't a clue!  (If you want to skip this, jump to Line 370. */
+	/* And now it's time for this massive switch statement!  Yes, I *did* try that thing that seems like such an obvious way to do this!  It didn't do jack-sh*t!  Why‽  I haven't a clue!  (If you want to skip this, jump to Line 370. */
 
 	switch ( CurrentCharacter[0] ) {
 	case 0x20 :
@@ -405,7 +404,7 @@ double PreviousNifth = 0.0 ;
 char PreviousNifthText[255] ;
 int WindowFlags = 0 ;
 
-/* Once we've done that, we need to setup SDL, or at least the parts we care about.  This part checks to see if fullscreen is wanted, sets up the video subsystem, creates the game window, then creates the renderer for that window.  These have checks to make sure that everything goes right that crash the program if things go wrong.  If you really care about exactly what's going on here, please just read the SDL wiki.  It explains what each of these things does. */
+/* Once we've done that, we need to setup SDL, or at least the parts we care about.  This part checks to see if fullscreen is wanted, sets up the video subsystem, creates the game window, then creates the renderer for that window.  These have checks to make sure that everything goes right that crash the program if things go wrong.  This is _incredibly dull_, and I really don't want to bother explaining it.  All that's relevant is that the window is called `Window`, and the renderer is called `Renderer`.  If you really care about exactly what's going on here, please just read the SDL wiki.  It explains what each of these things does. */
 
 if ( SDL_Init( SDL_INIT_VIDEO ) != 0 ) {
 	printf ( "SDL failed to initialize the video subsystem!  Thankfully, it was kind enough to give this error:\n%s\n", SDL_GetError( ) ) ;
@@ -420,7 +419,7 @@ if ( FullscreenPopupRenderer == NULL ) {
 	printf ( "SDL failed to initialize the renderer for the fullscreen popup!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
 	return 0x41 ; }
 while ( 1 ) {
-	DrawText ( 0 , 0 , "Do you want to play in fullscreen?  Press [y] for yes or [n] for no.  (Note:  Not being in fullscreen will result in the window being the same size as this window.)" , AssetsLocation , FullscreenPopupRenderer ) ;
+	DrawText ( 0 , 0 , 640 , "Do you want to play in fullscreen?  Press [y] for yes or [n] for no.  (Note:  Not being in fullscreen will result in the window being the same size as this window.)" , AssetsLocation , FullscreenPopupRenderer ) ;
 	SDL_RenderPresent ( FullscreenPopupRenderer ) ;
 	while ( SDL_PollEvent ( &CurrentEvent ) ) {
 		if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_n ) {
@@ -466,7 +465,7 @@ SDL_RenderPresent ( Renderer ) ;
 
 /* Now let's test text drawing. */
 
-DrawText ( 128 , 128 , "Surprise!" , AssetsLocation , Renderer ) ;
+DrawText ( 128 , 128 , 256 , "Surprise!" , AssetsLocation , Renderer ) ;
 SDL_RenderPresent ( Renderer ) ;
 
 /* Now begins the main game loop. */
@@ -498,9 +497,9 @@ while ( SDL_PollEvent ( &CurrentEvent ) ) {
 if ( Quit == 1 ) {
 	break ; }
 
-DrawText ( 256 , 256 , "~!@#$%%^&*()_+`1234567890-=QWERTYUIOP{}|qwertyuiop[]\\ASDFGHJKL:\"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./" , AssetsLocation , Renderer ) ;
+DrawText ( 256 , 256 , 512 , "~!@#$%%^&*()_+`1234567890-=QWERTYUIOP{}|qwertyuiop[]\\ASDFGHJKL:\"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./" , AssetsLocation , Renderer ) ;
 snprintf ( PreviousNifthText , 5 , "%f" , PreviousNifth ) ;
-DrawText ( 0 , 98 , PreviousNifthText , AssetsLocation , Renderer ) ;
+DrawText ( 0 , 98 , 102 , PreviousNifthText , AssetsLocation , Renderer ) ;
 
 /* Finally, we need to write to the screen. */
 
