@@ -40,7 +40,7 @@ For plans for future versions, see `PLANS.md`.
 - + Created the file `REQUIREMENTS.md`.
 - + Created the file `STYLE.md`.
 
-## Version N.1 beta 0
+## Version N.1 beta 0, released on 2021-03-23.
 
 ### IMPORTANT!
 - ! The goal of Release N.1 is to get all of the basic game things listed in `docs/PLANS.md` into the game.
