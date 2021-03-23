@@ -400,9 +400,16 @@ strcat ( AssetsLocation , "/.ExNihilo/Assets/" ) ;
 char ImageLocationLocation[255] = " " ;
 _Bool Quit = 0 ;
 SDL_Event CurrentEvent ;
-double PreviousNifth = 0.0 ;
-char PreviousNifthText[255] ;
+double PreviousNifth [[maybe_unused]] = 0.0 ;
 int WindowFlags = 0 ;
+SDL_Rect PlayerCharacterDestinationRectangle ;
+PlayerCharacterDestinationRectangle.x = 128 ;
+PlayerCharacterDestinationRectangle.y = 128 ;
+PlayerCharacterDestinationRectangle.w = 16 ;
+PlayerCharacterDestinationRectangle.h = 16 ;
+SDL_Surface* Surface ;
+SDL_Texture* PlayerCharacterTexture ;
+SDL_Texture* [[maybe_unused]] Texture ;
 
 /* Once we've done that, we need to setup SDL, or at least the parts we care about.  This part checks to see if fullscreen is wanted, sets up the video subsystem, creates the game window, then creates the renderer for that window.  These have checks to make sure that everything goes right that crash the program if things go wrong.  This is _incredibly dull_, and I really don't want to bother explaining it.  All that's relevant is that the window is called `Window`, and the renderer is called `Renderer`.  If you really care about exactly what's going on here, please just read the SDL wiki.  It explains what each of these things does. */
 
@@ -441,6 +448,13 @@ if ( Renderer == NULL ) {
 	printf ( "SDL failed to initialize the renderer!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
 	return 0x41 ; }
 
+char PlayerCharacterImageLocation[256] = " " ;
+strcpy ( PlayerCharacterImageLocation , AssetsLocation ) ;
+strcat ( PlayerCharacterImageLocation , "TheCharacter.bmp" ) ;
+Surface = SDL_LoadBMP ( PlayerCharacterImageLocation ) ;
+PlayerCharacterTexture = SDL_CreateTextureFromSurface ( Renderer , Surface ) ;
+SDL_FreeSurface ( Surface ) ;
+
 /* Let's now clear the window.  This is done with the `SDL_RenderClear` function.  Since this is a drawing function, we need to set the color first, using `SDL_SetRenderDrawColor`; in this case, I'm setting it to black.  The `SDL_RenderPresent` function just flushes the buffer to the renderer.  While this is done every tick, making this not strictly necessary, I've chosen to do it anyway. */
 
 SDL_SetRenderDrawColor ( Renderer , 0 , 0 , 0 , 0xFF ) ;
@@ -462,6 +476,7 @@ if ( TestTexture == NULL ) {
 SDL_FreeSurface ( TestSurface ) ;
 SDL_RenderCopy ( Renderer , TestTexture , NULL , NULL ) ;
 SDL_RenderPresent ( Renderer ) ;
+SDL_DestroyTexture ( TestTexture ) ;
 
 /* Now let's test text drawing. */
 
@@ -472,14 +487,19 @@ SDL_RenderPresent ( Renderer ) ;
 
 while ( 1 ) {
 
-/* We first need to deal with the time.  The game only does things one nif times per second, so if it's before the next nifth of a second, we shouldn't bother doing anything. (This is, by the way, one of the only reasons <time.h> is needed.) */
+/*Uh, okay, this is interesting.  For some reason, the game runs better overall when this bit is commented out.  I have no idea why this is.  I've decided to leave this, and the original comment associated with it (listed under "<=>" below), since this is supposed to improve performance, not hurt it.
+ *
+ * <=>
+ *
+ * We first need to deal with the time.  The game only does things one nif times per second, so if it's before the next nifth of a second, we shouldn't bother doing anything. (This is, by the way, one of the only reasons <time.h> is needed.) */
+/*
 if ( time ( NULL ) == -1 ) {
 	break ; }
-if ( difftime ( time ( NULL ) , PreviousNifth )  > 0.027 ) {
+if ( difftime ( time ( NULL ) , PreviousNifth )  > 0.0278 ) {
 	PreviousNifth = time ( NULL ) ; }
 else {
 	continue ; }
-
+*/
 /* The next thing we need to do is clear the screen.  This is done as before. */
 
 SDL_SetRenderDrawColor ( Renderer , 0 , 0 , 0 , 0xFF ) ;
@@ -490,16 +510,27 @@ SDL_RenderClear ( Renderer ) ;
 while ( SDL_PollEvent ( &CurrentEvent ) ) {
 	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_q ) {
 		Quit = 1 ;
-		break ; } }
+		continue ; }
+	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_f ) {
+		PlayerCharacterDestinationRectangle.x++ ;
+		continue ; }
+	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_s ) {
+		PlayerCharacterDestinationRectangle.x-- ;
+		continue ; }
+	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_e ) {
+		PlayerCharacterDestinationRectangle.y-- ;
+		continue ; }
+	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_c ) {
+		PlayerCharacterDestinationRectangle.y++ ;
+		continue ; } }
+
 
 /* Now it's time to actually do things.  Currently, all that we're doing is quitting if the `Quit` variable is set to 1. */
 
 if ( Quit == 1 ) {
 	break ; }
 
-DrawText ( 256 , 256 , 512 , "~!@#$%%^&*()_+`1234567890-=QWERTYUIOP{}|qwertyuiop[]\\ASDFGHJKL:\"asdfghjkl;'ZXCVBNM<>?zxcvbnm,./" , AssetsLocation , Renderer ) ;
-snprintf ( PreviousNifthText , 5 , "%f" , PreviousNifth ) ;
-DrawText ( 0 , 98 , 102 , PreviousNifthText , AssetsLocation , Renderer ) ;
+SDL_RenderCopy ( Renderer , PlayerCharacterTexture , NULL , &PlayerCharacterDestinationRectangle ) ;
 
 /* Finally, we need to write to the screen. */
 

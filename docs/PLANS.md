@@ -8,7 +8,7 @@ The long-term goal of the project is to create a game in which the player starts
 
 ### Basic game things
 
-- [ ] Movable character
+- [X] Movable character
 - [ ] Placing and destruction of flooring
 - [ ] Placing and destruction of not-flooring
 - [ ] Interactions with tiles
