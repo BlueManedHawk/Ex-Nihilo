@@ -45,13 +45,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+/* #include <time.h> */ /* It's not actually clear whether `<time.h>` is necessary.  Since it isn't being used right now, I've decided to temporarily (?) not include it. */
 
 /* Now, I need to add the SDL library. */
 
 #include "SDL.h"
 
-/* Drawing text to the screen is a pretty common thing to need to do, so I've created this function for it.  It takes two points for the location of the top-left corner of the text, a string to use for the text, where to find the text images, and where to place the text.  To prevent overflow, the function will automatically newline at the boundary of the window. */
+/* Drawing text to the screen is a pretty common thing to need to do, so I've created this function for it.  It takes two points for the location of the top-left corner of the text, a place to never go past, a string to use for the text, where to find the text images, and where to place the text. */
 
 void DrawText ( int LocationX , int LocationY , int MaximumLocationX , const char *Text , char *AssetsLocation , SDL_Renderer *Renderer ) {
 
@@ -371,12 +371,8 @@ for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
 	/* Once we've gotten the character image we need, we then need to load the image onto a surface, then load the surface onto the texture, then copy the texture to the screen.  After the loop is finished, the characters will then be presented to the screen. */
 
 	CharacterSurface = SDL_LoadBMP ( CharacterImageLocation ) ;
-	if ( CharacterSurface == NULL ) {
-		printf ( "SDL failed to load %s!  Thankfully, it was nice enough to give this error:\n%s\n" , CharacterImageLocation , SDL_GetError ( ) ) ; }
 	CharacterTexture = SDL_CreateTextureFromSurface ( Renderer , CharacterSurface ) ;
 	SDL_FreeSurface ( CharacterSurface ) ;
-	if ( CharacterTexture == NULL ) {
-		printf ( "SDL failed to apply the character surface to the character texture!  Thankfully, it was kind enough to give this error:\n%s\n" , SDL_GetError ( ) ) ; }
 	SDL_RenderCopy ( Renderer , CharacterTexture , NULL , &CharacterDestination ) ; }
 
 SDL_DestroyTexture ( CharacterTexture ) ; }
@@ -397,7 +393,6 @@ char AssetsLocation[255] = "/home/";
 const char *CurrentUser = getenv ( "USER" ) ;
 strcat ( AssetsLocation , CurrentUser ) ;
 strcat ( AssetsLocation , "/.ExNihilo/Assets/" ) ;
-char ImageLocationLocation[255] = " " ;
 _Bool Quit = 0 ;
 SDL_Event CurrentEvent ;
 double PreviousNifth [[maybe_unused]] = 0.0 ;
@@ -411,20 +406,12 @@ SDL_Surface* Surface ;
 SDL_Texture* PlayerCharacterTexture ;
 SDL_Texture* [[maybe_unused]] Texture ;
 
-/* Once we've done that, we need to setup SDL, or at least the parts we care about.  This part checks to see if fullscreen is wanted, sets up the video subsystem, creates the game window, then creates the renderer for that window.  These have checks to make sure that everything goes right that crash the program if things go wrong.  This is _incredibly dull_, and I really don't want to bother explaining it.  All that's relevant is that the window is called `Window`, and the renderer is called `Renderer`.  If you really care about exactly what's going on here, please just read the SDL wiki.  It explains what each of these things does. */
+/* Once we've done that, we need to setup SDL, or at least the parts we care about.  This part checks to see if fullscreen is wanted, sets up the video subsystem, creates the game window, then creates the renderer for that window.  This is _incredibly dull_, and I really don't want to bother explaining it.  All that's relevant is that the window is called `Window`, and the renderer is called `Renderer`.  If you really care about exactly what's going on here, please just read the SDL wiki.  It explains what each of these things does. */
 
-if ( SDL_Init( SDL_INIT_VIDEO ) != 0 ) {
-	printf ( "SDL failed to initialize the video subsystem!  Thankfully, it was kind enough to give this error:\n%s\n", SDL_GetError( ) ) ;
-	return 0x41 ; }
+SDL_Init( SDL_INIT_VIDEO ) ;
 atexit ( SDL_Quit ) ;
 SDL_Window *FullscreenPopup = SDL_CreateWindow ( "Would you like fullscreen?" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 , 480 , 0 ) ;
-if ( FullscreenPopup == NULL ) {
-	printf ( "SDL failed to create the fullscreen popup!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
 SDL_Renderer *FullscreenPopupRenderer = SDL_CreateRenderer ( FullscreenPopup , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ) ;
-if ( FullscreenPopupRenderer == NULL ) {
-	printf ( "SDL failed to initialize the renderer for the fullscreen popup!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
 while ( 1 ) {
 	DrawText ( 0 , 0 , 640 , "Do you want to play in fullscreen?  Press [y] for yes or [n] for no.  (Note:  Not being in fullscreen will result in the window being the same size as this window.)" , AssetsLocation , FullscreenPopupRenderer ) ;
 	SDL_RenderPresent ( FullscreenPopupRenderer ) ;
@@ -440,13 +427,7 @@ while ( 1 ) {
 SDL_DestroyRenderer ( FullscreenPopupRenderer ) ;
 SDL_DestroyWindow ( FullscreenPopup ) ;
 SDL_Window *Window = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 , 480 , WindowFlags ) ;
-if ( Window == NULL ) {
-	printf ( "SDL failed to create the window!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
 SDL_Renderer *Renderer = SDL_CreateRenderer ( Window , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ) ;
-if ( Renderer == NULL ) {
-	printf ( "SDL failed to initialize the renderer!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
 
 char PlayerCharacterImageLocation[256] = " " ;
 strcpy ( PlayerCharacterImageLocation , AssetsLocation ) ;
@@ -459,28 +440,6 @@ SDL_FreeSurface ( Surface ) ;
 
 SDL_SetRenderDrawColor ( Renderer , 0 , 0 , 0 , 0xFF ) ;
 SDL_RenderClear ( Renderer ) ;
-SDL_RenderPresent ( Renderer ) ;
-
-/* We now need to test…something.  I'm not actually sure what this was supposed to be for.  In any case, it loads an image from the assets to the screen. */
-
-strcpy ( ImageLocationLocation , AssetsLocation ) ;
-strcat ( ImageLocationLocation , "TestImage.bmp" ) ;
-SDL_Surface *TestSurface = SDL_LoadBMP ( ImageLocationLocation ) ;
-if ( TestSurface == NULL ) {
-	printf ( "SDL failed to create the test surface!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
-SDL_Texture *TestTexture = SDL_CreateTextureFromSurface ( Renderer , TestSurface ) ;
-if ( TestTexture == NULL ) {
-	printf ( "SDL failed to create the test texture!  Thankfully, it was nice enough to explain why:\n%s\n" , SDL_GetError ( ) ) ;
-	return 0x41 ; }
-SDL_FreeSurface ( TestSurface ) ;
-SDL_RenderCopy ( Renderer , TestTexture , NULL , NULL ) ;
-SDL_RenderPresent ( Renderer ) ;
-SDL_DestroyTexture ( TestTexture ) ;
-
-/* Now let's test text drawing. */
-
-DrawText ( 128 , 128 , 256 , "Surprise!" , AssetsLocation , Renderer ) ;
 SDL_RenderPresent ( Renderer ) ;
 
 /* Now begins the main game loop. */
@@ -500,6 +459,7 @@ if ( difftime ( time ( NULL ) , PreviousNifth )  > 0.0278 ) {
 else {
 	continue ; }
 */
+
 /* The next thing we need to do is clear the screen.  This is done as before. */
 
 SDL_SetRenderDrawColor ( Renderer , 0 , 0 , 0 , 0xFF ) ;
@@ -538,7 +498,6 @@ SDL_RenderPresent ( Renderer ) ; }
  
 /* Now, it's time to clean up everything.  We need to kill the renderer, kill the window, kill the video subsytem, kill SDL, and then kill the program. */
 
-SDL_DestroyTexture ( TestTexture ) ;
 SDL_DestroyRenderer ( Renderer ) ;
 SDL_DestroyWindow ( Window ) ;
 SDL_QuitSubSystem ( SDL_INIT_VIDEO ) ;
