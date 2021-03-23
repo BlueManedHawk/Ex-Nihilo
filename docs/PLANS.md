@@ -34,7 +34,7 @@ Void magic will be the most basic form of magic, necessary to synthesize things 
 
 ### Music and Sound
 
-The music and sound of a game is extremely important to give the game an atmosphere, to immerse the player in the world, and to truly make the game feel alive.  The game will use simple sounds to go with its simple graphics, using triangle, square, sawtooth, and noise waves.
+The music and sound of a game is extremely important to give the game an atmosphere, to immerse the player in the world, and to truly make the game feel alive.  ~~The game will use simple sounds to go with its simple graphics, using triangle, square, sawtooth, and noise waves.~~  (After some experimentation, it appears that this can no longer be gaurenteed; thereby, no gaurentee is made about what the music will sound like.)
 
 - [ ] _The Key_, a song played while the game is loading that uses simple single tones, going over each of the melodies used throughout the soundtrack, which overall doesn't mean anything and isn't intended to evoke any particular feeling.  Each melody is assigned a movement, and the movements play in a random order.
 - [ ] Fours single-movement songs played on the title screen that _The Key_ transitions to:
