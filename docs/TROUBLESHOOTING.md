@@ -44,6 +44,7 @@ Firstly, run the game from a CLI, reproduce the crash, and then get the exit cod
 	- 7 indicates an abnormal infinite loop was detected.
 	- 8 indicates that the error was from an inability to read.
 	- 9 indicates that a server sent bad information.
+	- A indicates invalid assets.
 	- Other values are currently unused.
 
 Please be sure to file an issue (see `CONTRIBUTING.md`).
