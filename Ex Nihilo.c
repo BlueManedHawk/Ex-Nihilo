@@ -482,8 +482,23 @@ while ( SDL_PollEvent ( &CurrentEvent ) ) {
 		continue ; }
 	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_c ) {
 		PlayerCharacterDestinationRectangle.y++ ;
+		continue ; }
+	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_r ) {
+		PlayerCharacterDestinationRectangle.x++ ;
+		PlayerCharacterDestinationRectangle.y-- ;
+		continue ; }
+	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_v ) {
+		PlayerCharacterDestinationRectangle.x++ ;
+		PlayerCharacterDestinationRectangle.y++ ;
+		continue ; }
+  	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_x ) {
+		PlayerCharacterDestinationRectangle.x-- ;
+		PlayerCharacterDestinationRectangle.y++ ;
+		continue ; }
+	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_w ) {
+		PlayerCharacterDestinationRectangle.x-- ;
+		PlayerCharacterDestinationRectangle.y-- ;
 		continue ; } }
-
 
 /* Now it's time to actually do things.  Currently, all that we're doing is quitting if the `Quit` variable is set to 1. */
 
