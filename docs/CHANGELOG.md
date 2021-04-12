@@ -61,3 +61,21 @@ For plans for future versions, see `PLANS.md`.
 ### Modifications
 - ~ Moved all markdown files (exempting `README.md`) to the `docs` folder.
 - ~ While I was at it, modified pretty much every one of those files.
+
+## Version N.1 beta 1
+
+### IMPORTANT!
+
+- ! The primary reason this version is being released is to fix a massive error regarding a memory leak in the text drawing in the fullscreen prompt.  It does some other things, too.
+
+### Additions
+
+- + The Character can now be controlled diagonally.
+
+### Modifications
+
+- ~ Most textures now have transparent backgrounds.
+
+### Behind-the-scenes
+
+- = Fixed a memory leak in the text drawing of the fullscreen prompt.
