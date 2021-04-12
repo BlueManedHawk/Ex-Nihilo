@@ -53,18 +53,28 @@
 
 /* Drawing text to the screen is a pretty common thing to need to do, so I've created this function for it.  It takes two points for the location of the top-left corner of the text, a place to never go past, a string to use for the text, where to find the text images, and where to place the text. */
 
-void DrawText ( int LocationX , int LocationY , int MaximumLocationX , const char *Text , char *AssetsLocation , SDL_Renderer *Renderer ) {
+void DrawText ( int LocationX , int LocationY , int MaximumCharactersInLine , const char *Text , char *AssetsLocation , SDL_Renderer *Renderer ) {
 
 /* We first need to setup all of the variables used in this function.  This includes storing the original LocationX for later, creating some strings for storage of characters and the locations thereof, defining the height and width of the rectangle where the characters will be placed, and creating a surface and texture for the characters. */
 
 int OriginalLocationX = LocationX ;
-char CurrentCharacter[1] = " " ;
-char CharacterImageLocation[255] = " " ;
+int MaximumLocationX = MaximumCharactersInLine * 16 ;
+char *CurrentCharacter = malloc ( sizeof (char) ) ;
+char *CharacterImageLocation = malloc ( sizeof (char) * 256 ) ;
 SDL_Rect CharacterDestination ;
 CharacterDestination.w = 8 ;
 CharacterDestination.h = 8 ;
+SDL_Rect TextDestination ;
+TextDestination.x = OriginalLocationX ;
+TextDestination.y = LocationY ;
+TextDestination.w = MaximumLocationX - LocationX ;
+TextDestination.h = ( MaximumCharactersInLine /* strlen ( Text ) */) * 6 ;
 SDL_Surface *CharacterSurface ;
 SDL_Texture *CharacterTexture ;
+
+SDL_SetRenderDrawColor ( Renderer , 0x88 , 0x88 , 0x88 , 0xFF ) ;
+SDL_RenderDrawRect ( Renderer , &TextDestination ) ;
+SDL_RenderFillRect ( Renderer , &TextDestination ) ;
 
 /* We then need to cycle through the characters in the string given, then output each of them in the appropriate place. */
 
@@ -375,7 +385,9 @@ for ( int i = 0 ; Text[i] != '\0' ; i++ ) {
 	SDL_FreeSurface ( CharacterSurface ) ;
 	SDL_RenderCopy ( Renderer , CharacterTexture , NULL , &CharacterDestination ) ; }
 
-SDL_DestroyTexture ( CharacterTexture ) ; }
+SDL_DestroyTexture ( CharacterTexture ) ;
+free ( CurrentCharacter ) ;
+free ( CharacterImageLocation ) ; }
 
 /* The main function contains the code, except for functions.  Why?  I don't know.  In any case, it takes a couple of arguments, these being an integer `argc` and a character pointer array `argv`.  These contain the count of arguments to the program and the arguments to the program, respecively.  Currently, I'm using this as debug functionality to tell the user that the program doesn't take any arguments.  Additionally, `argc` has the `maybe_unused` atribute, because I haven't thought of a reason to use it. */
 
@@ -405,6 +417,8 @@ PlayerCharacterDestinationRectangle.h = 16 ;
 SDL_Surface* Surface ;
 SDL_Texture* PlayerCharacterTexture ;
 SDL_Texture* [[maybe_unused]] Texture ;
+_Bool PlayerMovementDirection[4] ;
+double PlayerAngle = 0.0 ;
 
 /* Once we've done that, we need to setup SDL, or at least the parts we care about.  This part checks to see if fullscreen is wanted, sets up the video subsystem, creates the game window, then creates the renderer for that window.  This is _incredibly dull_, and I really don't want to bother explaining it.  All that's relevant is that the window is called `Window`, and the renderer is called `Renderer`.  If you really care about exactly what's going on here, please just read the SDL wiki.  It explains what each of these things does. */
 
@@ -412,9 +426,18 @@ SDL_Init( SDL_INIT_VIDEO ) ;
 atexit ( SDL_Quit ) ;
 SDL_Window *FullscreenPopup = SDL_CreateWindow ( "Would you like fullscreen?" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 , 480 , 0 ) ;
 SDL_Renderer *FullscreenPopupRenderer = SDL_CreateRenderer ( FullscreenPopup , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC ) ;
+DrawText ( 100 , 100 , 20 , \
+		"Do you want to play \
+		in fullscreen?  Press\
+		[y] for yes or [n]   \
+		for no.  (Note:  Not \
+		being in fullscreen  \
+		will result in the   \
+		window being the same\
+		size as this window.)" \
+		, AssetsLocation , FullscreenPopupRenderer ) ;
+SDL_RenderPresent ( FullscreenPopupRenderer ) ; 
 while ( 1 ) {
-	DrawText ( 0 , 0 , 640 , "Do you want to play in fullscreen?  Press [y] for yes or [n] for no.  (Note:  Not being in fullscreen will result in the window being the same size as this window.)" , AssetsLocation , FullscreenPopupRenderer ) ;
-	SDL_RenderPresent ( FullscreenPopupRenderer ) ;
 	while ( SDL_PollEvent ( &CurrentEvent ) ) {
 		if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_n ) {
 			WindowFlags = SDL_WINDOW_ALLOW_HIGHDPI ;
@@ -472,40 +495,51 @@ while ( SDL_PollEvent ( &CurrentEvent ) ) {
 		Quit = 1 ;
 		continue ; }
 	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_f ) {
-		PlayerCharacterDestinationRectangle.x++ ;
+		PlayerMovementDirection[1] = 1 ;
 		continue ; }
 	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_s ) {
-		PlayerCharacterDestinationRectangle.x-- ;
+		PlayerMovementDirection[3] = 1 ;
 		continue ; }
 	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_e ) {
-		PlayerCharacterDestinationRectangle.y-- ;
+		PlayerMovementDirection[0] = 1 ;
 		continue ; }
 	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_c ) {
-		PlayerCharacterDestinationRectangle.y++ ;
+		PlayerMovementDirection[2] = 1 ;
 		continue ; }
 	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_r ) {
-		PlayerCharacterDestinationRectangle.x++ ;
-		PlayerCharacterDestinationRectangle.y-- ;
+		PlayerMovementDirection[0] = 1 ;
+		PlayerMovementDirection[1] = 1 ;
 		continue ; }
 	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_v ) {
-		PlayerCharacterDestinationRectangle.x++ ;
-		PlayerCharacterDestinationRectangle.y++ ;
+		PlayerMovementDirection[1] = 1 ;
+		PlayerMovementDirection[2] = 1 ;
 		continue ; }
   	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_x ) {
-		PlayerCharacterDestinationRectangle.x-- ;
-		PlayerCharacterDestinationRectangle.y++ ;
+		PlayerMovementDirection[2] = 1 ;
+		PlayerMovementDirection[3] = 1 ;
 		continue ; }
 	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_w ) {
-		PlayerCharacterDestinationRectangle.x-- ;
-		PlayerCharacterDestinationRectangle.y-- ;
-		continue ; } }
+		PlayerMovementDirection[3] = 1 ;
+		PlayerMovementDirection[0] = 1 ;
+		continue ; }
+	if ( CurrentEvent.key.type == SDL_KEYDOWN && CurrentEvent.key.keysym.sym == SDLK_j ) {
+		PlayerAngle = 270 ; }
+	}
 
 /* Now it's time to actually do things.  Currently, all that we're doing is quitting if the `Quit` variable is set to 1. */
 
 if ( Quit == 1 ) {
 	break ; }
 
-SDL_RenderCopy ( Renderer , PlayerCharacterTexture , NULL , &PlayerCharacterDestinationRectangle ) ;
+PlayerCharacterDestinationRectangle.y += PlayerMovementDirection[0] ? -1 : 0 ;
+PlayerCharacterDestinationRectangle.x += PlayerMovementDirection[1] ? 1 : 0 ;
+PlayerCharacterDestinationRectangle.y += PlayerMovementDirection[2] ? 1 : 0 ;
+PlayerCharacterDestinationRectangle.x += PlayerMovementDirection[3] ? -1 : 0 ;
+for ( int i = 0 ; i < 4 ; i++ ) {
+	PlayerMovementDirection[i] = 0 ; }
+
+DrawText ( 20 , 20 , 4 , "Test" , AssetsLocation , Renderer ) ;
+SDL_RenderCopyEx ( Renderer , PlayerCharacterTexture , NULL , &PlayerCharacterDestinationRectangle , PlayerAngle , NULL , SDL_FLIP_NONE ) ;
 
 /* Finally, we need to write to the screen. */
 
