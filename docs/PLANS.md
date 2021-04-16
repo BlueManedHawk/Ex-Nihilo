@@ -39,8 +39,8 @@ The music and sound of a game is extremely important to give the game an atmosph
 - [ ] _The Key_, a song played while the game is loading that uses simple single tones, going over each of the melodies used throughout the soundtrack, which overall doesn't mean anything and isn't intended to evoke any particular feeling.  Each melody is assigned a movement, and the movements play in a random order.
 - [ ] Fours single-movement songs played on the title screen that _The Key_ transitions to:
 	- [ ] _The Lock_, a song which continues _The Key_, but with harmony.  Like _The Key_, it isn't meant to mean anything or invoke any particular feeling.
-	- [ ] _The Door_, a song intended to be bright and cheerful, meant to invoke a feeling of happiness and hope, with the intent to focus on how there's nothing in your way.
-	- [ ] _The Gate_, a song intended to be dark and forboding, meant to invoke a feeling of depression and fear, with the intent to focus on how there's nothing in your way.
+	- [ ] _The Door_, a song intended to be bright and cheerful, meant to invoke a feeling of happiness and hope, with the intent to focus on how there's nothing in your ~~way.~~
+	- [ ] _The Gate_, a song intended to be dark and forboding, meant to invoke a feeling of depression and fear, with the intent to focus on how there's nothing in your ~~way.~~
 	- [ ] _The Safe_, a mysterious and confusing song.
 - [ ] Several multi-movement songs which play during normal gameplay in no particular order, intended to invoke the following feelings:
 	- [ ] Calmness
@@ -94,20 +94,25 @@ Necromancy will be a late-game magic system building upon blood magic.  It will 
 
 A sensible, balanced, and enjoyable combat system is incredibly important for a game to succeed.  A combat system needs the right balance of strategy, requiring the player to determine creative solutions to problems, while also having some skill, with a bit of luck to balance things out.  However, it won't do to just have a simple combat system…
 
-- [ ] Each weapon will have several forms of attack:
-	- [ ] Swing
-	- [ ] Thrust
-	- [ ] Block
-	- [ ] Combo
-	- [ ] Special
+- [ ] ~~Each weapon will have several forms of attack:~~ _(After some careful thinking, I have come to the conclusion that this system would be too complex to implement using contemporary control mediums in real time.)_
+	- [ ] ~~Swing~~
+	- [ ] ~~Thrust~~
+	- [ ] ~~Block~~
+	- [ ] ~~Combo~~
+	- [ ] ~~Special~~
 - [ ] the the the the the the the the the the the the ththe thet the the tht eht the theht eht ehtht ehthe tthe the the theh the theht ehtheht the thteh t'
 - [ ] At least the following combat items:
-	- [ ] Sword
-	- [ ] Shield
-	- [ ] Axe
-	- [ ] Scythe
+	- [ ] Sword for slashing
+	- [ ] Shield for blocking
+	- [ ] ~~Axe~~ Spear for piercing
+	- [ ] Scythe for reaching
+	- [ ] Mace for pulling
 	- [ ] Bow (long and compound forms)
 - [ ] Knockback
+
+### Automation
+
+Automation will be a category of technology used to automate menial tasks.  Because the entire world will be loaded at once, this automation will mostly occur in the background while the player does other things, removing the need for the player to sit in one place waiting for something to get done.  As with basic automation, the system will be extremely modular.  The exact details have not yet been fleshed out.
 
 ## Finished Short-term Goals
 
