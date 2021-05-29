@@ -8,7 +8,9 @@ This file explains how you can contribute to Ex Nihilo.
 
 The main way you can contribute to Ex Nihilo is by opening Issues on Github when you find an issue in the game.  Assign your issue a blue label based on where the issue is.  **Do not assign a green or red label.  I will assign those when necessary.**
 
-Please be sure to read `TROUBLESHOOTING.md` and to search through all issues, _including closed ones_, thoroughly, to make sure that it hasnt been reported before.
+Please be sure to read `TROUBLESHOOTING.md` and to search through all issues, _including closed ones_, thoroughly, to make sure that it hasn't been reported before.
+
+Attempting to create a definitive line separating the bug report-feature request gradient will only lead to people getting angry, so I'm not going to try.  However, all issues submitted must be _formatted as issues_.  Failure to do so will lead to it being marked as invalid.
 
 ## Wiki
 

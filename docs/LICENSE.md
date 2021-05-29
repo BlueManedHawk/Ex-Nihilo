@@ -1,25 +1,47 @@
 # Licensing
 
-## The game itself
+## The License
 
-You can freely distribute the unmodified source for this game and compiled binaries of the source, but you cannot sell them.
+**THIS PART IS LEGALLY BINDING**
 
-You may freely modify the source, compile binaries from modified sources, and modify compiled binaries of the unmodified source, and distribute these, but you must explicitly state that they are modified, how they are modified, and where to obtain the unmodified ones.  You can't sell these.
+### The software
 
-If you distribute a compiled binary of a modified source, you must also distribute that source.
+You may freely distribute the original source code, binaries compiled from the original source code, modified binaries compiled from the original source code, modified source code, binaries compiled from modified source code, and modified binaries compiled from modified source code.  However, you cannot charge for these, and you must distribute this license and give attribution when distributing.
 
-Derivative works must be licensed in a way that grants the same rights with the same conditions and restrictions as this license.
+Modifications must be licensed in a way that preserves the rights that this license gives with the same conditions, and any modified files must state how they were modified and how to obtain the originals; additionally, any binaries must state how to obtain the sources that they were compiled from.
 
-I hereby disclaim any warranty for this game, implicit or explicit, and disclaim any responsibility for damages caused by this game.
+This software comes with no warranty, implied or explicit, and I am not liable for any problems caused by this software.  Additonally, this license does not cover trademarks in any capacity.
 
-## Assets
+### The assets
 
-You may freely distribute the assets for this game, compressed or otherwise, but you cannot sell them.
+The assets may be freely distributed, so long as attribution is given, but they cannot be sold.  Derivations of the assets must be licened in a way that preserves the rights and restrictions that this license gives; additionally, you must state what was modified, and how to obtain the originals.  This license does not cover trademarks.
 
-You may freely modify the assets and distribute such modified assets, but you cannot sell them, and you must explicitly state that they are modified, how they are modified, and where to obtain the originals.
+### SDL
 
-Derivative works must be licensed in a way that grants the same rights with the same conditions and restrictions as this license.
+This project dynamically links to SDL2, which is under the zlib license.  You can find it at https://www.libsdl.org/license.php.
 
-## SDL
+## Notes
 
-SDL is distributed under the zlib license.
+**THIS PART IS _NOT_ LEGALLY BINDING**
+
+Some of the assets are simple enough that they may not qualify for copyright.
+
+Derivitave assets will crash the game for safety reasons.
+
+While this license allows you to port to other systems besides Linux (which is the only platform I'm developing this for), there are certain systems I'd rather you not port this too, including:
+
+- Microsoft Windows
+- Mac OS X
+- Mac OS
+- Most game consoles (although some consoles have been so thouroughly analyzed and documented that most problems I'd have are moot)
+- iOS, iPadOS, iTVOS, or iWatchOS
+- Texas Instruments calculators
+- Supposedly "smart" appliances (although genuinely smart appliances are fine)
+
+These are almost all closed-source systems that I do not personally support, especially Microsoft, Apple, and Texas Instruments.
+
+With that being said, there are some systems I'm explicitly fine with ports being made for:
+
+- The Internet (despite all of the flaws, it's nicely open and decentralized [mostly])
+- FreeBSD, OpenBSD, NetBSD, DragonflyBSD, etc.
+- Android (although I request that you do not distribute it through the Google Play Store; instead, consider an alternative platform, like F-Droid)

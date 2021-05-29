@@ -30,13 +30,13 @@ Void magic will be the most basic form of magic, necessary to synthesize things 
 - [ ] Altar, made like crushing table, consumes certain materials and void particulate to expand void particulate capacity
 - [ ] Fluid barrel, made like crushing table, can consume 10 void particulate to synthesize water
 - [ ] Void silt, made from saturating void sand
-- [ ] Void dirt, made from void silt and void gravel, forms the basis of plants, can be imbued with 15 void particulate to grow…something.
+- [ ] Void dirt, made from void silt and void gravel, forms the basis of plants, can be imbued with 15 void particulate to grow some Rabmab (see below).
 
 ### Music and Sound
 
 The music and sound of a game is extremely important to give the game an atmosphere, to immerse the player in the world, and to truly make the game feel alive.  ~~The game will use simple sounds to go with its simple graphics, using triangle, square, sawtooth, and noise waves.~~  (After some experimentation, it appears that this can no longer be gaurenteed; thereby, no gaurentee is made about what the music will sound like.)
 
-- [ ] _The Key_, a song played while the game is loading that uses simple single tones, going over each of the melodies used throughout the soundtrack, which overall doesn't mean anything and isn't intended to evoke any particular feeling.  Each melody is assigned a movement, and the movements play in a random order.
+- [ ] _The Key_, a multi-movement song played while the game is loading that uses single notes to establish the melodies for the rest of the soundtrack.  The melodies are played in a random order.  It won't mean anything.
 - [ ] Fours single-movement songs played on the title screen that _The Key_ transitions to:
 	- [ ] _The Lock_, a song which continues _The Key_, but with harmony.  Like _The Key_, it isn't meant to mean anything or invoke any particular feeling.
 	- [ ] _The Door_, a song intended to be bright and cheerful, meant to invoke a feeling of happiness and hope, with the intent to focus on how there's nothing in your ~~way.~~
@@ -106,13 +106,25 @@ A sensible, balanced, and enjoyable combat system is incredibly important for a 
 	- [ ] Shield for blocking
 	- [ ] ~~Axe~~ Spear for piercing
 	- [ ] Scythe for reaching
-	- [ ] Mace for pulling
+	- [ ] Mace for knocking
 	- [ ] Bow (long and compound forms)
 - [ ] Knockback
 
 ### Automation
 
 Automation will be a category of technology used to automate menial tasks.  Because the entire world will be loaded at once, this automation will mostly occur in the background while the player does other things, removing the need for the player to sit in one place waiting for something to get done.  As with basic automation, the system will be extremely modular.  The exact details have not yet been fleshed out.
+
+### Beasts
+
+Beasts will be autonomous entities.  Friendly beasts will be called Creatures, whereas unfriendly beasts will be called Monsters.  I don't have too many ideas for beasts yet, but I have a couple.
+
+- [ ] Puffballs — adorable little balls of fluff, which can be created by leaving fluff (probably synthesized by imbuing some plant fiber with void particulate) in adequate quantities on the ground and waiting a bit.  They naturally grow and shed fluff, which can be harvested for…something, I dunno, or can be left there to get more puffballs.  They will come in small variations.
+- [ ] Glork-pe — simple slightly-humanoid monsters from the shadows.  Slompling around, they have a simple melee attack.  If a player creates a large platform in the shadows with a single way to them, they can be like that one berserker sometime before of the Normal Invasion that got stabbed in the balls by people in a barrel.
+
+### Plants
+
+- [ ] Rabmab — a simple plant with a single green stalk that grows fast until it fruits with a large, bulbous, orange ball that gives a bit of Class A nutrients and some Class B nutrients.  Can be manufactured into Plant Fiber, which can imbued with Void Particulate to get Fluff.
+- [ ] Qlurectrio — a fast-growing plant that gives a very nice building material that is much easier to obtain than void stone, especially with automation.
 
 ## Finished Short-term Goals
 

@@ -10,7 +10,7 @@ However, the license does allow for the game to theorhetically be ported to any 
 
 ### BSD-based systems
 
-From what I know, these systems are free and open source, and are reasonably good.
+These systems are free and open source.  They're fine.
 
 ### The Internet
 
@@ -18,7 +18,7 @@ The Internet is a nice, open place.
 
 ### Android
 
-Android is a free and open source phone system, and I am fine if you build an APK for this system.  However, I would prefer that you not distribute such an APK through the Google Play Store, as Google is a terrible, terrible company.  Please distribute it through F-Droid or some other thing.
+Android is a free and open source phone system, and I am fine if you build an APK for this system.  However, I would prefer that you not distribute such an APK through the Google Play Store, as Google is a terrible, terrible company.  Please distribute it through F-Droid or another similarly ethical source.
 
 ## Systems I would rather not have ports be made for
 

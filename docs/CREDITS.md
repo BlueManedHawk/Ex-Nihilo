@@ -1,3 +1,5 @@
 # Credits
 
-This file doesn't contain anything right now, but since I'll probably need it at some point, I'm creating it anyway.
+This game uses SDL 2.0.
+
+Binaries for this game are compiled with Clang 11.
