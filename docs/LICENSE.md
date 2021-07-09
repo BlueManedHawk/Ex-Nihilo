@@ -16,6 +16,10 @@ This software comes with no warranty, implied or explicit, and I am not liable f
 
 The assets may be freely distributed, so long as attribution is given, but they cannot be sold.  Derivations of the assets must be licened in a way that preserves the rights and restrictions that this license gives; additionally, you must state what was modified, and how to obtain the originals.  This license does not cover trademarks.
 
+#### Exception:  Barlow Condensed
+
+Barlow Condensed is created by the Barlow Project Authors, and is licensed under the SIL Open Font License.
+
 ### SDL
 
 This project dynamically links to SDL2, which is under the zlib license.  You can find it at https://www.libsdl.org/license.php.
@@ -24,16 +28,18 @@ This project dynamically links to SDL2, which is under the zlib license.  You ca
 
 **THIS PART IS _NOT_ LEGALLY BINDING**
 
+This project uses SDL\_image, SDL\_mixer, and SDL\_ttf.  While I assume that these are all under the zlib license, I can't find a citation for this—if somebody knows, please file an issue!
+
 Some of the assets are simple enough that they may not qualify for copyright.
 
-Derivitave assets will crash the game for safety reasons.
+Derivative assets will crash the game for safety reasons.
 
-While this license allows you to port to other systems besides Linux (which is the only platform I'm developing this for), there are certain systems I'd rather you not port this too, including:
+While this license allows you to port to other systems besides Linux, which is the only platform I'm developing this for, since it's the only platform that I have access to, there are certain systems I'd rather you not port this too, including:
 
 - Microsoft Windows
 - Mac OS X
 - Mac OS
-- Most game consoles (although some consoles have been so thouroughly analyzed and documented that most problems I'd have are moot)
+- Most game consoles (although some old consoles have been so thouroughly analyzed and documented that most problems I'd have are moot)
 - iOS, iPadOS, iTVOS, or iWatchOS
 - Texas Instruments calculators
 - Supposedly "smart" appliances (although genuinely smart appliances are fine)
