@@ -14,16 +14,16 @@ Most of the sounds will probably be recorded, including the music, which will pr
 
 The intended endgame is a final boss called the Magical Circuit.  There are no plans for a postgame.
 
-Multiplayer support is not planned, as starting with nothing includes starting without freinds.  However, networking still may be implemented for other things.
+Multiplayer support is not planned, as starting with nothing includes starting without friends.  However, networking still may be implemented for other things.
 
 ## Specific short-term goals
 
 ### Basic software things
 
 - [ ] Checks
-	- [ ] Verification of OS
+	- [X] Verification of OS
 	- [ ] Verification of assets
-	- [ ] Verification of battery
+	- [X] Verification of battery
 - [ ] Setting up SDL
 - [ ] Cleanup
 - [ ] Crash handler
