@@ -49,7 +49,7 @@ These are all located in the `docs` directory in this repository.
 
 This program is written in C.  The latest public draft of C2x is available at http://www.open-std.org/JTC1/SC22/WG14/www/docs/n2596.pdf.
 
-This game uses SDL 2 and the extensions SDL\_image, SDL\_mixer, and SDL\_ttf.  The wiki for SDL is available at https://wiki.libsdl.org/, and information on its extensions are available at https://libsdl.org/projects/SDL\_image/docs/index.html, https://libsdl.org/projects/SDL\_mixer/docs/index.html, and https://libsdl.org/projects/SDL\_ttf/docs/index.html
+This game uses SDL 2 and the extensions SDL\_image, SDL\_mixer, and SDL\_ttf.  The wiki for SDL is available at https://wiki.libsdl.org/, and information on its extensions are available at https://libsdl.org/projects/SDL_image/docs/index.html, https://libsdl.org/projects/SDL_mixer/docs/index.html, and https://libsdl.org/projects/SDL_ttf/docs/index.html
 
 This project uses Clang 11 to compile, because Clang 13 (the latest version) would take up too much space and Clang 12 seems to not actually exist.  The user manual for Clang is available at https://clang.llvm.org/docs/UsersManual.html.  Clang also implements several extensions to C, which can be read about at https://clang.llvm.org/docs/LanguageExtensions.html.  It also implements extensions from GCC for compatibility, which are available at https://gcc.gnu.org/onlinedocs/gcc/C-Extensions.html.
 

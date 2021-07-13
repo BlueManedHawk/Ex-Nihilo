@@ -47,3 +47,7 @@ Don't fret too much, though:  I do use SDL\_Image and SDL\_sound to use compress
 ## What IDE do you use to make this?
 
 I don't use an IDE.  I use Neovim for text editing and LLDB for debugging.
+
+## Why do the directories in the root of the repo all have decapitalized names, but the files in all of those directories all have front-capitalized names, except in `docs/`, where the files have screaming-case names, but the directories don't?
+
+Unfortunately, I have no idea.  This seems to be common practice in a lot of repositories, so I decided to went with go to have it.  At the very least, I can say that the reason the `docs/` directory is decapitalized is because otherwise GitHub wouldn't recognize the files in it for their special purposes.

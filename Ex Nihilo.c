@@ -16,6 +16,7 @@
 
 #include "include/Global.h"
 #include "include/Checks.h"
+#include "include/Crash.h"
 
 /* Now, we get to the main function. */
 
@@ -29,6 +30,8 @@ int main ( [[maybe_unused]] int argc , char * [[maybe_unused]] argv[] ) {
 	SDL_LogSetAllPriority ( SDL_LOG_PRIORITY_INFO ) ;
 #endif
 
-	/* Now, we need to run the checks from the file `Checks.h`. */
+	/* Now, we need to run the checks from the file `Checks.h`.  If we get an abnormal return value, the program is crashed depending on what the value was. */
 
-	RunChecks ( ) ; }
+	RunChecks ( ) ;
+	
+	return 0x00 ; }

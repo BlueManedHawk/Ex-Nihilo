@@ -22,16 +22,47 @@
 #ifndef CHECKS_H
 #define CHECKS_H
 
-/* We now need to include SDL because it has some functions that allow us to check the OS and the battery.  We also need to include the global header. */
+/* We now need to include SDL because it has some functions that allow us to check the OS and the battery.  We also need to include the global header and the crash handler.  Oh, and there's also the standard input-output header to check for the existence of a file, and `<stdlib.h>` for `malloc ( )`. */
 
+#include <stdio.h>
+#include <stdlib.h>
 #include "SDL.h"
 #include "Global.h"
+#include "Crash.h"
 
 /* And now, we get to the meat of the file. */
 
-int RunChecks ( void ) {
+void RunChecks ( void ) {
 
-	/* We first verify the OS.  `SDL_GetPlatform` is used to get this information.  If the OS is invalid, the program is crashed.  If the OS is questionable, the user is warned appropriately.  If the OS is fine, nothing happens. */
+	/* We first verify the assets.  For now, all this does is ensure that a specific file exists, and if it doesn't, the user is told to put their assets in the appropriate place, and the game is crashed.
+	 *
+	 * Eventually, I want to make this properly checksum each of the assets, because currently this system doesn't do very much. */
+
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Getting pref path…" ) ;
+	PrefPath = SDL_GetPrefPath ( "BlueManedHawk" , "Ex Nihilo vN 2" ) ; // Currently, it's just me working on this, and I'm not part of any organization (that I know of).  That's why I chose this. //
+	if ( PrefPath == NULL ) {
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_CRITICAL , "Pref path could not be obtained!  Crashing program…" ) ;
+		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6201 : 0x4201 ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Pref path obtained!" ) ;
+	char TestImageBitmapPath[0xFFF] = "" ;
+	strcpy ( TestImageBitmapPath , PrefPath ) ;
+	strcat ( TestImageBitmapPath , "assets/Images/Special/TestImage.bmp" ) ;
+	char AssetsFailDialogMessage[0xFFF] = "Your assets appear to not be\n\
+					  installed.  Please install them; if\n\
+					  done correctly, `TestImage.bmp`\n\
+					  should be located at\n`" ;
+	strcat ( AssetsFailDialogMessage , TestImageBitmapPath ) ;
+	strcat ( AssetsFailDialogMessage , "`." ) ;
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Checking for assets…" ) ;
+	SDL_Surface * TestImageSurface = SDL_LoadBMP ( TestImageBitmapPath ) ;
+	if ( TestImageSurface == NULL ) {
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_CRITICAL , "Assets not found!  Crashing program…" ) ;
+		SDL_ShowSimpleMessageBox ( SDL_MESSAGEBOX_ERROR , "Please install assets" , AssetsFailDialogMessage , NULL ) ;
+		SDL_FreeSurface ( TestImageSurface ) ;
+		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6301 : 0x4301 ) ; }
+	SDL_FreeSurface ( TestImageSurface ) ;
+
+	/* We now verify the OS.  `SDL_GetPlatform` is used to get this information.  If the OS is invalid, the program is crashed.  If the OS is questionable, the user is warned appropriately.  If the OS is fine, nothing happens. */
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Verifying OS…" ) ;
 	const char * Platform = SDL_GetPlatform ( ) ;
 	if ( strstr ( Platform , "Linux" ) != NULL ) {
@@ -52,7 +83,7 @@ int RunChecks ( void ) {
 				see the non-binding section of the License.\n\
 				\n\
 				The program will now crash." , NULL ) ;
-		return 2 ; }
+		Crash ( EX_NIHILO_DEBUG_MODE ? 0x2302 : 0x0302 ) ; }
 	else if ( strstr ( Platform , "Android" ) != NULL ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_WARN , "User is on Android and may or may not have acquired program through illegitimate means; assuming good faith." ) ;
 		SDL_ShowSimpleMessageBox ( SDL_MESSAGEBOX_WARNING , "Acquiration concerns" ,\
@@ -90,7 +121,7 @@ int RunChecks ( void ) {
 					been stopped to prevent loss of data.  Please\n\
 					plug in your battery and relaunch the game if\n\
 					you want to play." , NULL ) ;
-			return 3 ; }
+			Crash ( EX_NIHILO_DEBUG_MODE ? 0x6302 : 0x4302 ) ; }
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "User is on battery; will run rechecks." ) ;
 		SDL_ShowSimpleMessageBox ( SDL_MESSAGEBOX_INFORMATION , "You are on battery" ,\
 				"If you are planning on playing for a long period\n\
@@ -99,7 +130,6 @@ int RunChecks ( void ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "User doesn't have battery; will not run rechecks." ) ;
 		BatteryRechecks = 0 ; }
 	else if ( PowerState == SDL_POWERSTATE_CHARGED || PowerState == SDL_POWERSTATE_CHARGING ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "User battery is plugged in; will run rechecks." ) ; }
-	return 0 ; }
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "User battery is plugged in; will run rechecks." ) ; } }
 
 #endif/*ndef CHECKS_H*/

@@ -24,31 +24,6 @@ The exact details of what to do vary for each desktop environment.  However, in 
 
 Once you've fixed that, _please report an issue!_  See `CONTRIBUTING.md` and `ISSUES.md` for details.
 
-## My battery is broken and my system (which uses LXDE) needs to be constantly plugged in, but it constantly alternates between thinking the battery is discharging and thinking it's charging, thereby creating particularly annoying notifications in fullscreen mode!  What do I do?
-
-Kill the process `xfce4-power-manager`.  You don't need it.
-
 ## It's crashing!
 
-Aw, crap.
-
-First, _file an issue!_  See `CONTRIBUTING.md` and `ISSUES.md` for details.
-
-**I will never ask you for a save file, and neither should anybody else.**
-
-I may ask you for an exit code.  To get this, run the game from a Bash CLI and reproduce the crash, then do `echo $?`.  Convert it to binary.  This error code determines what caused the crash:
-
-- The first nybble of the byte describes a few characteristics (in all cases, 0 is yes, and 1 is no):
-	- The first bit states whether the game exited safely.
-	- The second bit states whether the game exited expectedly.
-	- The third bit states whether the game was outside debug mode.
-	- The fourth bit is reserved because it makes things easier.
-- The second nybble of the byte is used to state the source of the crash, and is _not_ treated bitwise.
-	- 0 indicates normal exit conditions.
-	- 1 indicates an error with SDL.
-	- 2 indicates a manual crash.
-	- 3 indicates a closure to prevent loss of data.
-	- 4 indicates that the assets were invalid, and you should probably reinstall them.
-	- 5 indicates an attempt to play under invalid circumstances.
-	- 6 indicates that the game was given invalid input.
-	- Other values are not currently used.
+See `CRASHES.md`.  In general, you should report an issue.  Please see `CONTRIBUTING.md` and `ISSUES.md`.

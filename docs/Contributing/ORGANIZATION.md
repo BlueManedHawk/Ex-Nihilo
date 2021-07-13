@@ -19,7 +19,7 @@ And now, we reach the loop.  This is the brains of the operation.  The loop goes
 
 The first step in the loop is to gather input.  What keys have been pressed?  Where has the mouse been clicked?  What text has been inputted?  This information is then written down for later use.  This is from the file `Input.h`.  (And yes, text input is different from keypresses.  It's a bit strange.)
 
-From here, we need to consider what state the program is in.  Are we in the main menu?  Are we in normal gameplay?  Are we looking at our inventory?  Are we in the pause menu?  This is from the file `State.h`
+From here, we need to consider what state the program is in.  Are we in the main menu?  Are we in normal gameplay?  Are we looking at our inventory?  Are we in the pause menu?  This is from the file `State.h`.
 
 From here, what to do depends on the state of the program.  This can get very complicated, too much so to explain here.  Some of these steps are shared between the different states, and some of the states have multiple files dedicated to them.  However, in general, the steps generally involve considering the input given and using that to change some part of the program…which I have just realized is probably the least helpful I could possibly be.
 
@@ -29,8 +29,8 @@ And then, we wait until the end of the we go back to the start of the loop and d
 
 At some point, we will want to quit.  This will break us from the loop, where we then perform some cleanup, such as saving things, properly closing SDL, and other stuff.  This is from the file `Cleanup.h`.
 
-At some point, the game might crash.  The file `Crash.h`contains the crash handler for the game.
+At some point, the game might crash.  The file `Crash.h` contains the crash handler for the game.
 
 …
 
-I'm not quite sure why I made this document.  What was the point of this again?  I think it may just have been to get my thoughts straight.  I'm honestly not sure.  Eh, whatever.  It might be useful.
+I'm not quite sure why I made this document.  What was the point of this again?  I think it may just have been to get my thoughts straight.  I'm honestly not sure.  Eh, whatever.  It might be useful for somebody.

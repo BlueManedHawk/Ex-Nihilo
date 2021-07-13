@@ -4,7 +4,7 @@ This game contains a number of entities known as "beasts".  If these were to exi
 
 ## The Character
 
-The Character is who the player plays as.  This character is always in a cloak, and what's in the cloak is entirely unknown.  The only thing that's know is that they make not a noise, they only ever manipulate things bimanually, and that they are not an adult.
+The Character is who the player plays as.  This character is always in a cloak, and what's in the cloak is entirely unknown.  The only things that are know is that they make not a noise and they only ever manipulate things bimanu(?)ally.
 
 ## The Magical Circuit
 

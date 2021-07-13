@@ -20,4 +20,8 @@
 
 _Bool BatteryRechecks = 1 ;
 
+/* This contains the "pref path", which the SDL wiki claims should be assumed to be the only safe place to write things.  This is later set to the value returned by `SDL_GetPrefPath ( )` in `Checks.h`. */
+
+char * PrefPath = NULL ;
+
 #endif/*ndef GLOBAL_H*/

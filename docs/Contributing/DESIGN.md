@@ -22,7 +22,7 @@ Oh, also, this is part of the reason I use C for this.
 
 ## Two Manuals
 
-This game contains two manuals:  an interactive user manual, meant to be completed from start to finish, and a comprehensive reference manual, intended to completely and entirely document everything about the game.  As I understand it, this concept originated with the text editor Vim (though the User Manual there isn't interactive).  I really like this concept, and I've integrated it into this game.
+This game contains two manuals:  an interactive user manual, meant to be completed from start to finish, and a comprehensive reference manual, intended to completely and entirely document everything about the game.  As I understand it, this concept originated with the text editor Vim (though the User Manual there is [mostly] not interactive).  I really like this concept, and I've integrated it into this game.
 
 ## Balances
 
