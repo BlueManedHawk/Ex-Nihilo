@@ -25,12 +25,15 @@ The flags in the first nybble are as follows (with 0 meaning yes and 1 meaning n
 
 This is used to indicate that the crash was _caused_ because of debug mode.  The types are:
 
-- 0: Indicates that the crash was caused manually.
+- 1: Indicates that the crash was caused manually.
 - Other values aren't used.
 
 ### Crash Class 2:  SDL error
 
 This indicates that the problem occured with SDL.
+
+- 1: Unobtainable pref path
+- Other values aren't used.
 
 ### Crash Class 3:  Invalid Circumstances
 
@@ -48,3 +51,11 @@ This indicates that the program was crashed to prevent data loss.
 ### Crash Class 5:  Signal
 
 This indicates that the program was crashed because it recieved a signal.
+
+- 1: Abnormal program termination
+- 2: Floating point error
+- 3: Illegal instruction
+- 4: Interruption
+- 5: Segmentation fault
+- 6: Termination request
+- Other values aren't used.

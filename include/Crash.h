@@ -18,10 +18,13 @@
 #ifndef CRASH_H
 #define CRASH_H
 
-/* Now, some standard library stuff.  `<stdarg.h>` is for variable arguments, and `<stdlib.h>` is for `exit ( )`. */
+/* Now, some standard library stuff.  `<stdarg.h>` is for variable arguments, `<stdlib.h>` is for `exit ( )`, `<signal.h>` is to deal with signals, and `<time.h>` and `<stdio.h>` is used to put a time on and export the crash log. */
 
 #include <stdarg.h>
 #include <stdlib.h>
+#include <signal.h>
+#include <time.h>
+#include <stdio.h>
 
 /* This is probably the function that matters the most.  A good bit of this is just a big switch-case statement based on the first argument. */
 
@@ -38,7 +41,7 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 		{ 0xFF , 0x1F , 0x1F } ,
 		{ 0xFF , 0x1F , 0x1F } ,
 		{ 0x7F , 0x0F , 0x0F } ,
-		{ 0x7F , 0x7F , 0x0F } } } ;
+		{ 0xFF , 0xFF , 0x1F } } } ;
 
 	/* Now, we need to setup the text which will occur in the messagebox should the game crash.  This part is a pain in the hole, because strings aren't builtin to C, so we need to deal with this nightmare. */
 
@@ -110,6 +113,24 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 		case 0x0500:
 			ErrorClassMessage = "Crash-inducing signal recieved\n" ;
 			switch ( ApplicationExitCode & 0x00FF ) {
+				case 0x0001:
+					ErrorTypeMessage = "Abnormal program exit occurred." ;
+					break ;
+				case 0x0002:
+					ErrorTypeMessage = "A floating-point error occured." ;
+					break ;
+				case 0x0003:
+					ErrorTypeMessage = "An illegal instruction was given." ;
+					break ;
+				case 0x0004:
+					ErrorTypeMessage = "An interruption request was sent to the program." ;
+					break ;
+				case 0x0005:
+					ErrorTypeMessage = "Goodness me, a segfault occurred.  This'll be a pain to solve." ;
+					break ;
+				case 0x0006:
+					ErrorTypeMessage = "A termination request was sent to the program." ;
+					break ;
 				default:
 					ErrorTypeMessage = "An unknown error type occurred.  Please file an issue." ;
 					break ; }
@@ -127,8 +148,12 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 	char * OtherInformation = va_arg ( ap , char * ) ;
 	va_end ( ap ) ;
 	strcat ( CrashText , "\nOther information:\n" ) ;
-	strcat ( CrashText , OtherInformation ) ;
-	strcat ( CrashText , "\n\n" ) ;
+	if ( OtherInformation == NULL ) {
+		strcat ( CrashText , "None given." ) ; }
+	else {
+		strcat ( CrashText , OtherInformation ) ; }
+	strcat ( CrashText , "\n" ) ;
+	strcat ( CrashText , "You may want to file an issue.\n\n" ) ;
 
 	/* And after all that, we finally get to presenting the messagebox. */
 
@@ -145,9 +170,73 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 
 	SDL_ShowMessageBox ( &MessageBoxData , &ButtonID ) ;
 
+	/* Exporting to a file isn't anything fancy.  We just put the crash text into a file. */
+
 	if ( ButtonID ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_WARN , "Unfortunately, log exports don't yet exist.  Sorry!" ) ; }
+		char * CrashLogFilename = SDL_GetPrefPath ( "BlueManedHawk" , "Ex Nihilo vN 2" ) ;
+		strcat ( CrashLogFilename , "Crash Logs/Crash " ) ;
+		time_t Time = time ( NULL ) ;
+		char * TimeString = ctime ( &Time ) ;
+		strcat ( CrashLogFilename , TimeString ) ;
+		strcat ( CrashLogFilename , ".txt" ) ;
+		FILE * CrashLogFile = fopen ( CrashLogFilename , "w" ) ; // Mmmph.
+		if ( !CrashLogFile ) {
+			SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not open crash log file for writing!" ) ; }
+		else {
+			fprintf ( CrashLogFile , "%s" , CrashText ) ; } }
 
 	exit ( ApplicationExitCode >> 8 ) ; }
+
+/* Now, we get to the crash handler setup functions.  Since `signal ( )` doesn't accept an argument for the arguments to the pointed function, I have to declare a bunch of other functions for it to point to that are really just the `Crash ( )` function with arguments. */
+
+_Noreturn void CrashFromAbnormalExit ( [[maybe_unused]] int Required ) {
+#ifdef EX_NIHILO_DEBUG_MODE
+	Crash ( 0xE501 ) ; }
+#else
+	Crash ( 0xC501 ) ; }
+#endif/*def EX_NIHILO_DEBUG_MODE*/
+
+_Noreturn void CrashFromFloatingPointError ( [[maybe_unused]] int Required ) {
+#ifdef EX_NIHILO_DEBUG_MODE
+	Crash ( 0xE502 ) ; }
+#else
+	Crash ( 0xC502 ) ; }
+#endif/*def EX_NIHILO_DEBUG_MODE*/
+
+_Noreturn void CrashFromIllegalOperation ( [[maybe_unused]] int Required ) {
+#ifdef EX_NIHILO_DEBUG_MODE
+	Crash ( 0xE503 ) ; }
+#else
+	Crash ( 0xC503 ) ; }
+#endif/*def EX_NIHILO_DEBUG_MODE*/
+
+_Noreturn void CrashFromInterruption ( [[maybe_unused]] int Required ) {
+#ifdef EX_NIHILO_DEBUG_MODE
+	Crash ( 0xE504 ) ; }
+#else
+	Crash ( 0xC504 ) ; }
+#endif/*def EX_NIHILO_DEBUG_MODE*/
+
+_Noreturn void CrashFromSegfault ( [[maybe_unused]] int Required ) {
+#ifdef EX_NIHILO_DEBUG_MODE
+	Crash ( 0xE505 ) ; }
+#else
+	Crash ( 0xC505 ) ; }
+#endif/*def EX_NIHILO_DEBUG_MODE*/
+
+_Noreturn void CrashFromTermination ( [[maybe_unused]] int Required ) {
+#ifdef EX_NIHILO_DEBUG_MODE
+	Crash ( 0xE506 ) ; }
+#else
+	Crash ( 0xC506 ) ; }
+#endif/*def EX_NIHILO_DEBUG_MODE*/
+
+void CrashHandlerSetup ( void ) {
+	signal ( SIGABRT , CrashFromAbnormalExit ) ;
+	signal ( SIGFPE , CrashFromFloatingPointError ) ;
+	signal ( SIGILL , CrashFromIllegalOperation ) ;
+	signal ( SIGINT , CrashFromInterruption ) ;
+	signal ( SIGSEGV , CrashFromSegfault ) ;
+	signal ( SIGTERM , CrashFromTermination ) ; }
 
 #endif/*ndef CRASH_H*/

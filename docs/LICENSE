@@ -30,11 +30,11 @@ This project dynamically links to SDL2, which is under the zlib license.  You ca
 
 This project uses SDL\_image, SDL\_mixer, and SDL\_ttf.  While I assume that these are all under the zlib license, I can't find a citation for this—if somebody knows, please file an issue!
 
-Some of the assets are simple enough that they may not qualify for copyright.
+Some of the assets, such as `Test Image.png` are simple enough that they may not qualify for copyright.  Others, such as `UHOH.bmp`, are extremely common, and are probably public domain at this point.
 
-Derivative assets will crash the game for safety reasons.
+Modified assets will crash the game for safety reasons.
 
-While this license allows you to port to other systems besides Linux, which is the only platform I'm developing this for, since it's the only platform that I have access to, there are certain systems I'd rather you not port this too, including:
+While this license allows you to port to other systems besides Linux (which is the only platform I'm developing this for since it's the only platform that I have access to) there are certain systems I'd rather you not port this too, including:
 
 - Microsoft Windows
 - Mac OS X
@@ -49,5 +49,5 @@ These are almost all closed-source systems that I do not personally support, esp
 With that being said, there are some systems I'm explicitly fine with ports being made for:
 
 - The Internet (despite all of the flaws, it's nicely open and decentralized [mostly])
-- FreeBSD, OpenBSD, NetBSD, DragonflyBSD, etc.
+- FreeBSD, OpenBSD, NetBSD, DragonflyBSD, etc.  (I've never personally used any of these, but they're open-source, and I've heard good things about them.)
 - Android (although I request that you do not distribute it through the Google Play Store; instead, consider an alternative platform, like F-Droid)

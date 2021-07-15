@@ -16,6 +16,12 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+/* This is just so that we can have debug-mode checks use the ternary operator instead preprocessing, which makes things _much_ nicer-looking. */
+
+#ifndef EX_NIHILO_DEBUG_MODE
+const int EX_NIHILO_DEBUG_MODE = 0 ;
+#endif/*ndef EX_NIHILO_DEBUg_MODE*/
+
 /* This defines whether the battery will be rechecked every so often during the loop.  This is on by default. */
 
 _Bool BatteryRechecks = 1 ;
