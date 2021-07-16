@@ -33,6 +33,10 @@ This is used to indicate that the crash was _caused_ because of debug mode.  The
 This indicates that the problem occured with SDL.
 
 - 1: Unobtainable pref path
+- 2: Failed to initialize SDL
+- 3: Failed to initialize SDL\_image
+- 4: Failed to initialize SDL\_mixer
+- 5: Failed to initialize SDL\_ttf
 - Other values aren't used.
 
 ### Crash Class 3:  Invalid Circumstances

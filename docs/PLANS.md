@@ -26,7 +26,7 @@ Multiplayer support is not planned, as starting with nothing includes starting w
 	- [X] Verification of battery
 - [ ] Setting up SDL
 - [ ] Cleanup
-- [ ] Crash handler
+- [X] Crash handler
 
 ### Basic game things
 

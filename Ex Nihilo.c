@@ -13,10 +13,14 @@
 /* First, we need to include some things.  This includes some of the C Standard Library, SDL, and the files in the `include/` directory. */
 
 #include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_mixer.h"
+#include "SDL_ttf.h"
 
 #include "include/Crash.h"
 #include "include/Global.h"
 #include "include/Checks.h"
+#include "include/Setup.h"
 
 /* Now, we get to the main function. */
 
@@ -38,7 +42,8 @@ int main ( [[maybe_unused]] int argc , char * [[maybe_unused]] argv[] ) {
 
 	RunChecks ( ) ;
 
-	int * p = NULL ;
-	SDL_Log ( "%d" , *p ) ;
+	/* Now, we need to setup SDL and its extensions. */
+
+	Setup ( ) ;
 
 	return 0x00 ; }

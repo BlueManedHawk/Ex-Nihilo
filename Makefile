@@ -46,7 +46,7 @@ TAR_COMMAND = tar -cJf $(COMMON_ASSETS_OUTPUT) $(COMMON_ASSETS_INPUT)
 FORMATTING_OPTIONS = -fdiagnostics-show-category=name
 DIAGNOSTIC_OPTIONS = -Wall -Werror -Wextra -pedantic 
 DEBUGGING_OPTIONS = -g -fdebug-macro -glldb
-OTHER_OPTIONS = -std=c2x
+OTHER_OPTIONS = -std=c2x -v -lSDL2_image -lSDL2_mixer -lSDL2_ttf
 
 release:
 	$(COMPILE_COMMAND) $(COMMON_SOURCE_INPUT) -o $(COMMON_BINARY_OUTPUT)
