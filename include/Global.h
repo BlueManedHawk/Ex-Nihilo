@@ -30,4 +30,8 @@ _Bool BatteryRechecks = 1 ;
 
 char * PrefPath = NULL ;
 
+int SizeMultiplier = 1 ;
+
+SDL_Window * MainWindow ;
+
 #endif/*ndef GLOBAL_H*/

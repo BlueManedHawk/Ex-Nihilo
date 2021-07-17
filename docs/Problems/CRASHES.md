@@ -37,6 +37,8 @@ This indicates that the problem occured with SDL.
 - 3: Failed to initialize SDL\_image
 - 4: Failed to initialize SDL\_mixer
 - 5: Failed to initialize SDL\_ttf
+- 6: Failed to create the window
+- 7: Failed to create the renderer
 - Other values aren't used.
 
 ### Crash Class 3:  Invalid Circumstances
@@ -63,3 +65,9 @@ This indicates that the program was crashed because it recieved a signal.
 - 5: Segmentation fault
 - 6: Termination request
 - Other values aren't used.
+
+### Crash Class 6:  Standard Library Failure
+
+This indicates that something went wrong with the standard library.  This really, _really_ shouldn't happen.
+
+- 1:  `atexit ( )` registration failure

@@ -84,8 +84,54 @@ void Setup ( void ) {
 	if ( atexit ( TTF_Quit ) != 0 ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_CRITICAL , "`atexit ( )` registration failed!" ) ;
 		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6601 : 0x4601 , "CATASTROPHIC FAILURE" ) ; }
-	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Registered `TTF_Quit ( )` in `atexit ( )`!" ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Registered `TTF_Quit ( )` in `atexit ( )`!" ) ;
 
-	/* Now that we've done that, we can set up some more stuff. */
+	/* Now that we've done that, we can set up some more stuff.  We need to create our game window and renderer, load some particularly important textures, setup some stuff with the audio and load some particularly important sounds _(or we would, if I could figure out how to get FLAC support to work)_, and load the font. */
+
+	SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "Asking for window size…" ) ;
+	SDL_MessageBoxButtonData FullscreenPromptButtons[] = {
+		{ 0 , 0 , "Fullscreen" } ,
+		{ 0 , 1 , "Monadic" } ,
+		{ 0 , 2 , "Duplicant" } ,
+		{ 0 , 3 , "Triplet" } ,
+		{ 0 , 4 , "Quaternical" } } ;
+	SDL_MessageBoxData FullscreenPromptData = {
+		SDL_MESSAGEBOX_INFORMATION ,
+		NULL ,
+		"Size" ,
+		"Please select the window size you want to play at." ,
+		4 ,
+		FullscreenPromptButtons ,
+		NULL } ;
+	int FullscreenButton = 0 ;
+	SDL_ShowMessageBox ( &FullscreenPromptData , &FullscreenButton ) ;
+	SDL_WindowFlags WindowFlags = 0 ;
+	switch ( FullscreenButton ) {
+		case 0:
+			SizeMultiplier = 1 ;
+			WindowFlags |= SDL_WINDOW_FULLSCREEN ;
+			SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "User has asked for fullscreen." ) ;
+			break ;
+		case 1:
+			SizeMultiplier = 1 ;
+			SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "User has asked for monadic window size." ) ;
+			break ;
+		case 2:
+			SizeMultiplier = 2 ;
+			SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "User has asked for duplicant window size." ) ;
+			break ;
+		case 3:
+			SizeMultiplier = 3 ;
+			SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "User has asked for triplet window size." ) ;
+			break ;
+		case 4:
+			SizeMultiplier = 4 ;
+			SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "User has asked for quaternical window size." ) ;
+			break ; }
+	MainWindow = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 * SizeMultiplier , 480 * SizeMultiplier , WindowFlags ) ;
+	if ( MainWindow == NULL ) {
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not create the window!  Error from SDL:  \"%s\".  Crashing program…" , SDL_GetError ( ) ) ;
+		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6206 : 0x4206 ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "Created window!" ) ; }
 
 #endif/*ndef SETUP_H*/
