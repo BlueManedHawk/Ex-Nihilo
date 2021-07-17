@@ -31,6 +31,7 @@
 /* We also need some things from the standard library; currently, this is just `<stdlib.h>` for `atexit ( )`. */
 
 #include <stdlib.h>
+#include <string.h>
 
 /* Alright, here's the function. */
 
@@ -128,10 +129,48 @@ void Setup ( void ) {
 			SizeMultiplier = 4 ;
 			SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "User has asked for quaternical window size." ) ;
 			break ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "Making window…" ) ;
 	MainWindow = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 * SizeMultiplier , 480 * SizeMultiplier , WindowFlags ) ;
 	if ( MainWindow == NULL ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not create the window!  Error from SDL:  \"%s\".  Crashing program…" , SDL_GetError ( ) ) ;
 		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6206 : 0x4206 ) ; }
-	SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "Created window!" ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "Created window!" ) ;
+	SDL_LogMessage ( SDL_LOG_CATEGORY_RENDER , SDL_LOG_PRIORITY_VERBOSE , "Making renderer…" ) ;
+	MainRenderer = SDL_CreateRenderer ( MainWindow , -1 , SDL_RENDERER_ACCELERATED ) ;
+	if ( MainRenderer == NULL ) {
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not create the renderer!  Error from SDL:  \"%s\".  Crashing program…" , SDL_GetError ( ) ) ;
+		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6207 : 0x4207 ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_RENDER , SDL_LOG_PRIORITY_VERBOSE , "Created renderer!" ) ;
+
+	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loading important images…" ) ;
+	char ErrorImagePath[0xFFF] ;
+	strcpy ( ErrorImagePath , PrefPath ) ;
+	strcat ( ErrorImagePath , "assets/Images/Special/UHOH.png" ) ;
+	ErrorSurface = IMG_Load ( ErrorImagePath ) ;
+	if ( ErrorSurface == NULL ) {
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not load the error image!  Crashing program…" ) ;
+		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6208 : 0x4208 , "The error image could not be loaded." ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loaded error image." ) ;
+	char TestImagePath[0xFFF] ;
+	strcpy ( TestImagePath , PrefPath ) ;
+	strcat ( TestImagePath , "assets/Images/Special/TestImage.png" ) ;
+	TestSurface = IMG_Load ( TestImagePath ) ;
+	if ( TestSurface == NULL ) {
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not load the test image!  Crashing program…" ) ;
+		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6208 : 0x4208 , "The test image could not be loaded." ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loaded test image." ) ;
+	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loaded important images!" ) ;
+
+	/* This is where there should be some stuff with setting up audio and loading important sounds, but unfortunately, I haven't been able to get FLAC to work, so until I do, this is empty, and the program goes straight to getting the font. */
+
+	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Obtaining font…" ) ;
+	char BarlowCondensedPath[0xFFF] ;
+	strcpy ( BarlowCondensedPath , PrefPath ) ;
+	strcat ( BarlowCondensedPath , "assets/Text/Font/BarlowCondensed-Thin.ttf" ) ;
+	BarlowCondensed = TTF_OpenFont ( BarlowCondensedPath , 12 ) ;
+	if ( BarlowCondensed == NULL ) {
+		SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_CRITICAL ,  "Could not obtain font!  Crashing program…" ) ;
+		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6209 : 0x6209 ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Font obtained!" ) ; }
 
 #endif/*ndef SETUP_H*/

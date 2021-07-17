@@ -16,6 +16,8 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include "SDL.h"
+
 /* This is just so that we can have debug-mode checks use the ternary operator instead preprocessing, which makes things _much_ nicer-looking. */
 
 #ifndef EX_NIHILO_DEBUG_MODE
@@ -33,5 +35,11 @@ char * PrefPath = NULL ;
 int SizeMultiplier = 1 ;
 
 SDL_Window * MainWindow ;
+
+SDL_Renderer * MainRenderer ;
+
+SDL_Surface * ErrorSurface , * TestSurface ;
+
+TTF_Font * BarlowCondensed ;
 
 #endif/*ndef GLOBAL_H*/

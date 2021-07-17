@@ -39,6 +39,8 @@ This indicates that the problem occured with SDL.
 - 5: Failed to initialize SDL\_ttf
 - 6: Failed to create the window
 - 7: Failed to create the renderer
+- 8: Failed to get important image
+- 9: Failed to load font
 - Other values aren't used.
 
 ### Crash Class 3:  Invalid Circumstances

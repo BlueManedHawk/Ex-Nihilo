@@ -24,7 +24,7 @@ Multiplayer support is not planned, as starting with nothing includes starting w
 	- [X] Verification of OS
 	- [ ] Verification of assets
 	- [X] Verification of battery
-- [ ] Setting up SDL
+- [X] Setting up SDL and its extensions
 - [ ] Cleanup
 - [X] Crash handler
 
