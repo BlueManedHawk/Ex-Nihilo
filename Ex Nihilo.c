@@ -21,6 +21,7 @@
 #include "include/Global.h"
 #include "include/Checks.h"
 #include "include/Setup.h"
+#include "include/Cleanup.h"
 
 /* Now, we get to the main function. */
 
@@ -38,6 +39,10 @@ int main ( [[maybe_unused]] int argc , char * [[maybe_unused]] argv[] ) {
 
 	CrashHandlerSetup ( ) ;
 
+	/* Now, we need to register our cleanup function in `atexit ( )`. */
+
+	atexit ( Cleanup ) ;
+
 	/* Now, we need to run the checks from the file `Checks.h`.  If we get an abnormal return value, the program is crashed depending on what the value was. */
 
 	RunChecks ( ) ;
@@ -45,5 +50,15 @@ int main ( [[maybe_unused]] int argc , char * [[maybe_unused]] argv[] ) {
 	/* Now, we need to setup SDL and its extensions. */
 
 	Setup ( ) ;
+
+	SDL_Texture * ErrorTexture ; 
+	ErrorTexture = SDL_CreateTextureFromSurface ( MainRenderer , ErrorSurface ) ;
+	SDL_RenderCopy ( MainRenderer , ErrorTexture , NULL , NULL ) ;
+	SDL_RenderPresent ( MainRenderer ) ;
+	SDL_Delay ( 5000 ) ;
+
+	/* Finally, we need to clean up. */
+
+	Cleanup ( ) ;
 
 	return 0x00 ; }

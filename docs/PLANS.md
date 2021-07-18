@@ -24,8 +24,8 @@ Multiplayer support is not planned, as starting with nothing includes starting w
 	- [X] Verification of OS
 	- [ ] Verification of assets
 	- [X] Verification of battery
-- [X] Setting up SDL and its extensions
-- [ ] Cleanup
+- [X] Setting up SDL and its extensions _(note:  SDL\_mixer is not yet working due to error in getting FLAC to work, and will therefore be delayed until it's necessary.)_
+- [X] Cleanup (I think this is working?)
 - [X] Crash handler
 
 ### Basic game things
@@ -66,7 +66,7 @@ The music of a game is extremely important to give the game an atmosphere, to im
 	- [ ] _The Air of the Solstice_, a track intended to evoke feelings of adventure.  Will be somewhat similar to _The Key_, except not.
 	- [ ] _The Peaceable Day_, a track intended to evoke that feeling you get when you're in a hard rain with no thunder on a very toned day.
 	- [ ] _The Island of Rocks_, a track intended to invoke a feeling of depression, sadness, and remorse.
-- [ ] A few songs which specifically play during combat, each named after a tool of combat.  Deterimining what "during combat" means will be _extremely_ difficult, especially without angering everybody.
+- [ ] A few songs which specifically play during combat, each named after a tool of combat.  Deterimning what "during combat" means will be _extremely_ difficult, especially without angering everybody.
 - [ ] Songs for bossfights, each one building on the last, and with each one named after the according boss.
 - [ ] A credits song, consisting of a medley of everything, and including most of the rest of the soundtrack.
 
@@ -88,7 +88,7 @@ ROMMMM stand for Read-Only Memory Metallic Music Medium.  These will be on-deman
 	- [ ] Fake Jazz (since real jazz is fundamentally bad)
 	- [ ] Electronica (I'm thinking something like Animusic, y'know?)
 - [ ] _Instruments_ will contain songs focused on a single instrument.  I have no idea how I'll do this.
-- [ ] _Misinterpretations_ will be a series of other files disguised as Ogg Vorbis files, or maybe other file formats if Ogg Vorbis is too restrictive.
+- [ ] _Misinterpretations_ will be a series of other files disguised as FLAC files, or maybe other file formats if FLAC is too restrictive a format.
 - [ ] _Numbers_ will be a series of experimental tracks, many of which won't be "music".  The numbers will range from 0 to 13, with the exception of Number 8.  Some of the tracks will have variants.  Not all the numbers have been decided.  Some that have are:
 	- [ ] Number 9 will be many people screaming.  This will all be individually gathered, so it won't contain iconic screams like the Wilhelm Scream and the one from Big Enough.  This will have a large variant in which the screams will be separate instead of all together.
 	- [ ] Number 6 will be the audio of some bodies of water.  This will have a variant from inside the bodies of water instead.

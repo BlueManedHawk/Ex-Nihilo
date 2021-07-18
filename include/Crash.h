@@ -126,7 +126,7 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 					ErrorTypeMessage = "An interruption request was sent to the program." ;
 					break ;
 				case 0x0005:
-					ErrorTypeMessage = "Goodness me, a segfault occurred.  This'll be a pain to solve." ;
+					ErrorTypeMessage = "A segmentation fault occured." ;
 					break ;
 				case 0x0006:
 					ErrorTypeMessage = "A termination request was sent to the program." ;
