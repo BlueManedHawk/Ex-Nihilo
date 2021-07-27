@@ -20,9 +20,9 @@ Multiplayer support is not planned, as starting with nothing includes starting w
 
 ### Basic software things
 
-- [ ] Checks
+- [X] Checks
 	- [X] Verification of OS
-	- [ ] Verification of assets
+	- [X] Verification of assets
 	- [X] Verification of battery
 - [X] Setting up SDL and its extensions _(note:  SDL\_mixer is not yet working due to error in getting FLAC to work, and will therefore be delayed until it's necessary.)_
 - [X] Cleanup (I think this is working?)

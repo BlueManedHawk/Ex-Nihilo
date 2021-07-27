@@ -22,13 +22,13 @@
 #ifndef CHECKS_H
 #define CHECKS_H
 
-/* We now need to include SDL because it has some functions that allow us to check the OS and the battery.  We also need to include the global header and the crash handler.  Oh, and there's also the standard input-output header to check for the existence of a file, and `<stdlib.h>` for `malloc ( )`. */
+/* We now need to include SDL because it has some functions that allow us to check the OS and the battery.  We also need to include the global header and the crash handler.  Oh, and there's also the standard input-output header to check for the existence of a file. */
 
 #include <stdio.h>
-#include <stdlib.h>
 #include "SDL.h"
 #include "Global.h"
 #include "Crash.h"
+#include "Assets.h"
 
 /* And now, we get to the meat of the file. */
 
@@ -44,24 +44,11 @@ void RunChecks ( void ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_CRITICAL , "Pref path could not be obtained!  Crashing program…" ) ;
 		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6201 : 0x4201 ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Pref path obtained!" ) ;
-	char TestImageBitmapPath[0xFFF] = "" ;
-	strcpy ( TestImageBitmapPath , PrefPath ) ;
-	strcat ( TestImageBitmapPath , "assets/Images/Special/TestImage.bmp" ) ;
-	char AssetsFailDialogMessage[0xFFF] = "Your assets appear to not be\n\
-					  installed.  Please install them; if\n\
-					  done correctly, `TestImage.bmp`\n\
-					  should be located at\n`" ;
-	strcat ( AssetsFailDialogMessage , TestImageBitmapPath ) ;
-	strcat ( AssetsFailDialogMessage , "`." ) ;
-	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Checking for assets…" ) ;
-	SDL_Surface * TestImageSurface = SDL_LoadBMP ( TestImageBitmapPath ) ;
-	if ( TestImageSurface == NULL ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_CRITICAL , "Assets not found!  Crashing program…" ) ;
-		SDL_ShowSimpleMessageBox ( SDL_MESSAGEBOX_ERROR , "Please install assets" , AssetsFailDialogMessage , NULL ) ;
-		SDL_FreeSurface ( TestImageSurface ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6301 : 0x4301 ) ; }
-	SDL_FreeSurface ( TestImageSurface ) ;
-
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Verifying assets…" ) ;
+	for ( register int i = 0 ; AssetsLocationArray[i] != NULL ; i++ ) {
+		AssetsChecksum ( AssetsLocationArray[i] , AssetsChecksumArray[i] ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "All assets have been verified!" ) ;
+	
 	/* We now verify the OS.  `SDL_GetPlatform` is used to get this information.  If the OS is invalid, the program is crashed.  If the OS is questionable, the user is warned appropriately.  If the OS is fine, nothing happens. */
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Verifying OS…" ) ;
 	const char * Platform = SDL_GetPlatform ( ) ;

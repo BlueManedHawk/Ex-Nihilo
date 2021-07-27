@@ -42,4 +42,16 @@ SDL_Surface * ErrorSurface , * TestSurface ;
 
 TTF_Font * BarlowCondensed ;
 
+const short Primes[16] = { 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 , 23 , 29 , 31 , 37 , 41 , 43 , 57 , 53 } ;
+
+/* IMPORTANT:  WHEN UPDATING THIS, ALWAYS ENSURE THAT THE FINAL `NULL` CONTINUES TO EXIST. */
+
+char * AssetsLocationArray[] = {
+	"/Images/Special/TestImage.png",
+	NULL } ;
+
+long long AssetsChecksumArray[] = {
+	15385344 ,
+	0 } ;
+
 #endif/*ndef GLOBAL_H*/
