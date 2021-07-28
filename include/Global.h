@@ -48,10 +48,24 @@ const short Primes[16] = { 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 , 23 , 29 , 31 , 37
 
 char * AssetsLocationArray[] = {
 	"/Images/Special/TestImage.png",
+	"/Images/Special/UHOH.png" ,
+	"/Images/Special/TheCharacter.png" ,
+	"/Images/Tiles/Void Stone.png" ,
+	"/Text/Font/BarlowCondensed-Black.ttf" ,
+	"/Text/Font/BarlowCondensed-BlackItalic.ttf" ,
+	"/Text/Font/BarlowCondensed-Thin.ttf" ,
+	"/Text/Font/BarlowCondensed-ThinItalic.ttf" ,
 	NULL } ;
 
 long long AssetsChecksumArray[] = {
 	15385344 ,
+	15106048 ,
+	6961152 ,
+	10108160 ,
+	2565376 ,
+	11518720 ,
+	346112 ,
+	11650048 ,
 	0 } ;
 
 #endif/*ndef GLOBAL_H*/
