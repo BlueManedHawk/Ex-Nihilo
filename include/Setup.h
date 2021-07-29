@@ -37,6 +37,8 @@
 
 void Setup ( void ) {
 
+	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "BEGIN FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ;
+
 	/* First, we need to initialize all of the libraries.  We're initializing the video and audio subsystems of SDL (and, implicitly, their prerequisites) and we're initializing support for PNG, FLAC, and TTF files.  Can't have lossy compression! */
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "Initializing SDL with video and audio subsystems…" ) ;
@@ -101,7 +103,7 @@ void Setup ( void ) {
 		NULL ,
 		"Size" ,
 		"Please select the window size you want to play at." ,
-		4 ,
+		5 ,
 		FullscreenPromptButtons ,
 		NULL } ;
 	int FullscreenButton = 0 ;

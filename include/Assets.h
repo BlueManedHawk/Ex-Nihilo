@@ -31,6 +31,8 @@
 
 void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
 
+	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "BEGIN FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ;
+
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Beginning checksum of %s." , Asset ) ;
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Opening asset…" ) ;
 	char AssetLocation[0xFFF] = "" ;
@@ -43,6 +45,7 @@ void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
 		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6301 : 0x4301 , AssetLocation ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Opened asset." ) ;
 
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Creating actual sum…" ) ;
 	long long Intermediate0 = 0x0 ;
 	long long Intermediate1 = 0x0 ;
 	long long Final = 0x0 ;
@@ -85,9 +88,13 @@ void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
 			Intermediate0 <<= 8 ; }
 		Byte = EOF ;
 		Count++ ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Sum created." ) ;
 	
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Comparing checksums…" ) ;
 	if ( Final != ExpectedChecksum ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Failed to checksum %s!  Expected %lld, but got %lld!  Crashing program…" , Asset , ExpectedChecksum , Final ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6301 : 0x4301 , "Please look at the log for the fault." ) ; } }
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "%s checksummed to the wrong value!  Expected %lld, but got %lld!  Crashing program…" , Asset , ExpectedChecksum , Final ) ;
+		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6301 : 0x4301 , "Please look at the log for the fault." ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Checksum succeeded!" ) ;
+	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "END FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ; }
 
 #endif/*ndef ASSETS_H*/

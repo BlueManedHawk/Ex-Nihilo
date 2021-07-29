@@ -34,6 +34,8 @@
 
 void RunChecks ( void ) {
 
+	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "BEGIN FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ;
+
 	/* We first verify the assets.  For now, all this does is ensure that a specific file exists, and if it doesn't, the user is told to put their assets in the appropriate place, and the game is crashed.
 	 *
 	 * Eventually, I want to make this properly checksum each of the assets, because currently this system doesn't do very much. */
@@ -117,6 +119,8 @@ void RunChecks ( void ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "User doesn't have battery; will not run rechecks." ) ;
 		BatteryRechecks = 0 ; }
 	else if ( PowerState == SDL_POWERSTATE_CHARGED || PowerState == SDL_POWERSTATE_CHARGING ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "User battery is plugged in; will run rechecks." ) ; } }
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "User battery is plugged in; will run rechecks." ) ; }
+
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "END FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ; }
 
 #endif/*ndef CHECKS_H*/
