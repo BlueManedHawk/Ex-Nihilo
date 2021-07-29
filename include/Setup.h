@@ -53,7 +53,7 @@ void Setup ( void ) {
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Registered `SDL_Quit ( )` in `atexit ( )`!" ) ;
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "Initializing SDL_image with PNG support…" ) ;
-	if ( ( ( IMG_Init ( IMG_INIT_PNG ) ) & IMG_INIT_PNG ) != IMG_INIT_PNG ) { // This is stupid.  There must be a better way to do this.
+	if ( ( ( IMG_Init ( IMG_INIT_PNG ) ) & IMG_INIT_PNG ) != IMG_INIT_PNG ) { /* This is stupid.  There must be a better way to do this. */
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "SDL_image failed to initialize!  Error give:  \"%s\".  Crashing program…" , SDL_GetError ( ) ) ;
 		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6203 : 0x4203 , SDL_GetError ( ) ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "SDL_image has been initialized!" ) ;
@@ -66,7 +66,7 @@ void Setup ( void ) {
 	/* This is temporarily disabled, as I'm having trouble determining which FLAC library I need to have installed for this to work.
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "Initializing SDL_mixer with FLAC support…" ) ;
-	if ( ( ( Mix_Init ( MIX_INIT_FLAC ) ) & MIX_INIT_FLAC ) != MIX_INIT_FLAC ) { // This is also stupid.
+	if ( ( ( Mix_Init ( MIX_INIT_FLAC ) ) & MIX_INIT_FLAC ) != MIX_INIT_FLAC ) { // This is also stupid. 
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "SDL_mixer failed to initialize!  Error given:  \"%s\".  Crashing program…" , SDL_GetError ( ) ) ;
 		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6204 : 0x4204 , SDL_GetError ( ) ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "SDL_mixer has been initialized!" ) ;
@@ -89,7 +89,7 @@ void Setup ( void ) {
 		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6601 : 0x4601 , "CATASTROPHIC FAILURE" ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Registered `TTF_Quit ( )` in `atexit ( )`!" ) ;
 
-	/* Now that we've done that, we can set up some more stuff.  We need to create our game window and renderer, load some particularly important textures, setup some stuff with the audio and load some particularly important sounds _(or we would, if I could figure out how to get FLAC support to work)_, and load the font. */
+	/* Now that we've done that, we can set up some more stuff.  We need to create our game window and renderer (making sure to set the size based on the user's choice), load some particularly important textures, setup some stuff with the audio and load some particularly important sounds _(or we would, if I could figure out how to get FLAC support to work)_, and load the font. */
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "Asking for window size…" ) ;
 	SDL_MessageBoxButtonData FullscreenPromptButtons[] = {

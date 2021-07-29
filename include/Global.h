@@ -32,19 +32,31 @@ _Bool BatteryRechecks = 1 ;
 
 char * PrefPath = NULL ;
 
+/* This size multiplier is used so that we can set the resolution to different things on different monitors. */
+
 int SizeMultiplier = 1 ;
+
+/* These are the window and the renderer, which are set in `Setup.h`. */
 
 SDL_Window * MainWindow ;
 
 SDL_Renderer * MainRenderer ;
 
-SDL_Surface * ErrorSurface , * TestSurface ;
+/* This is the only font that's currently being used in this. */
 
 TTF_Font * BarlowCondensed ;
 
+/* These are a couple of surfaces for particularly important images. */
+
+SDL_Surface * ErrorSurface , * TestSurface ;
+
+/* These primes are used for checksumming. */
+
 const short Primes[16] = { 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 , 23 , 29 , 31 , 37 , 41 , 43 , 57 , 53 } ;
 
-/* IMPORTANT:  WHEN UPDATING THIS, ALWAYS ENSURE THAT THE FINAL `NULL` CONTINUES TO EXIST. */
+/* IMPORTANT:  WHEN UPDATING THIS, ALWAYS ENSURE THAT THE FINAL `NULL` CONTINUES TO EXIST. 
+ *
+ * These arrays contain the locations of the assets and their expected checksums. */
 
 char * AssetsLocationArray[] = {
 	"/Images/Special/TestImage.png",

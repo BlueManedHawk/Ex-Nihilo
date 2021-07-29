@@ -27,7 +27,9 @@
 #include "Crash.h"
 #include "Global.h"
 
-/* Now comes the function.  What this does is it finds the asset, reads off bytes from it, concatenates eight of them into a long long, multiplies that long long by a specific prime, and stores it.  Once it's done that for each group of eight bytes in the asset, it takes each pair of long longs, multiplies the second by the cube root of a prime determined by the first, and XORs it on to the first.  It then XORs each long long onto the next, and then it compares the result it got to the one it was told it should have.  If they're equal, it does nothing; otherwise, it crashes the game. */
+/* Now comes the function.  What this does is it finds the asset, reads off bytes from it, concatenates eight of them into a long long, multiplies that long long by a specific prime, and stores it.  Once it's done that for each group of eight bytes in the asset, it takes each pair of long longs, multiplies the second by the cube root of a prime determined by the first, and XORs it on to the first.  It then XORs each long long onto the next, and then it compares the result it got to the one it was told it should have.  If they're equal, it does nothing; otherwise, it crashes the game.
+ *
+ * As stated before, this is a terrible checksum. */
 
 void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
 

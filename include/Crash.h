@@ -43,7 +43,7 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 		{ 0x7F , 0x0F , 0x0F } ,
 		{ 0xFF , 0xFF , 0x1F } } } ;
 
-	/* Now, we need to setup the text which will occur in the messagebox should the game crash.  This part is a pain in the hole, because strings aren't builtin to C, so we need to deal with this nightmare. */
+	/* Now, we need to setup the text which will occur in the messagebox should the game crash.  This part is a pain in the hole, because strings aren't a builtin part of C except where they are, so we need to deal with this nightmare from `<stdlib.h>`. */
 
 	char CrashText[0xFFF] = "A problem has occurred with Ex Nihilo and the game has crashed.\n\
 			    \n\
@@ -59,7 +59,7 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 	strcat ( CrashText , "Expected Exit: " ) ;
 	strcat ( CrashText , ( ApplicationExitCode & 0x4000 ) ? "No.\n" : "Yes.\n" ) ;
 	strcat ( CrashText , "Debug Mode On: " ) ;
-	strcat ( CrashText , ( ApplicationExitCode & 0x2000 ) ? "Yes.\n" : "No.\n" ) ; // I'm fully aware this is weird.  See the protocol document for why this is.
+	strcat ( CrashText , ( ApplicationExitCode & 0x2000 ) ? "Yes.\n" : "No.\n" ) ; /* I'm fully aware this is weird.  See the protocol document for why this is. */
 	strcat ( CrashText , "[reserved]: " ) ;
 	strcat ( CrashText , ( ApplicationExitCode & 0x1000 ) ? "No.\n\n" : "Yes.\n\n" ) ;
 
@@ -170,7 +170,7 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 
 	SDL_ShowMessageBox ( &MessageBoxData , &ButtonID ) ;
 
-	/* Exporting to a file isn't anything fancy.  We just put the crash text into a file. */
+	/* Exporting to a file isn't anything fancy.  We just put the crash text into a file named based on the time and date. */
 
 	if ( ButtonID ) {
 		char * CrashLogFilename = SDL_GetPrefPath ( "BlueManedHawk" , "Ex Nihilo vN 2" ) ;
@@ -179,7 +179,7 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 		char * TimeString = ctime ( &Time ) ;
 		strcat ( CrashLogFilename , TimeString ) ;
 		strcat ( CrashLogFilename , ".txt" ) ;
-		FILE * CrashLogFile = fopen ( CrashLogFilename , "w" ) ; // Mmmph.
+		FILE * CrashLogFile = fopen ( CrashLogFilename , "w" ) ; /* Mmpgh. */
 		if ( !CrashLogFile ) {
 			SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not open crash log file for writing!" ) ; }
 		else {

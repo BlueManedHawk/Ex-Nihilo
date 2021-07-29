@@ -36,12 +36,12 @@ void RunChecks ( void ) {
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "BEGIN FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ;
 
-	/* We first verify the assets.  For now, all this does is ensure that a specific file exists, and if it doesn't, the user is told to put their assets in the appropriate place, and the game is crashed.
+	/* We first verify the assets.  This uses a _terrible_ checksum that I wrote in `Assets.h`, and performs it on all of the files listed in `Global.h` based off the expected checksums in `Global.h`.
 	 *
-	 * Eventually, I want to make this properly checksum each of the assets, because currently this system doesn't do very much. */
+	 * This also sets the pref path to the correct place. */
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Getting pref path…" ) ;
-	PrefPath = SDL_GetPrefPath ( "BlueManedHawk" , "Ex Nihilo vN 2" ) ; // Currently, it's just me working on this, and I'm not part of any organization (that I know of).  That's why I chose this. //
+	PrefPath = SDL_GetPrefPath ( "BlueManedHawk" , "Ex Nihilo vN 2" ) ; /* Currently, it's just me working on this, and I'm not part of any organization (that I know of).  That's why I chose this. */
 	if ( PrefPath == NULL ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_CRITICAL , "Pref path could not be obtained!  Crashing program…" ) ;
 		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6201 : 0x4201 ) ; }
