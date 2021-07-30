@@ -10,11 +10,7 @@
  *
  * This file, `Checks.h`, is a header file included in the main file, `Ex Nihilo.c`.  This header contains a single function, `RunChecks ( )`.  If you want to see where this function is used, see the main file.
  *
- * This function verifies a few things, such as the assets, the OS, and the battery. 
- *
- * The function returns an integer, which is 1 if the assets were bad, 2 if the OS was bad, and 3 if the battery was bad. 
- *
- * This function has a number of side effects.  A functional programmer, I am not. */
+ * This function verifies a few things, such as the assets, the OS, and the battery. */
 
 /* We first need an include guard. */
 
@@ -44,7 +40,7 @@ void RunChecks ( void ) {
 	PrefPath = SDL_GetPrefPath ( "BlueManedHawk" , "Ex Nihilo vN 2" ) ; /* Currently, it's just me working on this, and I'm not part of any organization (that I know of).  That's why I chose this. */
 	if ( PrefPath == NULL ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_CRITICAL , "Pref path could not be obtained!  Crashing program…" ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6201 : 0x4201 ) ; }
+		Crash ( 0x7 , "The pref path could not be obtained." ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Pref path obtained!" ) ;
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Verifying assets…" ) ;
 	for ( register int i = 0 ; AssetsLocationArray[i] != NULL ; i++ ) {
@@ -72,7 +68,7 @@ void RunChecks ( void ) {
 				see the non-binding section of the License.\n\
 				\n\
 				The program will now crash." , NULL ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x2302 : 0x0302 ) ; }
+		Crash ( 0x2 , "Your operating system is invalid for playing this game." ) ; }
 	else if ( strstr ( Platform , "Android" ) != NULL ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_WARN , "User is on Android and may or may not have acquired program through illegitimate means; assuming good faith." ) ;
 		SDL_ShowSimpleMessageBox ( SDL_MESSAGEBOX_WARNING , "Acquiration concerns" ,\
@@ -110,7 +106,7 @@ void RunChecks ( void ) {
 					been stopped to prevent loss of data.  Please\n\
 					plug in your battery and relaunch the game if\n\
 					you want to play." , NULL ) ;
-			Crash ( EX_NIHILO_DEBUG_MODE ? 0x6302 : 0x4302 ) ; }
+			Crash ( 0x2 , "Your battery was too low to play the game.") ;
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "User is on battery; will run rechecks." ) ;
 		SDL_ShowSimpleMessageBox ( SDL_MESSAGEBOX_INFORMATION , "You are on battery" ,\
 				"If you are planning on playing for a long period\n\
@@ -121,6 +117,6 @@ void RunChecks ( void ) {
 	else if ( PowerState == SDL_POWERSTATE_CHARGED || PowerState == SDL_POWERSTATE_CHARGING ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "User battery is plugged in; will run rechecks." ) ; }
 
-	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "END FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "END FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ; } }
 
 #endif/*ndef CHECKS_H*/

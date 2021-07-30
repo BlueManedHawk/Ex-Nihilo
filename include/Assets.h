@@ -29,14 +29,13 @@
 
 /* Now comes the function.  What this does is it finds the asset, reads off bytes from it, concatenates eight of them into a long long, multiplies that long long by the cube root of a specific prime, and stores it.  Once it's done that for each group of eight bytes in the asset, it takes each pair of long longs, multiplies the second by the cube root of a prime determined by the first, and XORs it's inversion on to the first.  It then XORs each long long onto the next, and then it compares the result it got to the one it was told it should have.  If they're equal, it does nothing; otherwise, it crashes the game.
  *
+ * Because this function is designed to be called in a loop through each of the assets, there is intentionally not very much logging so as not to spam `stdout`.
+ *
  * As stated before, this is a terrible checksum. */
 
 void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
 
-	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "BEGIN FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ;
-
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Beginning checksum of %s." , Asset ) ;
-	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Opening asset…" ) ;
 	char AssetLocation[0xFFF] = "" ;
 	strcpy ( AssetLocation , PrefPath ) ;
 	strcat ( AssetLocation , "assets" ) ;
@@ -44,10 +43,10 @@ void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
 	FILE * AssetFILE = fopen ( AssetLocation , "r" ) ;
 	if ( AssetFILE == NULL ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_CRITICAL , "Failed to open %s!  Crashing program…" , AssetLocation ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6301 : 0x4301 , AssetLocation ) ; }
-	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Opened asset." ) ;
+		char LoadingFailureMessage[0xFFF] = "" ;
+		sprintf ( LoadingFailureMessage , "The file `%s` could not be opened for checksumming." , AssetLocation ) ;
+		Crash ( 0x7 , LoadingFailureMessage ) ; }
 
-	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Creating actual sum…" ) ;
 	long long Intermediate0 = 0x0 ;
 	long long Intermediate1 = 0x0 ;
 	long long Final = 0x0 ;
@@ -90,13 +89,12 @@ void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
 			Intermediate0 <<= 8 ; }
 		Byte = EOF ;
 		Count++ ; }
-	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Sum created." ) ;
 	
-	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Comparing checksums…" ) ;
 	if ( Final != ExpectedChecksum ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "%s checksummed to the wrong value!  Expected %lld, but got %lld!  Crashing program…" , Asset , ExpectedChecksum , Final ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6301 : 0x4301 , "Please look at the log for the fault." ) ; }
-	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Checksum succeeded!" ) ;
-	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "END FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ; }
+		char ChecksumFailureMessage[0xFFF] = "" ;
+		sprintf ( ChecksumFailureMessage , "%s checksummed to the wrong value!  Expected %lld, but got %lld!  Crashing program…" , Asset , ExpectedChecksum , Final ) ;
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "%s" , ChecksumFailureMessage ) ;
+		Crash ( 0x2 , ChecksumFailureMessage ) ; }
+	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Checksum succeeded!" ) ; }
 
 #endif/*ndef ASSETS_H*/

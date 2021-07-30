@@ -10,7 +10,7 @@
  *
  * This file, `Crash.h`, is a header file that defines the crash system for the project.  It consists of several functions, only two of which matter:  `CrashHandlerSetup ( )`, which set up the crash handler, and `Crash ( )`, which causes a crash.
  *
- * More information on the crash protocol is available in `docs/Problems/CRASHES.md`.  Importantly, this details the difference between the application exit code and the system exit code, and describes what different codes mean. */
+ * More information on the crash protocol is available in `docs/Problems/CRASHES.md`. */
 
 /* First, some include guards. */
 
@@ -28,7 +28,7 @@
 
 /* This is probably the function that matters the most.  A good bit of this is just a big switch-case statement based on the first argument. */
 
-_Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode` _should_ be considered a short, and it's _treated_ as a short, but I can't _declare_ it as a short without Clang getting pissy. //
+_Noreturn void Crash ( int ExitCode , ... ) { // `ExitCode` _should_ be considered a short, and it's _treated_ as a short, but I can't _declare_ it as a short without Clang getting pissy. //
 
 	/* We first need to set the button data and the color scheme for the message box.  This part is easy—I decided to go with a very red color scheme to hopefully get the attention of whoever experienced the crash. */
 
@@ -47,109 +47,56 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 
 	char CrashText[0xFFF] = "A problem has occurred with Ex Nihilo and the game has crashed.\n\
 			    \n\
-			    System Exit Code: " ;
-	char ApplicationExitCodeString[16] = "" ;
-	sprintf ( ApplicationExitCodeString , "%d" , ApplicationExitCode >> 8 ) ;
-	strcat ( CrashText , ApplicationExitCodeString  ) ;
-	strcat ( CrashText , "\nApplication Exit Code: " ) ;
-	sprintf ( ApplicationExitCodeString , "%d" , ApplicationExitCode ) ; 
-	strcat ( CrashText , ApplicationExitCodeString ) ;
-	strcat ( CrashText , "\n\nSafe Exit: " ) ;
-	strcat ( CrashText , ( ApplicationExitCode & 0x8000 ) ? "No.\n" : "Yes.\n" ) ;
-	strcat ( CrashText , "Expected Exit: " ) ;
-	strcat ( CrashText , ( ApplicationExitCode & 0x4000 ) ? "No.\n" : "Yes.\n" ) ;
-	strcat ( CrashText , "Debug Mode On: " ) ;
-	strcat ( CrashText , ( ApplicationExitCode & 0x2000 ) ? "Yes.\n" : "No.\n" ) ; /* I'm fully aware this is weird.  See the protocol document for why this is. */
-	strcat ( CrashText , "[reserved]: " ) ;
-	strcat ( CrashText , ( ApplicationExitCode & 0x1000 ) ? "No.\n\n" : "Yes.\n\n" ) ;
-
+			    Exit Code: " ;
+	char ExitCodeString[16] = "" ;
+	sprintf ( ExitCodeString , "%#x\n" , ExitCode ) ;
+	strcat ( CrashText , ExitCodeString  ) ;
+	
 	/* Here's that big switch-case statment I mentioned.  I've tried to cover every possible case so that there isn't a loop of segfaults. */
 
-	char * ErrorClassMessage = NULL ;
 	char * ErrorTypeMessage = NULL ;
-	switch ( ApplicationExitCode & 0x0F00 ) {
-		case 0x0100:
-			ErrorClassMessage = "Debug Mode\n" ;
-			switch ( ApplicationExitCode & 0x00FF ) {
-				case 0x0001:
-					ErrorTypeMessage = "The game was crashed manually." ;
-					break ;
-				default:
-					ErrorTypeMessage = "An unknown error type occured.  Please file an issue." ;
-					break ; }
-			break ;
-		case 0x0200:
-			ErrorClassMessage = "Problem with SDL (or extensions)\n" ;
-			switch ( ApplicationExitCode & 0x00FF ) {
-				case 0x0001:
-					ErrorTypeMessage = "The pref path could not be obtained." ;
-					break ;
-				default:
-					ErrorTypeMessage = "An unknown error type occured.   Please file an issue." ;
-					break ; }
-			break ;
-		case 0x0300:
-			ErrorClassMessage = "Attempt to play in invalid circumstances\n" ;
-			switch ( ApplicationExitCode & 0x00FF ) {
-				case 0x0001:
-					ErrorTypeMessage = "Your game has invalid assets.  Please reinstall them." ;
-					break ;
-				case 0x0002:
-					ErrorTypeMessage = "You have attempted to play on an invalid OS.  Please\n\
-							    read the non-binding section of the license to see why\n\
-							    this is a problem." ;
-					break ;
-				case 0x0003:
-					ErrorTypeMessage = "Your battery is too low to play.  Please charge it." ;
-					break ;
-				default:
-					ErrorTypeMessage = "An unknown error type occurred.  Please file an issue." ;
-					break ; }
-			break ;
-		case 0x0400:
-			ErrorClassMessage = "Game trying to prevent data loss\n" ;
-			ErrorTypeMessage = "No type." ;
-			break ;
-		case 0x0500:
-			ErrorClassMessage = "Crash-inducing signal recieved\n" ;
-			switch ( ApplicationExitCode & 0x00FF ) {
-				case 0x0001:
-					ErrorTypeMessage = "Abnormal program exit occurred." ;
-					break ;
-				case 0x0002:
-					ErrorTypeMessage = "A floating-point error occured." ;
-					break ;
-				case 0x0003:
-					ErrorTypeMessage = "An illegal instruction was given." ;
-					break ;
-				case 0x0004:
-					ErrorTypeMessage = "An interruption request was sent to the program." ;
-					break ;
-				case 0x0005:
-					ErrorTypeMessage = "A segmentation fault occured." ;
-					break ;
-				case 0x0006:
-					ErrorTypeMessage = "A termination request was sent to the program." ;
-					break ;
-				default:
-					ErrorTypeMessage = "An unknown error type occurred.  Please file an issue." ;
-					break ; }
-			break ;
-		default:
-			ErrorClassMessage = "Unknown; please file an issue\n" ;
-			ErrorTypeMessage = "An unknown error class was given, so no type can be determined." ;
-			break ; }
-	strcat ( CrashText , "Crash class: " ) ;
-	strcat ( CrashText , ErrorClassMessage ) ;
+	switch ( ExitCode ) {
+	case 0x0:
+		ErrorTypeMessage = "Normal program termination.  If this happened, you shouldn't be seeing this dialog; please report an issue." ;
+		break ;
+	case 0x1:
+		ErrorTypeMessage = "The player manually crashed the game." ;
+		break ;
+	case 0x2:
+		ErrorTypeMessage = "The runtime checks failed." ;
+		break ;
+	case 0x3:
+		ErrorTypeMessage = "A failure occured during the initialization of SDL." ;
+		break ;
+	case 0x4:
+		ErrorTypeMessage = "Setting up SDL failed." ;
+		break ;
+	case 0x5:
+		ErrorTypeMessage = "A signal was sent to the program." ;
+		break ;
+	case 0x6:
+		ErrorTypeMessage = "A function could not be registered in `atexit ( )`." ;
+		break ;
+	case 0x7:
+		ErrorTypeMessage = "Some assets could not be loaded." ;
+		break ;
+	case 0x8:
+		ErrorTypeMessage = "The game was crashed to prevent a loss of data." ;
+		break ;
+	default:
+		ErrorTypeMessage = "An unknown error type occured; you should probably file an issue." ;
+		break ; }
+	
+
 	strcat ( CrashText , "Crash type: " ) ;
 	strcat ( CrashText , ErrorTypeMessage ) ;
 	va_list ap ;
-	va_start ( ap , ApplicationExitCode ) ; 
+	va_start ( ap , ExitCode ) ; 
 	char * OtherInformation = va_arg ( ap , char * ) ;
 	va_end ( ap ) ;
 	strcat ( CrashText , "\nOther information:\n" ) ;
 	if ( OtherInformation == NULL ) {
-		strcat ( CrashText , "None given." ) ; }
+		strcat ( CrashText , "No further information was given." ) ; }
 	else {
 		strcat ( CrashText , OtherInformation ) ; }
 	strcat ( CrashText , "\n" ) ;
@@ -185,51 +132,27 @@ _Noreturn void Crash ( int ApplicationExitCode , ... ) { // `ApplicationExitCode
 		else {
 			fprintf ( CrashLogFile , "%s" , CrashText ) ; } }
 
-	exit ( ApplicationExitCode >> 8 ) ; }
+	exit ( ExitCode ) ; }
 
 /* Now, we get to the crash handler setup functions.  Since `signal ( )` doesn't accept an argument for the arguments to the pointed function, I have to declare a bunch of other functions for it to point to that are really just the `Crash ( )` function with arguments. */
 
 _Noreturn void CrashFromAbnormalExit ( [[maybe_unused]] int Required ) {
-#ifdef EX_NIHILO_DEBUG_MODE
-	Crash ( 0xE501 ) ; }
-#else
-	Crash ( 0xC501 ) ; }
-#endif/*def EX_NIHILO_DEBUG_MODE*/
+	Crash ( 0x5 , "Abnormal program termination occurred." ) ; }
 
 _Noreturn void CrashFromFloatingPointError ( [[maybe_unused]] int Required ) {
-#ifdef EX_NIHILO_DEBUG_MODE
-	Crash ( 0xE502 ) ; }
-#else
-	Crash ( 0xC502 ) ; }
-#endif/*def EX_NIHILO_DEBUG_MODE*/
+	Crash ( 0x5 , "A floating point error occurred." ) ; }
 
 _Noreturn void CrashFromIllegalOperation ( [[maybe_unused]] int Required ) {
-#ifdef EX_NIHILO_DEBUG_MODE
-	Crash ( 0xE503 ) ; }
-#else
-	Crash ( 0xC503 ) ; }
-#endif/*def EX_NIHILO_DEBUG_MODE*/
+	Crash ( 0x5 , "An illegal operation was performed." ) ; }
 
 _Noreturn void CrashFromInterruption ( [[maybe_unused]] int Required ) {
-#ifdef EX_NIHILO_DEBUG_MODE
-	Crash ( 0xE504 ) ; }
-#else
-	Crash ( 0xC504 ) ; }
-#endif/*def EX_NIHILO_DEBUG_MODE*/
+	Crash ( 0x5 , "The program was interrupted." ) ; }
 
 _Noreturn void CrashFromSegfault ( [[maybe_unused]] int Required ) {
-#ifdef EX_NIHILO_DEBUG_MODE
-	Crash ( 0xE505 ) ; }
-#else
-	Crash ( 0xC505 ) ; }
-#endif/*def EX_NIHILO_DEBUG_MODE*/
+	Crash ( 0x5 , "A segfault occurred." ) ; }
 
 _Noreturn void CrashFromTermination ( [[maybe_unused]] int Required ) {
-#ifdef EX_NIHILO_DEBUG_MODE
-	Crash ( 0xE506 ) ; }
-#else
-	Crash ( 0xC506 ) ; }
-#endif/*def EX_NIHILO_DEBUG_MODE*/
+	Crash ( 0x5 , "The program was terminated." ) ; }
 
 void CrashHandlerSetup ( void ) {
 	signal ( SIGABRT , CrashFromAbnormalExit ) ;

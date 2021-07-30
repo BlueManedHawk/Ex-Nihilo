@@ -46,6 +46,6 @@ The opening brace is to be put at the end of the first line before the contained
 
 ## Names
 
-All names are in `PascalCase`.  The exception is `#define`d macros, which are written capitalizedly.  **Constants are not to be capitalised.  Constants are _safer_ than variables, not dangerouser.**
+All names are in `PascalCase`.  The exception is `#define`d macros, which are written capitalizedly.  **Constants are not to be capitalised.  Constants are _safer_ than variables, not more dangerous.**
 
 Names should not be too long, and should not be too short.  The first is prevented by restricting names to use only nouns, verbs, and adwords, while the second is prevented by prohibition of shortenings.

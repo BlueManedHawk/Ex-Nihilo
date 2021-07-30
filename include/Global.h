@@ -18,7 +18,7 @@
 
 #include "SDL.h"
 
-/* This is just so that we can have debug-mode checks use the ternary operator instead preprocessing, which makes things _much_ nicer-looking. */
+/* This is just so that we can have debug-mode checks use the ternary operator instead preprocessing, which makes things _much_ nicer-looking.  This isn't done very much anymore, but it might be. */
 
 #ifndef EX_NIHILO_DEBUG_MODE
 const int EX_NIHILO_DEBUG_MODE = 0 ;

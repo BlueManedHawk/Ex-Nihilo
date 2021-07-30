@@ -43,24 +43,28 @@ void Setup ( void ) {
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "Initializing SDL with video and audio subsystems…" ) ;
 	if ( SDL_Init ( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "SDL failed to initialize!  Error given:  \"%s\".  Crashing program…" , SDL_GetError ( ) ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6202 : 0x4202 , SDL_GetError ) ; }
+		char InitializationFailureMessage[0xFFF] = "" ;
+		sprintf ( InitializationFailureMessage , "SDL failed to initialize!  Error given:  \"%s\".  " , SDL_GetError ( ) ) ;
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "%s" , InitializationFailureMessage ) ;
+		Crash ( 0x3 , InitializationFailureMessage ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "SDL has been initialized!" ) ;
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Setting up `atexit ( )` with `SDL_Quit ( )`…" ) ;
 	if ( atexit ( SDL_Quit ) != 0 ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "`atexit ( )` registration failed!" ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6601 : 0x4601 , "CATASTROPHIC FAILURE" ) ; }
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "`atexit ( )` registration failed!  Crashing program…" ) ;
+		Crash ( 0x6 , "`SDL_Quit ( )` could not be registered in `atexit ( )`." ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Registered `SDL_Quit ( )` in `atexit ( )`!" ) ;
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "Initializing SDL_image with PNG support…" ) ;
 	if ( ( ( IMG_Init ( IMG_INIT_PNG ) ) & IMG_INIT_PNG ) != IMG_INIT_PNG ) { /* This is stupid.  There must be a better way to do this. */
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "SDL_image failed to initialize!  Error give:  \"%s\".  Crashing program…" , SDL_GetError ( ) ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6203 : 0x4203 , SDL_GetError ( ) ) ; }
+		char InitializationFailureMessage[0xFFF] = "" ;
+		sprintf ( InitializationFailureMessage , "SDL_image failed to initialize!  Error give:  \"%s\".  " , SDL_GetError ( ) ) ;
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "%s" , InitializationFailureMessage ) ;
+		Crash ( 0x3 , InitializationFailureMessage ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "SDL_image has been initialized!" ) ;
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Setting up `atexit ( )` with `IMG_Quit ( )`…" ) ;
 	if ( atexit ( IMG_Quit ) != 0 ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "`atexit ( )` registration failed!" ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6601 : 0x4601 , "CATASTROPHIC FAILURE" ) ; }
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "`atexit ( )` registration failed!  Crashing program…" ) ;
+		Crash ( 0x3 , "`IMG_Quit ( )` could not be registered in `atexit ( )`." ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Registered `IMG_Quit ( )` in `atexit ( )`!" ) ;
 
 	/* This is temporarily disabled, as I'm having trouble determining which FLAC library I need to have installed for this to work.
@@ -80,13 +84,15 @@ void Setup ( void ) {
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "Initializing SDL_ttf…" ) ;
 	if ( TTF_Init ( ) < 0 ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "SDL_ttf failed to initialize!  Error given:  \"%s\".  Crashing program…" , SDL_GetError ( ) ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6205 : 0x4205 , SDL_GetError ( ) ) ; }
+		char InitializationFailureMessage[0xFFF] = "" ;
+		sprintf ( InitializationFailureMessage , "SDL_ttf failed to initialize!  Error given:  \"%s\".  " , SDL_GetError ( ) ) ;
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "%s" , InitializationFailureMessage ) ;
+		Crash ( 0x3 , InitializationFailureMessage ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "SDL_ttf has been initialized!" ) ;
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Setting up `atexit ( )` with `TTF_Quit ( )`…" ) ;
 	if ( atexit ( TTF_Quit ) != 0 ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_CRITICAL , "`atexit ( )` registration failed!" ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6601 : 0x4601 , "CATASTROPHIC FAILURE" ) ; }
+		SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_CRITICAL , "`atexit ( )` registration failed!  Crashing program…" ) ;
+		Crash ( 0x6 , "`TTF_Quit ( )` could not be registered in `atexit ( )`." ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Registered `TTF_Quit ( )` in `atexit ( )`!" ) ;
 
 	/* Now that we've done that, we can set up some more stuff.  We need to create our game window and renderer (making sure to set the size based on the user's choice), load some particularly important textures, setup some stuff with the audio and load some particularly important sounds _(or we would, if I could figure out how to get FLAC support to work)_, and load the font. */
@@ -134,14 +140,18 @@ void Setup ( void ) {
 	SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "Making window…" ) ;
 	MainWindow = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 * SizeMultiplier , 480 * SizeMultiplier , WindowFlags ) ;
 	if ( MainWindow == NULL ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not create the window!  Error from SDL:  \"%s\".  Crashing program…" , SDL_GetError ( ) ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6206 : 0x4206 ) ; }
+		char WindowCreationFailureMessage[0xFFF] = "" ;
+		sprintf ( WindowCreationFailureMessage , "Could not create the window!  Error from SDL:  \"%s\".  " , SDL_GetError ( ) ) ;
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "%s" , WindowCreationFailureMessage ) ;
+		Crash ( 0x4 , WindowCreationFailureMessage ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "Created window!" ) ;
 	SDL_LogMessage ( SDL_LOG_CATEGORY_RENDER , SDL_LOG_PRIORITY_VERBOSE , "Making renderer…" ) ;
 	MainRenderer = SDL_CreateRenderer ( MainWindow , -1 , SDL_RENDERER_ACCELERATED ) ;
 	if ( MainRenderer == NULL ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not create the renderer!  Error from SDL:  \"%s\".  Crashing program…" , SDL_GetError ( ) ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6207 : 0x4207 ) ; }
+		char RendererCreationFailureMessage[0xFFF] = "" ;
+		sprintf ( RendererCreationFailureMessage , "Could not create the renderer!  Error from SDL:  \"%s\".  " , SDL_GetError ( ) ) ;
+		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "%s" , RendererCreationFailureMessage ) ;
+		Crash ( 0x4 , RendererCreationFailureMessage ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_RENDER , SDL_LOG_PRIORITY_VERBOSE , "Created renderer!" ) ;
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loading important images…" ) ;
@@ -151,7 +161,7 @@ void Setup ( void ) {
 	ErrorSurface = IMG_Load ( ErrorImagePath ) ;
 	if ( ErrorSurface == NULL ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not load the error image!  Crashing program…" ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6208 : 0x4208 , "The error image could not be loaded." ) ; }
+		Crash ( 0x7 , "The error image could not be loaded." ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loaded error image." ) ;
 	char TestImagePath[0xFFF] ;
 	strcpy ( TestImagePath , PrefPath ) ;
@@ -159,7 +169,7 @@ void Setup ( void ) {
 	TestSurface = IMG_Load ( TestImagePath ) ;
 	if ( TestSurface == NULL ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not load the test image!  Crashing program…" ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6208 : 0x4208 , "The test image could not be loaded." ) ; }
+		Crash ( 0x7 , "The test image could not be loaded." ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loaded test image." ) ;
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loaded important images!" ) ;
 
@@ -172,7 +182,7 @@ void Setup ( void ) {
 	BarlowCondensed = TTF_OpenFont ( BarlowCondensedPath , 12 ) ;
 	if ( BarlowCondensed == NULL ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_CRITICAL ,  "Could not obtain font!  Crashing program…" ) ;
-		Crash ( EX_NIHILO_DEBUG_MODE ? 0x6209 : 0x6209 ) ; }
+		Crash ( 0x7 , "Barlow Condensed could not be loaded." ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Font obtained!" ) ; }
 
 #endif/*ndef SETUP_H*/
