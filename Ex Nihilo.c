@@ -69,28 +69,24 @@ int main ( [[maybe_unused]] int argc , char * [[maybe_unused]] argv[] ) { /* `ma
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_INFO , "Performing random crap…" ) ;
 	SDL_Texture * ErrorTexture = SDL_CreateTextureFromSurface ( MainRenderer , ErrorSurface ) ;
 	SDL_RenderCopy ( MainRenderer , ErrorTexture , NULL , NULL ) ;
+
 	SDL_Color White = { 0xFF , 0xFF , 0xFF , 0xFF } ;
+	SDL_Color Black = { 0x00 , 0x00 , 0x00 , 0xFF } ;
+	int StringWidth = 0 , StringHeight = 0 ;
+	TTF_SizeUTF8 ( BarlowCondensed , "heehoo peanut" , &StringWidth , &StringHeight ) ;
+	SDL_Rect HeeHooRectangle = { 0 , 0 , StringWidth * SizeMultiplier , StringHeight * SizeMultiplier } ;
 	SDL_Surface * HeeHoo = TTF_RenderUTF8_Solid ( BarlowCondensed , "heehoo peanut" , White ) ;
 	SDL_Texture * HeeHooTexture = SDL_CreateTextureFromSurface ( MainRenderer , HeeHoo ) ;
-	SDL_Rect HeeHooRectangle = { 0 , 0 , 320 * SizeMultiplier , 240 * SizeMultiplier } ;
 	SDL_RenderCopy ( MainRenderer , HeeHooTexture , NULL , &HeeHooRectangle ) ;
-	SDL_Color Magenta = { 0xFF , 0x00 , 0xFF , 0xFF } ;
-	SDL_Surface * Knee0 = TTF_RenderUTF8_Shaded ( BarlowCondensed , "Oh, ish como hard," , White , Magenta ) ;
-	SDL_Surface * Knee1 = TTF_RenderUTF8_Shaded ( BarlowCondensed , "ticka cutalay who!?" , White , Magenta ) ;
-	SDL_Surface * Knee2 = TTF_RenderUTF8_Shaded ( BarlowCondensed , "Yay pell nah kay heh" , White , Magenta ) ;
-	SDL_Surface * Knee3 = TTF_RenderUTF8_Shaded ( BarlowCondensed , "tay kay kell foo???" , White , Magenta ) ;
-	SDL_Texture * KneeTexture0 = SDL_CreateTextureFromSurface ( MainRenderer , Knee0 ) ;
-	SDL_Texture * KneeTexture1 = SDL_CreateTextureFromSurface ( MainRenderer , Knee1 ) ;
-	SDL_Texture * KneeTexture2 = SDL_CreateTextureFromSurface ( MainRenderer , Knee2 ) ;
-	SDL_Texture * KneeTexture3 = SDL_CreateTextureFromSurface ( MainRenderer , Knee3 ) ;
-	SDL_Rect KneeRectangle0 = { 320 * SizeMultiplier , 240 * SizeMultiplier , ( 320 / 4 )  * SizeMultiplier , ( 240 / 4 ) * SizeMultiplier } ;
-	SDL_Rect KneeRectangle1 = { ( 320 + ( 0.25 * 320 ) ) * SizeMultiplier , ( 240 + ( 0.25 * 320 ) ) * SizeMultiplier , ( 320 / 4 ) * SizeMultiplier , ( 240 / 4 ) * SizeMultiplier } ;
-	SDL_Rect KneeRectangle2 = { ( 320 + ( 0.25 * 320 ) ) * SizeMultiplier , ( 240 + ( 0.25 / 320 ) ) * SizeMultiplier , ( 320 / 4 ) * SizeMultiplier , ( 240 / 4 ) * SizeMultiplier } ;
-	SDL_Rect KneeRectangle3 = { ( 320 + ( 0.25 * 320 ) ) * SizeMultiplier , ( 240 + ( 0.25 / 320 ) ) * SizeMultiplier , ( 320 / 4 ) * SizeMultiplier , ( 240 / 4 ) * SizeMultiplier } ;
-	SDL_RenderCopy ( MainRenderer , KneeTexture0 , NULL , &KneeRectangle0 ) ;
-	SDL_RenderCopy ( MainRenderer , KneeTexture1 , NULL , &KneeRectangle1 ) ;
-	SDL_RenderCopy ( MainRenderer , KneeTexture2 , NULL , &KneeRectangle2 ) ;
-	SDL_RenderCopy ( MainRenderer , KneeTexture3 , NULL , &KneeRectangle3 ) ;
+	HeeHooRectangle.x = 320 * SizeMultiplier ;
+	HeeHoo = TTF_RenderUTF8_Shaded ( BarlowCondensed , "heehoo peanut" , White , Black ) ;
+	HeeHooTexture = SDL_CreateTextureFromSurface ( MainRenderer , HeeHoo ) ;
+	SDL_RenderCopy ( MainRenderer , HeeHooTexture , NULL , &HeeHooRectangle ) ;
+	HeeHooRectangle.y = 240 * SizeMultiplier ;
+	HeeHoo = TTF_RenderUTF8_Blended ( BarlowCondensed , "heehoo peanut" , White ) ;
+	HeeHooTexture = SDL_CreateTextureFromSurface ( MainRenderer , HeeHoo ) ;
+	SDL_RenderCopy ( MainRenderer , HeeHooTexture , NULL , &HeeHooRectangle ) ;
+
 	SDL_RenderPresent ( MainRenderer ) ;
 	SDL_Delay ( 5000 ) ;
 	SDL_DestroyTexture ( ErrorTexture ) ;
@@ -105,5 +101,7 @@ int main ( [[maybe_unused]] int argc , char * [[maybe_unused]] argv[] ) { /* `ma
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "Cleaned up!" ) ;
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "END FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ;
+
+	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_INFO , "Goodbye!" ) ;
 
 	return 0x00 ; }

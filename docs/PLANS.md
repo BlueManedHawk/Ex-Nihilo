@@ -24,13 +24,13 @@ Multiplayer support is not planned, as starting with nothing includes starting w
 	- [X] Verification of OS
 	- [X] Verification of assets
 	- [X] Verification of battery
-- [X] Setting up SDL and its extensions _(note:  SDL\_mixer is not yet working due to error in getting FLAC to work, and will therefore be delayed until it's necessary.)_
+- [X] Setting up SDL and its extensions _(note:  SDL Mixer is not yet working due to error in getting FLAC to work, and will therefore be delayed until it's necessary.)_
 - [X] Cleanup (I think this is working?)
 - [X] Crash handler
 
 ### Basic game things
 
-- [ ] Movable character — done with WASD, orientation controlled with (ugh) the mouse
+- [ ] Movable character — done with ESDF or IJKL, orientation controlled with (ugh) the mouse
 - [ ] Placing and destruction of flooring and not-flooring
 - [ ] Interactions with tiles — just something basic to start with
 - [ ] Basic **placeholder** inventory system
@@ -64,8 +64,9 @@ The music of a game is extremely important to give the game an atmosphere, to im
 	- [ ] _The Safe_, a mysterious and confusing song.
 - [ ] A few multi-movement songs which's movements play during normal gameplay in no particular order:
 	- [ ] _The Air of the Solstice_, a track intended to evoke feelings of adventure.  Will be somewhat similar to _The Key_, except not.
-	- [ ] _The Peaceable Day_, a track intended to evoke that feeling you get when you're in a hard rain with no thunder on a very toned day.
-	- [ ] _The Island of Rocks_, a track intended to invoke a feeling of depression, sadness, and remorse.
+	- [ ] _The Peaceable Day_, a track intended to evoke that feeling you get when you're in a hard rain with no thunder on a very toned (as in grey, but more polite) day.
+	- [ ] _The Island of Rocks_, a track intended to invoke a feeling of depression, sadness, and remorse.  This will be the only song played when suffering through the five flowers of grief (see below).
+	- [ ] _The Silliest Question_, a track intended to evoke a feeling of confused acceptance.  Will be somewhat like _The Safe_, but less jarring and more focussed on exploration (_of what‽_).
 - [ ] A few songs which specifically play during combat, each named after a tool of combat.  Deterimning what "during combat" means will be _extremely_ difficult, especially without angering everybody.
 - [ ] Songs for bossfights, each one building on the last, and with each one named after the according boss.
 - [ ] A credits song, consisting of a medley of everything, and including most of the rest of the soundtrack.
@@ -77,6 +78,7 @@ Sounds for the game will probably be harvested from the real world.  Sounds are 
 - [ ] Ambience — what exactly this will mean in this context is not yet certain.
 - [ ] Beast noises — probably including ambient sounds, attack sounds, being-attacked sounds, walking around, and specific sounds.  (Note:  The player won't emit any sounds.)
 - [ ] Interface sounds
+- [ ] Interacting with the environment
 - [ ] Other stuff too
 
 ### ROMMMMs
@@ -94,6 +96,7 @@ ROMMMM stand for Read-Only Memory Metallic Music Medium.  These will be on-deman
 	- [ ] Number 6 will be the audio of some bodies of water.  This will have a variant from inside the bodies of water instead.
 	- [ ] Number 7 will be a recording of crying.
 	- [ ] Number 4 and Number 5 will be on the same ROMMMM.  Number 4 will be a series of short jokes, and Number 5 will be a single long joke.  This ROMMMM will have a variant in which the jokes are cheesier.
+	- [ ] Number 2 will be a recording of a battle.
 	- [ ] _Number Eleven:  The End of It All_ will be a very long, single-movement piece of actual music detailing the fall of something incredible.
 	- [ ] Number 13 will be a piece of music made up of the game's sound files.
 - [ ] _Çoʔsap_ will be a series of remixes of certain movements of the background music.
@@ -120,17 +123,21 @@ Necromancy will be a late-game magic system building upon blood magic.  It will 
 
 ### Self-maintainence
 
-- [ ] Class A nutrients, used for healing
-- [ ] Class B nutrients, used for energy
-- [ ] Mood:  the happier you are, the faster you work
-- [ ] Food to get nutrients
-- [ ] Some way to modify mood
+- [ ] Fast-twitch nutrients and slow-twitch nutrients, along with foods to get them
+- [ ] Some sort of healing system
+- [ ] Mood, and items to affect it, especially…
+- [ ] The five flowers of grief:
+	- [ ] The peony would cause an immediate drop in mood.
+	- [ ] The dandelion would cause an immediate drop in damage done.
+	- [ ] The red rose would cause an immediate spike in nutrient consumption.
+	- [ ] The blue rose would cause an immediate drop in nutrient capacity.
+	- [ ] The poppy would cause an immediate reversal of the afformentioned affects and give a permanent mood boost.
 
 ### Effects
 
 - [ ] Circumstantial effects, permanent and applied to items
 - [ ] Permeating effects, temporary and applied to the player
-- [ ] Each general effect having an associated situational effect
+- [ ] Each permeating effect having an associated situational effect
 - [ ] Stacking of effects
 - [ ] Some way to obtain these effects
 - [ ] Other special effects that do more than simply change an attribute
@@ -140,26 +147,33 @@ Necromancy will be a late-game magic system building upon blood magic.  It will 
 A sensible, balanced, and enjoyable combat system is incredibly important for a game to succeed.  A combat system needs the right balance of strategy, requiring the player to determine creative solutions to problems, while also having some skill, with a bit of luck to balance things out.
 
 - [ ] the the the the the the the the the the the the ththe thet the the tht eht the theht eht ehtht ehthe tthe the the theh the theht ehtheht the thteh t'
-- [ ] At least the following combat items:
+- [ ] The following melee combat items:
 	- [ ] Sword for slashing
-	- [ ] Shield for blocking
 	- [ ] Spear for piercing
 	- [ ] Scythe for reaching
 	- [ ] Mace for knocking
-	- [ ] Bow (long and compound forms)
+- [ ] Some ranged weapon with normal ammunition, as well as some special types of ammunition (where most of the variation would be):
+	- [ ] Homing ammunition
+	- [ ] Curving ammunition
+	- [ ] Extra-long-range ammunition
+	- [ ] Very fast ammunition
+	- [ ] Effect-inducing ammunition (will need to be _tremendously_ careful designing this)
+- [ ] A hassle-free method to switch between combat items that makes sense with the complex inventory system
+- [ ] A shield for blocking — there probably won't be too much variation here.
 - [ ] Knockback
+- [ ] More combat items, but not _too_ many more.
 - [ ] Maybe using the weapons for other purposes too?
 
 ### Automation
 
-Automation will be a category of technology used to automate menial tasks.  Because the entire world will be loaded at once, this automation will mostly occur in the background while the player does other things, removing the need for the player to sit in one place waiting for something to get done.  As with basic automation, the system will be extremely modular.  The exact details have not yet been fleshed out.
+Automation will be a category of technology used to automate menial tasks.  Because the entire world will be loaded at once, this automation will mostly occur in the background while the player does other things, removing the need for the player to sit in one place waiting for something to get done.  As with basic technology, the system will be extremely modular.  The exact details have not yet been fleshed out.
 
 ### Beasts
 
 Beasts will be autonomous entities.  Friendly beasts will be called Creatures, whereas unfriendly beasts will be called Monsters.  I don't have too many ideas for beasts yet, but I have a couple.
 
 - [ ] Puffballs — adorable little balls of fluff, which can be created by leaving fluff (probably synthesized by imbuing some plant fiber with void particulate) in adequate quantities on the ground and waiting a bit.  They naturally grow and shed fluff, which can be harvested for…something, I dunno, or can be left there to get more puffballs.  They will come in small variations.
-- [ ] Glork-pe — simple monsters from the shadows.  Slompling around, they have a simple melee attack.  If a player creates a large platform in the shadows with a single way to them, they can be like that one berserker sometime before of the Normal Invasion that got stabbed in the balls by people in a barrel.
+- [ ] Glork-pe — simple monsters from the shadows.  Slompling around, they have a simple melee attack.  If a player creates a large platform in the shadows with a single way to them, they can be like that one berserker sometime before of the Normal Invasion that got stabbed in the crotch by people in a barrel.
 
 ### Plants
 

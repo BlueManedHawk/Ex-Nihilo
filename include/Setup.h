@@ -179,7 +179,7 @@ void Setup ( void ) {
 	char BarlowCondensedPath[0xFFF] ;
 	strcpy ( BarlowCondensedPath , PrefPath ) ;
 	strcat ( BarlowCondensedPath , "assets/Text/Font/BarlowCondensed-Thin.ttf" ) ;
-	BarlowCondensed = TTF_OpenFont ( BarlowCondensedPath , 12 ) ;
+	BarlowCondensed = TTF_OpenFont ( BarlowCondensedPath , 48 ) ;
 	if ( BarlowCondensed == NULL ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_CRITICAL ,  "Could not obtain font!  Crashing program…" ) ;
 		Crash ( 0x7 , "Barlow Condensed could not be loaded." ) ; }
