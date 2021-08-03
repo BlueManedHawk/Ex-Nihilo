@@ -11,3 +11,5 @@ Messageboxes tend to show the newline graphical character (␊, vaugely) in addi
 Sometimes, SDL will insert random log messages of its own.
 
 The "Other Information" section of the crash dialog will sometimes contain seemingly random gibberish.
+
+Text looks like dog vomit, especially outside of Fullscreen and Monadic resolutions, but not enough for me to care.

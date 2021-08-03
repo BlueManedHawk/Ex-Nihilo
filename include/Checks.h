@@ -21,7 +21,9 @@
 /* We now need to include SDL because it has some functions that allow us to check the OS and the battery.  We also need to include the global header and the crash handler.  Oh, and there's also the standard input-output header to check for the existence of a file. */
 
 #include <stdio.h>
+
 #include "SDL.h"
+
 #include "Global.h"
 #include "Crash.h"
 #include "Assets.h"

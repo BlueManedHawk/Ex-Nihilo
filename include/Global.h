@@ -8,7 +8,7 @@
 
 /* Hello, and welcome to the source code for Ex Nihilo!
  *
- * This file, `Global.h`, is a header file for the project that's used pretty much EVERYWHERE in the source.  Currently, it doesn't define much, but I expect it to grow a lot, so I'm creating it now for future-proofing.*/
+ * This file, `Global.h`, is a header file for the project that's used pretty much everywhere in the source.  This contains several variables that are used mostly for interfunction communication, though there are also some constants that mostly exist for convenience. */
 
 /* First, some include guards. */
 
@@ -28,7 +28,7 @@ const int EX_NIHILO_DEBUG_MODE = 0 ;
 
 _Bool BatteryRechecks = 1 ;
 
-/* This contains the "pref path", which the SDL wiki claims should be assumed to be the only safe place to write things.  This is later set to the value returned by `SDL_GetPrefPath ( )` in `Checks.h`. */
+/* This contains the "pref path", which the SDL wiki claims should be assumed to be the only safe place to write things. */
 
 char * PrefPath = NULL ;
 
@@ -42,7 +42,7 @@ SDL_Window * MainWindow ;
 
 SDL_Renderer * MainRenderer ;
 
-/* This is the only font that's currently being used in this. */
+/* There are multiple fonts for multiple sizes, because that's how SDL_ttf works, for some reason. */
 
 TTF_Font * BarlowCondensed ;
 
@@ -63,10 +63,7 @@ char * AssetsLocationArray[] = {
 	"/Images/Special/UHOH.png" ,
 	"/Images/Special/TheCharacter.png" ,
 	"/Images/Tiles/Void Stone.png" ,
-	"/Text/Font/BarlowCondensed-Black.ttf" ,
-	"/Text/Font/BarlowCondensed-BlackItalic.ttf" ,
-	"/Text/Font/BarlowCondensed-Thin.ttf" ,
-	"/Text/Font/BarlowCondensed-ThinItalic.ttf" ,
+	"/Text/Font/BarlowCondensed-Regular.ttf" ,
 	NULL } ;
 
 long long AssetsChecksumArray[] = {
@@ -74,10 +71,7 @@ long long AssetsChecksumArray[] = {
 	15106048 ,
 	6961152 ,
 	10108160 ,
-	2565376 ,
-	11518720 ,
-	346112 ,
-	11650048 ,
+	3199488 ,
 	0 } ;
 
 #endif/*ndef GLOBAL_H*/
