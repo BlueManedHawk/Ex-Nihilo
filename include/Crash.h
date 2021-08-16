@@ -1,7 +1,5 @@
 /* LICENSE
- *
- * You may freely distribute the original source code, binaries compiled from the original source code, modified binaries compiled from the original source code, modified source code, binaries compiled from modified source code, and modified binaries compiled from modified source code. However, you cannot charge for these, and you must distribute this license and give attribution when distributing.
- *
+ * You may freely distribute the original source code, binaries compiled from the original source code, modified binaries compiled from the original source code, modified source code, binaries compiled from modified source code, and modified binaries compiled from modified source code. However, you cannot charge for these, and you must distribute this license and give attribution when distributing.  
  * Modifications must be licensed in a way that preserves the rights that this license gives with the same conditions, and any modified files must state how they were modified and how to obtain the originals; additionally, any binaries must state how to obtain the sources that they were compiled from.
  * 
  * This software comes with no warranty, implied or explicit, and I am not liable for any problems caused by this software. Additonally, this license does not cover trademarks in any capacity. */
@@ -46,8 +44,8 @@ _Noreturn void Crash ( int ExitCode , ... ) { // `ExitCode` _should_ be consider
 	/* Now, we need to setup the text which will occur in the messagebox should the game crash.  This part is a pain in the hole, because strings aren't a builtin part of C except where they are, so we need to deal with this nightmare from `<stdlib.h>`. */
 
 	char CrashText[0xFFF] = "A problem has occurred with Ex Nihilo and the game has crashed.\n\
-			    \n\
-			    Exit Code: " ;
+\n\
+Exit Code: " ;
 	char ExitCodeString[16] = "" ;
 	sprintf ( ExitCodeString , "%#x\n" , ExitCode ) ;
 	strcat ( CrashText , ExitCodeString  ) ;
@@ -83,6 +81,12 @@ _Noreturn void Crash ( int ExitCode , ... ) { // `ExitCode` _should_ be consider
 	case 0x8:
 		ErrorTypeMessage = "The game was crashed to prevent a loss of data." ;
 		break ;
+	case 0x9:
+		ErrorTypeMessage = "The game has reached an undefined state and you probably lost your progress (sorry!)." ;
+		break ;
+	case 0xA:
+		ErrorTypeMessage = "The game was lagging too much and was crashed to prevent abuse." ;
+		break ;
 	default:
 		ErrorTypeMessage = "An unknown error type occured; you should probably file an issue." ;
 		break ; }
@@ -99,8 +103,7 @@ _Noreturn void Crash ( int ExitCode , ... ) { // `ExitCode` _should_ be consider
 		strcat ( CrashText , "No further information was given." ) ; }
 	else {
 		strcat ( CrashText , OtherInformation ) ; }
-	strcat ( CrashText , "\n" ) ;
-	strcat ( CrashText , "You may want to file an issue.\n\n" ) ;
+	strcat ( CrashText , "\n\nYou may want to file an issue.\n\n" ) ;
 
 	/* And after all that, we finally get to presenting the messagebox. */
 
@@ -154,7 +157,7 @@ _Noreturn void CrashFromSegfault ( [[maybe_unused]] int Required ) {
 _Noreturn void CrashFromTermination ( [[maybe_unused]] int Required ) {
 	Crash ( 0x5 , "The program was terminated." ) ; }
 
-void CrashHandlerSetup ( void ) {
+ void CrashHandlerSetup ( void ) {
 	signal ( SIGABRT , CrashFromAbnormalExit ) ;
 	signal ( SIGFPE , CrashFromFloatingPointError ) ;
 	signal ( SIGILL , CrashFromIllegalOperation ) ;

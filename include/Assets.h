@@ -33,7 +33,7 @@
  *
  * As stated before, this is a terrible checksum. */
 
-void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
+ void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_ASSERT , SDL_LOG_PRIORITY_VERBOSE , "Beginning checksum of %s." , Asset ) ;
 	char AssetLocation[0xFFF] = "" ;
@@ -52,6 +52,7 @@ void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
 	long long Final = 0x0 ;
 	int register Count = 0 ;
 	_Bool Twice = 0 ;
+
 	while ( !feof ( AssetFILE ) && !ferror ( AssetFILE ) ) {
 		if ( Count % 8 && !( Count % 16 ) ) {
 			Twice = 1 ;
@@ -60,6 +61,7 @@ void AssetsChecksum ( char * Asset , long long ExpectedChecksum ) {
 			PrimeSelection >>= 17 ;
 			Intermediate0 *= cbrt ( Primes[PrimeSelection] ) ;
 			Intermediate1 = 0x0 ; }
+
 		if ( Count % 8 && Count % 16 ) {
 			Twice = 0 ;
 			long long PrimeSelection = 0x001E0000 ;

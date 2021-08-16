@@ -61,7 +61,8 @@ const short Primes[16] = { 2 , 3 , 5 , 7 , 11 , 13 , 17 , 19 , 23 , 29 , 31 , 37
 char * AssetsLocationArray[] = {
 	"/Images/Special/TestImage.png",
 	"/Images/Special/UHOH.png" ,
-	"/Images/Special/TheCharacter.png" ,
+	"/Images/Special/Character Body.png" ,
+	"/Images/Special/Character Head.png" ,
 	"/Images/Tiles/Void Stone.png" ,
 	"/Text/Font/BarlowCondensed-Regular.ttf" ,
 	NULL } ;
@@ -69,9 +70,55 @@ char * AssetsLocationArray[] = {
 long long AssetsChecksumArray[] = {
 	15385344 ,
 	15106048 ,
-	6961152 ,
+	10654464 ,
+	12864256 ,
 	10108160 ,
 	3199488 ,
 	0 } ;
+
+/* This is used to track how many frames the game has lagged for.  It goes up by one for every lag frame, and down by one for every non-lag*/
+
+int Errors = 0 ;
+
+/* This is used to see whether the game intends to crash due to lag. */
+
+_Bool LagCrash = 0 ;
+
+/* The state of the game is used to determine the state of the game.  The other things are just to reduce magic numbers. */
+
+short State = 0 ;
+
+const short InGame = 1 ;
+const short MainMenu = 2 ;
+const short PauseMenu = 3 ;
+const short Documentation = 4 ;
+#ifdef EX_NIHILO_DEBUG_MODE
+const short DebugConsole = 5 ;
+#endif/*def EX_NIHILO_DEBUG_MODE*/
+
+/* These are used to track the state of the mouse.  These are filled each tick in `GetInput ( )`. */
+
+uint32_t MouseButtons ;
+int MouseX = 0 , MouseY = 0 ;
+
+/* These are use to track the angle of the character's parts. */
+
+double CharacterHeadAngle = 0 ;
+int CharacterBodyAngle = 0 ;
+
+/* These are pretty obvious. */
+
+SDL_Surface * CharacterHeadSurface ; 
+SDL_Texture * CharacterHeadTexture ;
+SDL_Surface * CharacterBodySurface ;
+SDL_Texture * CharacterBodyTexture ;
+
+/* This is where the character is located.  It's defined after the resolution has been chosen. */
+
+SDL_Rect CharacterRectangle ;
+
+/* This is checked to see if the game should quit. */
+
+_Bool Quit = 0 ;
 
 #endif/*ndef GLOBAL_H*/

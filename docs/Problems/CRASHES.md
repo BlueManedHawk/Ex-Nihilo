@@ -8,7 +8,7 @@ The crash handler setup function really just sets some stuff with `<signal.h>`. 
 
 The crash function must be called with one byte argument, and optionally a second string argument corresponding to an additional message to be displayed.  This string isn't formatted; if you need that, use `sprintf ( )` or something.  When the crash function is called, a window is displayed showing some information about the crash based on the arguments given.  ~~If the SDL video subsystem and the SDL\_ttf library are initialized, those will be used for this; otherwise, an SDL messagebox will be used.~~ (this is, temporarily, a lie.)
 
-The game currently uses a very simple system where a single byte is used for a basic exit code, and further information is stored in the message.  This may eventually prove too small; if such occurs, a more complex system will be designed.
+The game currently uses a very simple system where a single byte is used for a basic exit code, and further information is stored in the message.  This may eventually prove inadequate; if such occurs, a more complex system will be designed.
 
 ## Crash Codes
 
@@ -21,3 +21,5 @@ The game currently uses a very simple system where a single byte is used for a b
 - 6:  `atexit ( )` registration failure.
 - 7:  Loading failure.
 - 8:  Data loss prevention.
+- 9:  An undefined game state was reached.
+- A:  Lag abuse prevention.

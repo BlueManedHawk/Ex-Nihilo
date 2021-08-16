@@ -12,15 +12,13 @@ The overarching goal of the project is to create a game in which the player star
 
 _More information:  `docs/PROBLEMS.md`_
 
-There are a number of reasons you may be having a problem.  The files that you should look at when you have a problem are _generally_ all in the `docs/Problems/` directory.  These include `docs/Problems/LINGERERS.md`, which lists lingering well-known bugs in the game, `docs/Problems/QUESTIONS.md`, which lists several questions about the game and explains the many, _**many**_ questionable decisions, `docs/Problems/REQUIREMENTS.md`, which lists what you need to play the game, and `docs/Problems/TROUBLESHOOTING.md`, which lists common issues you might run into.
+There are a number of reasons you may be having a problem.  The files that you should look at when you have a problem are _generally_ all in the `docs/Problems/` directory.  See the Index section below.
 
 ## Contributing
 
 _More information:  `docs/CONTRIBUTING.md`_
 
-The easiest way to contribute is to find a problem and file an issue.  You can find more information on this in `docs/Contributing/ISSUES.md`.  When filing a problem, please consider the game design principles, available in `docs/Contributing/DESIGN.md`.
-
-I'm currently not accepting pull requests until I'm more educated about how copyright works.  Until then, you can look at `docs/Contributing/COMPILING.md` to understand how the game is compiled.  The source code is pretty well commented (or at least I'd like to think so) but `docs/Contributing/ORGANIZATION.md` gives a broad overview of how the source code is organized.  You'll also want to look at `docs/Contributing/STYLE.md` so you can understand why the source code looks like that.
+There are multiple ways to contribute.  The files containing information on how to contribute are _generally_ all in the `docs/Problems/` directory.  See the Index section below.
 
 ## Index
 
@@ -29,21 +27,20 @@ These are all located in the `docs` directory in this repository.
 - LICENSE.md contains licensing information.
 - SECURITY.md contains the protocol for reporting security problems with the game.
 - CREDITS.md contains my thanks to various people.
-- ETHICS.md
 - INSTALLING.md contains instructions on how to install the game.
-- CHANGELOG.md is a…changelog.
+- CHANGELOG.md is a changelog of all the versions released.
+- REQUIREMENTS.md explains what you need to play the game.
 - fdjdalgsnjcixslfo9cin2odoks==s;dqvicopzjhddaal
 - PROBLEMS.md explains where you can figure out how to fix some problems.
-	- LINGERERS.md lists several lingering bugs.
-	- REQUIREMENTS.md explains what you need to play the game.
+	- CRASHES.md explains the crash protocol for the game.
+	- LINGERERS.md lists several lingering problems with the game.
+	- FAIRNESS.md lists several problems regarding fairness in playing the game.
 	- QUESTIONS.md mostly explains questionable decisions.
-	- TROUBLESHOOTING.md explains how to fix some common problems.
 - CONTRIBUTING.md explains where you figure out how to contribute.
 	- DESIGN.md explains some design principles for the game.
 	- ISSUES.md explains how to file an issue.
-	- COMPILING.md explains how the makefile works.
-	- ORGANIZATION.md explains how the source is organized.
-	- STYLE.md explains how the source is formatted.
+	- PULLS.md explains how to make code contributions.
+	- LOGS.md explains the game's logging protocol.
 
 ## Further Reading
 

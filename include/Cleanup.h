@@ -12,7 +12,16 @@
  *
  * There isn't currently very much in this file, but that's mostly because there isn't very much in the program.  This will probably expand with time. */
 
+#pragma once
+#ifndef CLEANUP_H
+#define CLEANUP_H
+
 #include "Global.h"
+
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_mixer.h"
+#include "SDL_ttf.h"
 
 void Cleanup ( void ) {
 
@@ -43,3 +52,4 @@ void Cleanup ( void ) {
 	TTF_Quit ( ) ;
 
 	SDL_Quit ( ) ; }
+#endif/*ndef CLEANUP_H*/

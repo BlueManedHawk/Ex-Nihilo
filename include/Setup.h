@@ -35,7 +35,7 @@
 
 /* Alright, here's the function. */
 
-void Setup ( void ) {
+ void Setup ( void ) {
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "BEGIN FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ;
 
@@ -137,6 +137,12 @@ void Setup ( void ) {
 			SizeMultiplier = 4 ;
 			SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "User has asked for quaternical window size." ) ;
 			break ; }
+
+	CharacterRectangle.x = ( 320 - 8 ) * SizeMultiplier ;
+	CharacterRectangle.y = ( 240 - 8 ) * SizeMultiplier ;
+	CharacterRectangle.h = 16 * SizeMultiplier ;
+	CharacterRectangle.w = 16 * SizeMultiplier ; // Don't ask why this stuff is defined here of all places. //
+
 	SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "Making window…" ) ;
 	MainWindow = SDL_CreateWindow ( "Ex Nihilo" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 640 * SizeMultiplier , 480 * SizeMultiplier , WindowFlags ) ;
 	if ( MainWindow == NULL ) {
@@ -145,6 +151,7 @@ void Setup ( void ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "%s" , WindowCreationFailureMessage ) ;
 		Crash ( 0x4 , WindowCreationFailureMessage ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_VIDEO , SDL_LOG_PRIORITY_VERBOSE , "Created window!" ) ;
+
 	SDL_LogMessage ( SDL_LOG_CATEGORY_RENDER , SDL_LOG_PRIORITY_VERBOSE , "Making renderer…" ) ;
 	MainRenderer = SDL_CreateRenderer ( MainWindow , -1 , SDL_RENDERER_ACCELERATED ) ;
 	if ( MainRenderer == NULL ) {
@@ -153,37 +160,7 @@ void Setup ( void ) {
 		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "%s" , RendererCreationFailureMessage ) ;
 		Crash ( 0x4 , RendererCreationFailureMessage ) ; }
 	SDL_LogMessage ( SDL_LOG_CATEGORY_RENDER , SDL_LOG_PRIORITY_VERBOSE , "Created renderer!" ) ;
-
-	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loading important images…" ) ;
-	char ErrorImagePath[0xFFF] ;
-	strcpy ( ErrorImagePath , PrefPath ) ;
-	strcat ( ErrorImagePath , "assets/Images/Special/UHOH.png" ) ;
-	ErrorSurface = IMG_Load ( ErrorImagePath ) ;
-	if ( ErrorSurface == NULL ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not load the error image!  Crashing program…" ) ;
-		Crash ( 0x7 , "The error image could not be loaded." ) ; }
-	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loaded error image." ) ;
-	char TestImagePath[0xFFF] ;
-	strcpy ( TestImagePath , PrefPath ) ;
-	strcat ( TestImagePath , "assets/Images/Special/TestImage.png" ) ;
-	TestSurface = IMG_Load ( TestImagePath ) ;
-	if ( TestSurface == NULL ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_ERROR , SDL_LOG_PRIORITY_CRITICAL , "Could not load the test image!  Crashing program…" ) ;
-		Crash ( 0x7 , "The test image could not be loaded." ) ; }
-	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loaded test image." ) ;
-	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Loaded important images!" ) ;
-
-	/* This is where there should be some stuff with setting up audio and loading important sounds, but unfortunately, I haven't been able to get FLAC to work, so until I do, this is empty, and the program goes straight to getting the font. */
-
-	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Obtaining font…" ) ;
-	char BarlowCondensedPath[0xFFF] ;
-	strcpy ( BarlowCondensedPath , PrefPath ) ;
-	strcat ( BarlowCondensedPath , "assets/Text/Font/BarlowCondensed-Regular.ttf" ) ;
-	BarlowCondensed = TTF_OpenFont ( BarlowCondensedPath , 16 ) ;
-	if ( BarlowCondensed == NULL ) {
-		SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_CRITICAL ,  "Could not obtain font!  Crashing program…" ) ;
-		Crash ( 0x7 , "Barlow Condensed could not be loaded." ) ; }
-	TTF_SetFontHinting ( BarlowCondensed , TTF_HINTING_NORMAL ) ;
-	SDL_LogMessage ( SDL_LOG_CATEGORY_SYSTEM , SDL_LOG_PRIORITY_VERBOSE , "Font obtained!" ) ; }
+	
+	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "END FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ; }
 
 #endif/*ndef SETUP_H*/

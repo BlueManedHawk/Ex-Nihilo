@@ -30,7 +30,7 @@
 
 /* And now, we get to the meat of the file. */
 
-void RunChecks ( void ) {
+ void RunChecks ( void ) {
 
 	SDL_LogMessage ( SDL_LOG_CATEGORY_APPLICATION , SDL_LOG_PRIORITY_VERBOSE , "BEGIN FUNCTION %s IN FILE %s AT LINE %d." , __func__ , __FILE__ , __LINE__ ) ;
 

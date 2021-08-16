@@ -12,28 +12,11 @@
 
 # Hello, and welcome to the makefile for Ex Nihilo!
 #
-# If you don't know, a makefile is a compiling automation tool.  It consists of a number of _targets_ (the unindented bits that end with a colon) that can be selected as arguments to the process from the command line (e.g. you select the `help` target with `make help`).  If you don't specify any particular target, the first target in a makefile will be used.  These targets are then followed on the same line by prerequisites, which can be files or other targets.
-#
-# From there, a target consists of a series of single-tab-indented commands to be executed on a shell, separated by semicolons.  Each line is executed on a different shell (so, for example, `cd` won't be remembered between lines) but two lines can be treated as one by escaping the former's newline with a backslash.
-#
-# Additionally, there exist macros for makefiles.  These are defined similarly to how variables are in most programming languages.  They are used such that `$(EXAMPLE)` means "Expand the macro 'EXAMPLE' here.".
-#
-# There exist other things, like suffix rules and pattern rules.  If you want more information, I suggest you look at the Wikipedia page for Make, then look at the manual for GNU Make, which this program uses, which is available here:  https://www.gnu.org/software/make/manual/make.pdf.
+# This document will assume that you're familiar with makefiles, and more particularly, GNU make, the manual for which is available here:  https://www.gnu.org/software/make/manual/make.pdf.
 
-
-# This particular makefile uses the `clang-11` command a lot.  You may want to look at the documentation, which is available here:  https://clang.llvm.org/docs/.  (I use Clang 11 because any future revision would take up too much space on my Chromebook.)
-
-
-# The first target, and the default, chastises you for not specifying an argument, then redirects you to `COMPILING.md`
 
 default:
 	$(warning "Hey!  You need to specify something to make!  See `COMPILING.md` for details.")
-
-# I'm now going to declare some macros, because while these make it very slightly slower, they're going to overall make this much easier to maintain, and will reduce the repetitiveness of the makefile.
-
-
-# First, we need to declare the compilation stuff.  This includes the compilation command, the most common filenames, the formatting options, the diagnostic options, the it to it can't be what have, and some other options.  This means that in the event this needs to be expanded, faffing about with changing everything everywhere can be avoided.
-
 
 COMMON_BINARY_OUTPUT = Ex\ Nihilo.elf
 COMMON_ASSETS_OUTPUT = Assets.txz
@@ -64,4 +47,4 @@ binary:
 assets:
 	$(TAR_COMMAND)
 
-# There is no `make clean` command because I don't trust myself to not screw it up massively.
+# There is no `make clean` or `make install` command because I don't trust myself to not screw it up massively.

@@ -1,7 +1,5 @@
 # Contributing
 
-This file explains how you can contribute to Ex Nihilo.
-
 ## Issues
 
 _More information:  `ISSUES.md`_
@@ -12,6 +10,10 @@ The main way you can contribute to Ex Nihilo is by opening Issues on Github when
 
 Attempting to create a definitive line separating the bug report-feature request gradient will only lead to people getting angry, so I'm not going to try.  However, all issues submitted must be _presented as real problems within the game_.  Failure to do so will lead to it being marked as invalid.  Additionally, please make sure to keep issues limited to a single issue per issue.  This helps with keeping track of things.
 
+There do not exist issue templates, because they are too restrictive.  You are expected to use the freedom from this wisely.
+
 ## Pull requests
 
-Until I can get a more proper understanding of the nuances of copyright, I currently won't be accepting any pull requests.  You still might want to look at `DESIGN.md`, `COMPILING.md`, `ORGANIZATION.md`, and `STYLE.md`.
+_More information:  `PULLS.md`_
+
+Pull requests are the more complicated way to contribute to the project.  
