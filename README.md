@@ -1,3 +1,5 @@
+**This project has been archived.** For more information, see [here](https://bluemanedhawk.tumblr.com/post/662076954824114176/im-shelving-the-project-again).
+
 # Ex Nihilo
 
 ## Preface
